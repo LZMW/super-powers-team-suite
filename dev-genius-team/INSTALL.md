@@ -1,4 +1,4 @@
-# Dev-Genius Team v2.0 — 安装说明
+# Dev-Genius Team v2.2 — 安装说明
 
 ## 前置依赖
 
@@ -30,9 +30,9 @@ cp agents/dev-genius-analyst.md ~/.claude/agents/
 | 文件 | Agent ID | 门控 |
 |------|----------|------|
 | `dev-genius-planner.md` | 任务规划师 | 🚪 Gate 1 |
-| `dev-genius-architect.md` | 架构实施师 | — |
+| `dev-genius-architect.md` | 架构实施师 | 🚪 Gate 1.5 必经 |
 | `dev-genius-developer.md` | 开发工程师 | 🚪 Gate 2 |
-| `dev-genius-qa-tester.md` | 测试工程师 | 🚪 Gate 3 |
+| `dev-genius-qa-tester.md` | 测试工程师 | 🚪 Gate 3 必经 |
 | `dev-genius-analyst.md` | 代码审查师 | 🚪 Gate 4+5 |
 
 ### 4. MCP 服务器（可选但推荐）
@@ -55,11 +55,11 @@ cp agents/dev-genius-analyst.md ~/.claude/agents/
 ```
 1. design-interrogator-team 产出 .di/phases/07_documentation/
 2. 启动 dev-genius-coordinator
-3. 协调器自动检测上游 → 🚪 Gate 1 (Plan) → 🚪 Gate 2 (TDD) → 🚪 Gate 3 (Verify) → 🚪 Gate 4 (Review) → 🚪 Gate 5 (Finish)
-4. 每道门控通过后才进入下一阶段
+3. 协调器自动检测上游 → 🚪 Gate 1 (Plan) → 🚪 Gate 1.5 (Arch) → 🚪 Gate 2 (TDD) → 🚪 Gate 3 (Verify) → 🚪 Gate 4 (Review) → 🚪 Gate 5 (Finish)
+4. 每道门控通过后才进入下一阶段。Gate 1.5 (Architect) 和 Gate 3 (QA Tester) 是必经门控，协调器不可随意跳过
 5. 推荐 /goal + /loop 实现全自动开发
 ```
 
 ---
 
-**版本**: v2.0
+**版本**: v2.2

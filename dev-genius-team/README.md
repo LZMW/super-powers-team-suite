@@ -1,12 +1,22 @@
-# Dev-Genius (开发天才) 团队 v2.0
+# Dev-Genius (开发天才) 团队 v2.2
 
-> **一句话**：黑板型 + 五道质量门控 + Superpowers 方法论注入，从设计规格到可交付软件的全自动开发流水线。
+> **一句话**：黑板型 + 六道强制门控 + Superpowers + OpenSpec 方法论注入，从设计规格到可交付软件的全自动开发流水线。Architect 和 QA Tester 是每任务必经门控。
 
-## v2.0 核心创新（Superpowers 技能注入）
+## v2.2 核心变化（Architect + QA Tester 强制门控）
+
+| 变化 | 说明 |
+|------|------|
+| 🔴 **Architect 必经门控** | 从「可选架构环节」升级为 Gate 1.5，三级响应（完整架构/影响评估/架构签批），协调器定级别 |
+| 🔴 **QA Tester 必经门控** | 从「可选验证环节」升级为 Gate 3，验证深度协调器可调，证据门槛不变 |
+| 🔴 **stop-on-mismatch** | Developer 发现架构冲突/范围膨胀/设计缺陷立即停止并上报 |
+| 🔴 **no-silent-scope-expansion** | Developer 不得默默实现超出批准范围的内容 |
+| 🆕 **架构复杂度标注** | Planner 为每个任务标注架构复杂度，指导 Architect 响应级别 |
+
+## v2.0 核心创新（保留）
 
 | 创新 | 来源 | 说明 |
 |------|------|------|
-| **五道质量门控** | Superpowers 全流程 | Plan Gate → TDD Gate → Verify Gate → Review Gate → Finish Gate，每道不可跳过 |
+| **六道质量门控** | Superpowers + OpenSpec | Plan Gate → Architecture Gate → TDD Gate → Verify Gate → Review Gate → Finish Gate |
 | **TDD 铁律** | test-driven-development | RED-GREEN-REFACTOR 循环强制执行，无失败测试先行的代码必须删除重来 |
 | **系统化调试** | systematic-debugging | 四阶段调试（根因→模式→假设→修复），禁止猜测式修复 |
 | **验证前证据** | verification-before-completion | 每个完成声明必须附带新鲜测试输出，禁止"应该通过"类声明 |
@@ -27,17 +37,20 @@ dev-genius-team v2.0 (本团队, 5人, 黑板型)
     产出: 可交付软件产品
 ```
 
-## 五道质量门控
+## 六道质量门控
 
 ```
 🚪 Gate 1: Plan Gate (writing-plans)
-    Planner → task-queue.md（禁止 TODO/TBD）
+    Planner → task-queue.md（禁止 TODO/TBD，标注架构复杂度）
+    ↓
+🚪 Gate 1.5: Architecture Gate
+    Architect → architecture.md（三级响应：完整架构/影响评估/架构签批）
     ↓
 🚪 Gate 2: TDD Gate (test-driven-development)
     Developer → RED→GREEN→REFACTOR（无失败测试先行=任务失败）
     ↓
-🚪 Gate 3: Verify Gate (verification-before-completion)
-    QA Tester → 验收标准逐项验证（有测试输出为证据）
+🚪 Gate 3: Verify Gate
+    QA Tester → 验收标准逐项验证（新鲜测试输出为证据）
     ↓
 🚪 Gate 4: Review Gate (code-review)
     Analyst → Karpathy四原则 + OWASP（Critical 必须修复）
@@ -51,9 +64,9 @@ dev-genius-team v2.0 (本团队, 5人, 黑板型)
 | # | 代号 | 角色 | 门控 | 模型 |
 |---|------|------|------|------|
 | 1 | planner | 任务规划师 | 🚪 Gate 1 | Sonnet |
-| 2 | architect | 架构实施师 | — | Sonnet |
+| 2 | architect | 架构实施师 | 🚪 Gate 1.5 必经 | Sonnet |
 | 3 | developer | 开发工程师 | 🚪 Gate 2 | Sonnet |
-| 4 | qa-tester | 测试工程师 | 🚪 Gate 3 | Sonnet |
+| 4 | qa-tester | 测试工程师 | 🚪 Gate 3 必经 | Sonnet |
 | 5 | analyst | 代码审查师 | 🚪 Gate 4+5 | Sonnet |
 
 ## 黑板结构
@@ -69,36 +82,62 @@ dev-genius-team v2.0 (本团队, 5人, 黑板型)
 └── inbox.md            # 事件总线
 ```
 
-## Superpowers 注入映射
+## Superpowers + OpenSpec 注入映射
 
 | Agent | 注入技能 | 核心机制 |
 |-------|---------|---------|
-| **planner** | writing-plans | 禁止 TODO/TBD、任务原子/独立/可验证、自审检查清单 |
+| **planner** | writing-plans | 禁止 TODO/TBD、任务原子/独立/可验证、自审检查清单、架构复杂度标注 |
+| **architect** | — | 三级响应（完整架构/影响评估/架构签批）、架构冲突回退 |
 | **developer** | test-driven-development | RED-GREEN-REFACTOR 铁律、无失败测试=删除重来 |
 | **developer** | systematic-debugging | 四阶段调试、根因分析先于修复、3+ 失败质疑架构 |
-| **qa-tester** | verification-before-completion | 验证前运行命令+读取输出、禁止"应该通过" |
-| **analyst** | code-review + finishing | Karpathy 四原则、OWASP Top 10、合并前检查清单 |
-| **coordinator** | executing-plans | 五道门控串行执行、每道未通过禁止进入下一阶段 |
+| **developer** | openspec change-implementation | stop-on-mismatch、no-silent-scope-expansion |
+| **qa-tester** | verification-before-completion + pr-test-analyzer | 验收标准逐项验证、新鲜测试输出为证据、行为覆盖优先、负面空间映射 |
+| **analyst** | code-review + silent-failure-hunter | Karpathy 四原则、OWASP Top 10、静默失败检测、置信度评分、假阳性排除、合并前检查 |
+| **coordinator** | subagent-driven-development + openspec | 六道门控串行执行、每道未通过禁止进入下一阶段、文件即真实来源 |
 
 ## 设计来源
 
 | 来源 | 贡献 |
 |------|------|
-| dev-genius-team v1.1 | 黑板模式、事件总线、Dev↔QA 局部闭环、/goal+/loop |
+| dev-genius-team v2.1 | 黑板模式、事件总线、Dev↔QA 局部闭环、/goal+/loop、五道门控 |
 | design-interrogator-team v3.0 | 统一上游规格文档（.di/phases/07_documentation/） |
 | Superpowers: writing-plans | 规划方法论、禁止占位符 |
 | Superpowers: test-driven-development | RED-GREEN-REFACTOR 铁律 |
 | Superpowers: systematic-debugging | 四阶段系统化调试 |
 | Superpowers: verification-before-completion | 验证前强制证据 |
+| Superpowers: subagent-driven-development | 两阶段审查、每任务审查循环 |
 | Superpowers: code-review + finishing | Karpathy 审查 + 合并前检查 |
+| OpenSpec: change-implementation | stop-on-mismatch、no-silent-scope-expansion、文件即真实来源 |
+| Claude Plugins: code-review | 置信度评分、假阳性排除清单、五维并行审查 |
+| Claude Plugins: silent-failure-hunter | 静默失败五大铁律、错误处理五维审查 |
+| Claude Plugins: pr-test-analyzer | 行为覆盖优先、负面空间映射、DAMP 原则 |
 | super-team-builder v5.0 | 增强手艺结构 |
 
 ---
 
-**版本**: v2.0
-**更新日期**: 2026-05-23
+**版本**: v2.2
+**更新日期**: 2026-05-24
 
 ## 更新日志
+
+### v2.2.1 (2026-05-24)
+- 🆕 **Analyst 静默失败检测**（借鉴 claude-plugins-official silent-failure-hunter）：五铁律 + 六项检查清单
+- 🆕 **Analyst 置信度评分**（借鉴 claude-plugins-official code-review）：0-100 双维度评分，仅报告 ≥75 问题
+- 🆕 **Analyst 假阳性排除清单**（借鉴 claude-plugins-official code-review）：七类不报告的情况
+- 🆕 **QA Tester 行为覆盖优先**（借鉴 claude-plugins-official pr-test-analyzer）：测试行为而非实现
+- 🆕 **QA Tester 负面空间映射**（借鉴 claude-plugins-official pr-test-analyzer）：先列清单再对照检查
+- 🆕 **QA Tester Bug 分级锚点**：P0-P3 每级附具体示例
+
+### v2.2 (2026-05-24)
+- 🔴 **Architect 强制门控**：从「可选架构环节」升级为 Gate 1.5，三级响应（完整架构/影响评估/架构签批），每任务必经
+- 🔴 **QA Tester 必经门控**：从「可选验证环节」升级为 Gate 3，证据门槛升级（新鲜测试输出），验证深度协调器可调
+- 🔴 **stop-on-mismatch**：Developer 发现架构冲突/范围膨胀/设计缺陷立即停止并上报
+- 🔴 **no-silent-scope-expansion**：Developer 不得默默实现超出批准范围的内容
+- 🆕 **架构复杂度标注**：Planner 为每个任务标注架构复杂度，指导 Architect 响应级别
+- 🆕 **架构冲突回退机制**：ARCH_CONFLICT 事件 + Gate 1.5 重新评估流程
+- 🆕 **SCOPE_EXPANSION 事件**：Developer 发现范围膨胀时上报
+- 📝 **任务类型映射表重写**：所有路径强制包含 Architect + QA Tester，旧的可跳过模式废除
+- 📝 **五道门控→六道门控**：Gate 1.5 Architecture Gate 加入流程
 
 ### v2.0 (2026-05-23)
 - 🔴 **五道质量门控**：Plan → TDD → Verify → Review → Finish
