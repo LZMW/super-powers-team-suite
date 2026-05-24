@@ -1,4 +1,4 @@
-# Design Interrogator Team v3.0 — 安装说明
+# Design Interrogator Team v3.1 — 安装说明
 
 ## 前置依赖
 
@@ -98,4 +98,4 @@ cp agents/design-interrogator-strategist.md ~/.claude/agents/
 
 ---
 
-**版本**: v3.0
+**版本**: v3.1

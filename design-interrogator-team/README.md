@@ -1,4 +1,4 @@
-# Design Interrogator (设计审问官) 团队 v3.0
+# Design Interrogator (设计审问官) 团队 v3.1
 
 > **一句话**：双轨道黑板型 + 品味注入 + Pre-Synthesis + 设计挖掘上游集成，覆盖架构设计审问和 UX/UI 全流程，统一交付 dev-genius。
 
@@ -112,14 +112,23 @@ Phase 2a: interrogator (架构拷问)  Phase 2b: ixd (交互设计)
 | keli-wen: Agent Orchestration | Pre-Synthesis、自包含Prompt、Review-Execution分离 |
 | keli-wen: Context Engineering | context-map.md、Zero-inheritance、渐进披露 |
 | keli-wen: 蒸馏实践 | PCA品味注入、Handoff即API、基向量理论 |
+| grill-me 模式 | 一次一问、决策树深度优先、代码库优先、分支完成标准 |
+| openspec 模式 | 工件状态模型、分层审问协议、scope guardrails、严重程度分级 |
 | super-team-builder v5.0 | 增强手艺结构、18项验证矩阵 |
 
 ---
 
-**版本**: v3.0
-**更新日期**: 2026-05-23
+**版本**: v3.1
+**更新日期**: 2026-05-24
 
 ## 更新日志
+
+### v3.1 (2026-05-24)
+- 🆕 **Interrogator 决策节点状态模型**：五状态（pending/active/resolved/deferred/superseded）+ 分支完成标准
+- 🆕 **Interrogator 代码库优先协议**：Glob→Grep→Read 搜索后才向用户提问
+- 🆕 **Critic 分层审问协议**：五层依序进行（可用性→可访问性→一致性→边界→可行性）
+- 🆕 **Critic 反对意见严重程度分级**：critical/major/minor/suggestion
+- 🆕 **Critic Scope Guardrails**：Phase 3b/5b 范围防线 + 禁止泛泛而谈
 
 ### v3.0 (2026-05-23)
 - 🔴 **团队合并**：design-interrogator (v1.2) + uxui-studio (v2.0) → 统一双轨道黑板型团队

@@ -3,7 +3,7 @@ name: design-interrogator-coordinator
 description: Design Interrogator (设计审问官) team coordinator skill. Analyzes design tasks, reads upstream design-miner outputs, communicates with users, and coordinates expert agents (design-interrogator-analyst, design-interrogator-researcher, design-interrogator-interrogator, design-interrogator-ixd, design-interrogator-critic, design-interrogator-ui, design-interrogator-strategist) using Blackboard pattern with Event Bus for dual-track (Architecture + UX/UI) state synchronization. Use when user needs architecture design interrogation, UI/UX design, design pressure testing, or development specification generation requiring multi-expert collaboration, or any other design tasks.
 ---
 
-# Design Interrogator (设计审问官) 协调器 v3.2
+# Design Interrogator (设计审问官) 协调器 v3.3
 
 你是智能项目协调器，统筹设计审问官团队按双轨道黑板模式完成设计任务。
 
@@ -960,6 +960,8 @@ prompt: |
 | keli-wen: Context Engineering | 三层次渐进披露、context-map.md |
 | keli-wen: CC 蒸馏实践 | 品味注入、上游富化模式、reflect式偏好捕获 |
 | design-miner-team (上游) | 黑板模式架构、事件总线、MCP三级授权、产出验证 |
+| grill-me 模式 | 一次一问、决策树深度优先、代码库优先、建议答案、依赖解析 |
+| openspec 模式 | 工件状态模型、门控检查、scope guardrails、常见故障模式 |
 | claude-reflect | 纠正捕获 + 偏好排队 + 永久同步 |
 | Karpathy 4 Principles | 拷问/审问/文档编译的审查标准 |
 | CLAUDE.md | 行为准则 |
