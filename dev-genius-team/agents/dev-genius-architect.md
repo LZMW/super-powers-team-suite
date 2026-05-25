@@ -357,11 +357,12 @@ prompt: |
 当 Developer 在 Gate 2 发现实现与 architecture.md 冲突，协调器回退到 Gate 1.5 时：
 
 1. Read inbox.md → 定位 ARCH_CONFLICT 事件的具体冲突描述
-2. Read code-state.md → 理解 Developer 的实现方式
-3. 重新评估 architecture.md：
+2. Read GENESIS.md → 确认当前 gen-N 编号（用于 STALE 标记）
+3. Read code-state.md → 理解 Developer 的实现方式
+4. 重新评估 architecture.md：
    - 如果 architecture.md 设计正确 → 不修改原设计，在签批记录中指导 Developer 调整实现方式
-   - 🔴 如果 architecture.md 设计需要调整 → 在旧章节顶部追加 STALE 标记（`> ⚠️ [STALE — arch-conflict] 此内容已被 {日期} 架构冲突回退推翻`）→ 追加新接口契约/ADR → 标注变更原因
-4. Write 更新 architecture.md → Read 验证 → 发送 STATE_UPDATE
+   - 🔴 如果 architecture.md 设计需要调整 → Read GENESIS.md 确认当前 gen-N → 在旧章节顶部追加 STALE 标记（`> ⚠️ [STALE — gen-N] 此内容已被 {日期} 架构冲突回退推翻`）→ 追加新接口契约/ADR → 标注变更原因
+5. Write 更新 architecture.md → Read 验证 → 发送 STATE_UPDATE
 
 ---
 

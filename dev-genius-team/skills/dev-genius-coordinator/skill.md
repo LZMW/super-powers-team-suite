@@ -448,7 +448,11 @@ INDEX.md 存在？
 │       - DESIGN_DECISIONS.md
 │       - VALIDATION_PLAN.md
 │   3. 🔴 INDEX.md 中如有自定义文档引用，按需读取
-│   4. Planner 输入中包含全部可用文档的摘要
+│   4. 🔴 对比 INDEX.md 中的「最后更新」时间戳：
+│      - 首次读取 → 记录时间戳到 .dev-genius/INDEX.md（协调器维护）
+│      - 时间戳未变 → 上游无更新，继续使用已缓存的 Planner 理解
+│      - 时间戳变更 → 上游有更新 → 重新全读标准文档 → Planner 检查是否影响当前开发
+│   5. Planner 输入中包含全部可用文档的摘要
 │
 ├─ 不存在 + .di/phases/ 存在其他内容 → 可能是旧版 DI 产出，询问用户
 └─ 完全不存在 → AskUserQuestion 询问是否有外部设计文档
@@ -468,12 +472,6 @@ INDEX.md 存在？
 | DESIGN_DECISIONS.md | 决策 | 🔴 必读 | 提取所有设计/架构决策 | Architect/Analyst |
 | VALIDATION_PLAN.md | 验证 | 🔴 必读 | 提取验收标准 | QA Tester |
 | 🔴 其他自定义文档 | 补充 | 按需 | INDEX.md 中引用了才读 | 视主题分配 |
-| ARCHITECTURE_SPEC.md | 架构 | 提取模块列表、接口契约、技术约束、部署方案 | Architect 参考；Developer 遵循；Analyst 对照 |
-| UX_SPEC.md | UX | 理解目标用户、定义验收标准 | QA Tester 参考用户场景设计测试 |
-| INTERACTION_SPEC.md | 交互 | 提取前端路由/组件结构需求 | Architect 设计前端架构；Developer 实现交互 |
-| UI_SPEC.md | 视觉 | 提取视觉实现要求 | Developer 实现样式和组件 |
-| DESIGN_DECISIONS.md | 决策 | 提取所有设计/架构决策 | Architect 编写 ADR 时引用；Analyst 审查时对照 |
-| VALIDATION_PLAN.md | 验证 | 提取验收标准 → 每个任务引用 | QA Tester 验收测试依据
 
 ---
 
@@ -485,7 +483,7 @@ INDEX.md 存在？
 
 ### Step 2️⃣：黑板初始化
 
-创建 `.dev-genius/blackboard/` 目录结构 + INDEX.md。
+创建 `.dev-genius/` 目录结构（含 `blackboard/` 子目录 + `GENESIS.md` + `INDEX.md`）。GENESIS.md 初始化为空文件（首行 `# 世代日志`），后续事件追加。
 
 ---
 
@@ -562,6 +560,7 @@ prompt: |
 - Architect 重新评估：
   - 如 architecture.md 原设计需调整 → 旧章节标记 `> ⚠️ [STALE — gen-N]` → 追加新结论
   - 如原设计正确 → 不标记 STALE，仅追加签批确认
+- 🔴 Architect 完成后 → 协调器重新触发 Developer 回到 Gate 2，继续实现
 - 回退时协调器在 inbox.md 记录事件：
   ```
   ## [ISO8601时间] ARCH_CONFLICT
