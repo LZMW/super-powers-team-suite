@@ -411,15 +411,22 @@ design-interrogator-team 是 dev-genius 的统一上游，产出目录 `.di/phas
 INDEX.md 存在？
 ├─ ✅ 是
 │   1. Read INDEX.md，确认 DI 交付范围 + 文件清单 + 交接说明
-│   2. 🔴 默认全读 7 份标准文档——这是 DI 的固定产出契约。缺失的标注即可
-│   3. 🔴 INDEX.md 中如有自定义文档引用（DI 的补充产出），按需读取
+│   2. 🔴 默认全读 DI 标准文档（共 7 份，缺失的标注即可）：
+│       - INDEX.md
+│       - ARCHITECTURE_SPEC.md
+│       - UX_SPEC.md
+│       - INTERACTION_SPEC.md
+│       - UI_SPEC.md
+│       - DESIGN_DECISIONS.md
+│       - VALIDATION_PLAN.md
+│   3. 🔴 INDEX.md 中如有自定义文档引用，按需读取
 │   4. Planner 输入中包含全部可用文档的摘要
 │
 ├─ 不存在 + .di/phases/ 存在其他内容 → 可能是旧版 DI 产出，询问用户
 └─ 完全不存在 → AskUserQuestion 询问是否有外部设计文档
 ```
 
-**读取规则**：标准文档默认全读，自定义文档按需读。标准 7 份是 DI 的固定契约——即使某份内容为空也要确认存在与否。
+**读取规则**：以上 7 份标准文档默认全读——这是 DI 的固定契约。即使某份内容为空也要确认其存在（DI 可能仅产出部分领域）。INDEX.md 中引用的额外文档按需读取。
 
 ### 📥 输入源详表（design-interrogator 统一产出）
 
@@ -461,7 +468,9 @@ subagent_type: "dev-genius-planner"
 description: "Read upstream design specs and create task queue"
 prompt: |
   **📂 路径**:
-  - 上游: {项目}/.di/phases/07_documentation/INDEX.md + 6 份标准文档全读，自定义文档按需
+  - 上游: {项目}/.di/phases/07_documentation/
+    标准文档全读: INDEX.md, ARCHITECTURE_SPEC.md, UX_SPEC.md, INTERACTION_SPEC.md, UI_SPEC.md, DESIGN_DECISIONS.md, VALIDATION_PLAN.md
+    自定义文档: INDEX.md 中有引用则按需读
   - 黑板: {项目}/.dev-genius/blackboard/
   - 可写: task-queue.md
 
