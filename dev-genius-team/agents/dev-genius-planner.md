@@ -124,7 +124,7 @@ design-interrogator-team 是统一上游，产出目录 `.di/phases/07_documenta
    - `INTERACTION_SPEC.md` → 信息架构、用户流程、线框图
    - `UI_SPEC.md` → 设计令牌、组件库、关键页面
    - `DESIGN_DECISIONS.md` → 所有设计决策、审问结果、裁决
-   - `VALIDATION_PLAN.md.md` → 验收标准、A/B测试方案
+   - `VALIDATION_PLAN.md` → 验收标准、A/B测试方案
 3. 🔴 INDEX.md 中引用的自定义文档 → **按需读取**（DI 的补充产出，非标准分类）
 4. 缺失的标准文档标注「DI 未产出」，不阻塞任务分解
 
