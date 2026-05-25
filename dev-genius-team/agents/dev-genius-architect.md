@@ -359,8 +359,8 @@ prompt: |
 1. Read inbox.md → 定位 ARCH_CONFLICT 事件的具体冲突描述
 2. Read code-state.md → 理解 Developer 的实现方式
 3. 重新评估 architecture.md：
-   - 如果 architecture.md 设计正确 → 不修改，在签批记录中指导 Developer 调整实现方式
-   - 如果 architecture.md 设计需要调整 → 更新接口契约/ADR，标注变更原因
+   - 如果 architecture.md 设计正确 → 不修改原设计，在签批记录中指导 Developer 调整实现方式
+   - 🔴 如果 architecture.md 设计需要调整 → 在旧章节顶部追加 STALE 标记（`> ⚠️ [STALE — arch-conflict] 此内容已被 {日期} 架构冲突回退推翻`）→ 追加新接口契约/ADR → 标注变更原因
 4. Write 更新 architecture.md → Read 验证 → 发送 STATE_UPDATE
 
 ---
