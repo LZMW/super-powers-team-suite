@@ -403,25 +403,36 @@ Step 9: 🚪 Gate 5 (Finish Gate) — 汇总交付
 
 ### Step 0️⃣：上游检测
 
-design-interrogator-team 是 dev-genius 的统一上游，产出目录 `.di/phases/07_documentation/`（含架构+UX/UI 完整设计规格）。
+design-interrogator-team 是 dev-genius 的统一上游，产出目录 `.di/phases/07_documentation/`。DI 可能产出完整 7 份文档，也可能仅产出部分（仅架构/仅UX）。不假设文档齐全——先读索引再按需读取。
 
 ```
-协调器自动检测: Glob .di/phases/07_documentation/INDEX.md
-    ├── 存在 → Planner 读取全部 7 个规格文档（架构+UX 统一交付）
-    ├── 不存在 + .di/phases/ 存在其他内容 → 可能是旧版 DI 产出，询问用户
-    └── 完全不存在 → AskUserQuestion 询问是否有外部设计文档
+协调器自动检测: .di/phases/07_documentation/INDEX.md
+    ↓
+INDEX.md 存在？
+├─ ✅ 是
+│   1. 🔴 先 Read INDEX.md，确认实际存在的文档清单（DI 已明确标注）
+│   2. 🔴 根据清单按需 Read——不完全流程只读相关文档
+│      例：本次开发的是后端架构 → 优先读 ARCHITECTURE_SPEC + DESIGN_DECISIONS + VALIDATION_PLAN
+│      例：本次开发含前端 UX → 补读 UX_SPEC + INTERACTION_SPEC + UI_SPEC
+│   3. Planner 输入中标注哪些文档可用、哪些缺失
+│   4. 缺失的文档领域不在本次开发范围内——不阻塞，但 Planner 需标注
+│
+├─ 不存在 + .di/phases/ 存在其他内容 → 可能是旧版 DI 产出，询问用户
+└─ 完全不存在 → AskUserQuestion 询问是否有外部设计文档
 ```
+
+**🔴 索引优先原则**：不硬编码读取全部 7 份。DI 可能仅产出部分文档（仅架构/仅UX），Planner 应基于实际存在的文档制定开发计划。
 
 ### 📥 输入源详表（design-interrogator 统一产出）
 
 | DI 产出文件 | 内容领域 | Planner 使用方式 | 其他专家使用 |
 |-----------|----------|-----------------|-------------|
-| INDEX.md | 综合 | 理解整体设计范围 + 交接说明 | Coordinator 全局索引参考 |
+| INDEX.md | 🔴 索引 | 先读此文件确认文档清单——这是导航入口 | Coordinator 全局索引参考 |
 | ARCHITECTURE_SPEC.md | 架构 | 提取模块列表、接口契约、技术约束、部署方案 | Architect 参考；Developer 遵循；Analyst 对照 |
 | UX_SPEC.md | UX | 理解目标用户、定义验收标准 | QA Tester 参考用户场景设计测试 |
 | INTERACTION_SPEC.md | 交互 | 提取前端路由/组件结构需求 | Architect 设计前端架构；Developer 实现交互 |
 | UI_SPEC.md | 视觉 | 提取视觉实现要求 | Developer 实现样式和组件 |
-| DESIGN_DECISIONS.md | 决策 | 提取所有设计/架构决策 + 审问/裁决结果 | Architect 编写 ADR 时引用；Analyst 审查时对照 |
+| DESIGN_DECISIONS.md | 决策 | 提取所有设计/架构决策 | Architect 编写 ADR 时引用；Analyst 审查时对照 |
 | VALIDATION_PLAN.md | 验证 | 提取验收标准 → 每个任务引用 | QA Tester 验收测试依据
 
 ---
@@ -445,7 +456,7 @@ subagent_type: "dev-genius-planner"
 description: "Read upstream design specs and create task queue"
 prompt: |
   **📂 路径**:
-  - 上游: {项目}/.di/phases/07_documentation/INDEX.md（请先Read全部规格文档）
+  - 上游: {项目}/.di/phases/07_documentation/INDEX.md（先 Read 此文件确认文档清单，再按需读取可用文档）
   - 黑板: {项目}/.dev-genius/blackboard/
   - 可写: task-queue.md
 
