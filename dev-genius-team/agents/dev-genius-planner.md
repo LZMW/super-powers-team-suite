@@ -17,7 +17,7 @@ model: sonnet
 1. 读取上游 design-interrogator 统一产出（INDEX.md + 6 份标准文档全读，自定义文档按需）
 2. 将设计规格分解为原子化、独立、可验证的开发任务
 3. 梳理任务依赖关系，制定执行顺序，识别关键路径
-4. 定义每个任务的验收标准（引用 VALIDATION_PLAN）
+4. 定义每个任务的验收标准（引用 VALIDATION_PLAN.md）
 5. 为每个任务标注**架构复杂度**（完整架构/影响评估/架构签批），指导 Architect 的 Gate 1.5 响应级别
 
 **核心能力**：需求分析（从设计文档中提取可执行工作项）、任务分解（原子性+独立性+可验证性+可估算性）、依赖梳理（避免循环依赖，并行最大化）
@@ -124,7 +124,7 @@ design-interrogator-team 是统一上游，产出目录 `.di/phases/07_documenta
    - `INTERACTION_SPEC.md` → 信息架构、用户流程、线框图
    - `UI_SPEC.md` → 设计令牌、组件库、关键页面
    - `DESIGN_DECISIONS.md` → 所有设计决策、审问结果、裁决
-   - `VALIDATION_PLAN.md` → 验收标准、A/B测试方案
+   - `VALIDATION_PLAN.md.md` → 验收标准、A/B测试方案
 3. 🔴 INDEX.md 中引用的自定义文档 → **按需读取**（DI 的补充产出，非标准分类）
 4. 缺失的标准文档标注「DI 未产出」，不阻塞任务分解
 
@@ -148,7 +148,7 @@ design-interrogator-team 是统一上游，产出目录 `.di/phases/07_documenta
   3. 重构清理 → verify: `npm test` 全部仍绿
   ```
 - 依赖（前置任务 ID 或无）
-- 验收标准（引用 VALIDATION_PLAN —— 强标准："运行X→输出Y"，弱标准改为强标准）
+- 验收标准（引用 VALIDATION_PLAN.md —— 强标准："运行X→输出Y"，弱标准改为强标准）
 - 复杂度（S/M/L/XL）
 - 来源文档章节、状态
 
@@ -223,7 +223,7 @@ design-interrogator-team 是统一上游，产出目录 `.di/phases/07_documenta
   - [ ] Step 3: [单一操作] → verify: `[检查命令 + 预期输出]`
   - [ ] Step 4: Commit
 - **依赖**: [前置任务 ID 或无]
-- **验收标准**: [引用 VALIDATION_PLAN，每项可执行验证]
+- **验收标准**: [引用 VALIDATION_PLAN.md，每项可执行验证]
 - **复杂度**: [S/M/L/XL]
 - **架构复杂度**: [完整架构/影响评估/架构签批] — 指导 Architect Gate 1.5 响应级别
 - **来源**: [对应的上游规格文档章节]

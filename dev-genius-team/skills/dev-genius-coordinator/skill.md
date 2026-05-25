@@ -406,6 +406,8 @@ TASK_CREATED → ASSIGNED → IN_PROGRESS → REVIEW → [PASS] → COMPLETED
 ```
 Step 0: 上游检测（DI 设计规格）
     ↓
+Step 0.5: 🔴 轮询 inbox.md（如有未处理事件，优先处理）
+    ↓
 Step 1: 需求沟通
     ↓
 Step 2: 黑板初始化
@@ -422,7 +424,7 @@ Step 7: 局部闭环（如需要）— Dev↔QA（Bug 修复 + 复测，最大 3
     ↓
 Step 8: 🚪 Gate 4 (Review Gate) — Analyst
     ↓
-Step 4.5: 产出验证（协调器 Read 验证每个黑板文件）
+Step 4.5: 🔴 产出验证（每专家完成后立即执行——Read 验证对应黑板文件，非最后统一验证）
     ↓
 Step 9: 🚪 Gate 5 (Finish Gate) — 汇总交付
 ```
@@ -776,7 +778,7 @@ prompt: |
 **全流程开发（规划完成后）**:
 ```
 🎯 /goal .dev-genius/blackboard/task-queue.md 中的所有任务已完成，全部测试通过，审查无 Critical 问题
-💡 /loop 10m /dev-genius-coordinator 读取 INDEX.md，从 task-queue.md 取出下一个任务，调用对应专家按五道门控执行
+💡 /loop 10m /dev-genius-coordinator 读取 INDEX.md，从 task-queue.md 取出下一个任务，调用对应专家按六道门控执行
 ```
 
 **单任务执行（每个任务完成后）**:

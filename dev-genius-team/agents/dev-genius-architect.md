@@ -149,7 +149,7 @@ model: sonnet
 
 **Step 0：确定响应级别**
 
-Read task-queue.md → 查看 Planner 为当前任务标注的「架构复杂度」→ 按级别执行。
+以协调器 prompt 中指定的响应级别为准。同时 Read task-queue.md 中 Planner 标注的「架构复杂度」作为补充上下文——两者不一致时，以协调器 prompt 为准。
 
 **Step 1：读取上下文**
 
