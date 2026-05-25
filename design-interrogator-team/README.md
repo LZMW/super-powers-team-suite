@@ -36,6 +36,8 @@ Step 1: 需求沟通 + 品味注入 (Taste Vectors)
     ↓
 Phase 1a: analyst (源码分析)     ∥ Phase 1b: researcher (用户研究)
     ↓                              ↓
+    └────── Step 3.5: Pre-Synthesis ───────┘
+                    ↓
 Phase 2a: interrogator (架构拷问)  Phase 2b: ixd (交互设计)
     ↓                              ↓
     │                           Phase 3b: critic (交互审问)

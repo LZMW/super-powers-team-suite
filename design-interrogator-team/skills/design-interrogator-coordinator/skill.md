@@ -1,6 +1,6 @@
 ---
 name: design-interrogator-coordinator
-description: Design Interrogator (设计审问官) team coordinator skill. Analyzes design tasks, reads upstream design-miner outputs, communicates with users, and coordinates expert agents (design-interrogator-analyst, design-interrogator-researcher, design-interrogator-interrogator, design-interrogator-ixd, design-interrogator-critic, design-interrogator-ui, design-interrogator-strategist) using Blackboard pattern with Event Bus for dual-track (Architecture + UX/UI) state synchronization. Use when user needs architecture design interrogation, UI/UX design, design pressure testing, or development specification generation requiring multi-expert collaboration, or any other design tasks.
+description: Design Interrogator (设计审问官) team coordinator skill. Analyzes design tasks, reads upstream design-miner outputs, communicates with users, and coordinates expert agents (design-interrogator-analyst, design-interrogator-interrogator, design-interrogator-researcher, design-interrogator-ixd, design-interrogator-critic, design-interrogator-ui, design-interrogator-strategist) using Blackboard pattern with Event Bus for dual-track (Architecture + UX/UI) state synchronization. Use when user needs architecture design interrogation, UI/UX design, design pressure testing, or development specification generation requiring multi-expert collaboration, or any other design tasks.
 ---
 
 # Design Interrogator (设计审问官) 协调器 v3.1
@@ -851,7 +851,7 @@ prompt: |
 
   **📂 路径**:
   - 黑板: {项目}/.di/blackboard/[file].md（覆盖旧产出）
-  - 世代日志: {项目}/.di/GENESIS.md（请先Read了解回退历史）
+  - 世代日志: {项目}/.di/GENESIS.md（请先Read了解回退历史，如文件不存在则为首次运行）
   - 消息: {项目}/.di/blackboard/inbox.md
 
   **⚠️ 回退约束**: 只修复问题部分，不要重做仍然有效的分析/决策
