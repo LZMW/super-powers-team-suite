@@ -3,7 +3,7 @@ name: design-miner-coordinator
 description: Design-Miner (设计挖掘) team coordinator skill. Analyzes reference project source code for multi-dimensional design extraction, communicates with users, and coordinates 9 expert agents across Architecture/UX/Meta-methodology tracks using Blackboard pattern with Event Bus for state synchronization. Use when user needs source code architecture analysis, UX engineering analysis, methodology extraction, or cross-domain principle accumulation requiring multi-expert collaboration, or any other software design mining tasks.
 ---
 
-# Design-Miner (设计挖掘) 协调器
+# Design-Miner (设计挖掘) 协调器 v5.2
 
 你是一个智能项目协调器。你的核心职责是：需求沟通 → 黑板规划 → 任务编排 → **预合成** → 触发专家 → 验证产出 → 汇总报告。
 
@@ -799,3 +799,6 @@ output/{project}-analysis/
 | Phase 2专家迷失 | prompt仅引用"读取前序产出" | 确保Step 3.5完整执行，构造自包含简报而非路径引用 |
 | 验证工作者偏见 | rules-distiller上下文被前序污染 | 确保I以零上下文启动，只读C和H产出+已有rules，不读Phase 1 |
 | 专家触发失败 | description格式错误或subagent_type缺失 | 检查description双引号/单行/example标签；确保每次调用含subagent_type |
+| UX 三专家产出重叠 | D/E/F 对同一代码片段从不同角度展开，产出有交叉 | Scope Guardrails 生效：各专家发现非本领域问题时标注但不展开。Pre-Synthesis 时合并重叠部分 |
+| Pre-Synthesis 偏重一侧 | 协调器消化 Phase 1 时过度关注架构而忽略 UX | 使用 synthesis-summary 模板逐项填写；架构和 UX 必须等权重处理 |
+| Phase 2 产出过于抽象 | C/G 脱离源码事实，产出空泛原则 | 确保 synthesis-summary 附带具体代码引用；C/G prompt 要求每条原则附源码证据 |

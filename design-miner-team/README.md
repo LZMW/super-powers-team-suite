@@ -1,4 +1,4 @@
-# Design-Miner (设计挖掘) 团队 v5.1
+# Design-Miner (设计挖掘) 团队 v5.2
 
 > **一句话**：三轨道并行 + Pre-Synthesis + 品味注入 + Review-Execution 分离 + 增强手艺结构 + 模板完整对齐，从参考项目源码中挖掘架构智慧、UX 模式和跨领域元方法论。
 
@@ -100,9 +100,13 @@ output/{project}-analysis/
 | 提示词3/4 | UX三专家+体感到代码映射 |
 | 提示词5/6 | 元方法论萃取+反模式+跨域应用 |
 | CLAUDE.md | 行为准则 |
-| rules-distill | 三层过滤+六种裁决 |
+| openspec 模式 | Scope Guardrails、常见故障模式 |
 
 ## 更新日志
+
+### v5.2 (2026-05-25)
+- 🆕 **D/E/F Scope Guardrails**：三 UX 专家各自明确范围防线，发现非本领域问题时标注但不展开，防止产出重叠
+- 🆕 **协调器常见故障模式**：新增 3 条故障条目（UX 重叠、Pre-Synthesis 偏侧、Phase 2 过于抽象）
 
 ### v5.1 (2026-05-23)
 - 🔴 **模板对齐**：协调器原则编号对齐黑板型模板 7 条标准原则 + 3 条特有创新（Pre-Synthesis/自包含Prompt/分层输出）
