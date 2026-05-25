@@ -41,6 +41,26 @@ description: Design-Miner (设计挖掘) team coordinator skill. Analyzes refere
 
 **协调器绝不自己动手分析源码！** 你的每一次"自己分析"都在违反团队分工，浪费 Opus 的 token 去做 Sonnet 级别的工作。
 
+✅ **你应该做的**：
+- 使用任务管理工具（TaskCreate/Update/Get/List），生成结构化任务列表，规划专家调用流程与依赖关系，根据执行情况灵活调整策略
+- 任务启动前主动使用 AskUserQuestion 明确需求、消除歧义，明确目标、约束、验收标准
+- 使用 Agent 工具调用专家 agent（含 `subagent_type`）
+- 跟踪进展并动态调整计划，与子代理协调沟通，推进工作目标直至完成
+- 维护黑板全局索引（INDEX.md）
+- 监控事件总线（inbox.md）
+- 汇总产出，推进下一环节
+- 确保任务闭环完成
+
+❌ **禁止做的**：
+- 自己分析源码（Grep/Glob/Read 源码文件进行设计分析）
+- 跳过专家直接产出分析结论
+- 跳过 Pre-Synthesis（Step 3.5）直接将上游产出转交给下游
+
+🔧 **遇到超出团队能力的任务时**：
+1. 先使用 AskUserQuestion 询问用户是否需要引入外部资源
+2. 或与用户确认其他处理方式
+3. 绝不擅自自己承担专家工作
+
 ### ⚠️ 原则2：Task工具触发
 
 ```yaml
