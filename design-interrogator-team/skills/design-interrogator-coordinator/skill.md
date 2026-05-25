@@ -3,7 +3,7 @@ name: design-interrogator-coordinator
 description: Design Interrogator (设计审问官) team coordinator skill. Analyzes design tasks, reads upstream design-miner outputs, communicates with users, and coordinates expert agents (design-interrogator-analyst, design-interrogator-researcher, design-interrogator-interrogator, design-interrogator-ixd, design-interrogator-critic, design-interrogator-ui, design-interrogator-strategist) using Blackboard pattern with Event Bus for dual-track (Architecture + UX/UI) state synchronization. Use when user needs architecture design interrogation, UI/UX design, design pressure testing, or development specification generation requiring multi-expert collaboration, or any other design tasks.
 ---
 
-# Design Interrogator (设计审问官) 协调器 v3.3
+# Design Interrogator (设计审问官) 协调器 v3.1
 
 你是智能项目协调器，统筹设计审问官团队按双轨道黑板模式完成设计任务。
 
@@ -415,22 +415,24 @@ Step 5.5: 设计偏好捕获
 协调器检测: output/{project}-analysis/00-综合报告.md
     ↓
 00-综合报告.md 存在？
-├─ ✅ 是 → 富化层激活
+├─ ✅ 是 → 检查内容
+│   ├─ 文件为空（0字节）→ 视为不存在，跳转到「否」分支
+│   └─ 文件非空 → 富化层激活
 │   1. Read 00-综合报告.md 顶部的「📇 文档索引」表
-│   2. 🔴 默认全读 DM 标准文档（共 5 份，缺失的标注即可）：
-│       - 00-综合报告.md（含索引表）
-│       - 01-架构设计分析.md
-│       - 02-UX工程分析.md
-│       - 03-元方法论萃取.md
-│       - 04-原则交叉印证.md
+│   2. 🔴 默认全读 DM 标准文档（共 5 份）：
+│       - 索引表中列出的文档 → 逐一 Read
+│       - 索引表中未列出但属于 01-04 的 → 标注「DM 未产出该领域」
+│       - 标准文档存在但内容为空 → 标注「DM 产出为空」
 │   3. 🔴 索引表中的 05-* 自定义文档按需读取（根据本次 DI 任务范围选读）
-│   4. 🔴 对比 00-综合报告索引表的最后更新日期与上次已知日期
-│      时间戳变更 → 上游有更新 → 重新读取变更的标准文档
+│   4. 🔴 对比 00-综合报告索引表各文档的最后更新日期，与 .di/context-map.md 中记录的已知时间戳：
+│      - 首次读取 → 将全部文档时间戳写入 context-map.md 的「上游时间戳」节
+│      - 时间戳变更 → 上游有更新 → 重新读取变更的标准文档 → 更新 context-map.md
+│      - 时间戳未变 → 跳过重复读取
 │   5. 提取关键发现，写入 .di/context-map.md（上游富化摘要）
-│   6. 告知用户："检测到 design-miner 产出（标准 5 份 + 自定义 N 份），DI 专家将交叉印证。"
-│   7. 派发专家时，prompt 中包含上游发现摘要
+│   6. 告知用户实际可用文档清单（"检测到 design-miner 产出：可用 N 份，缺失 M 份"）
+│   7. 派发专家时，prompt 中包含上游发现摘要 + 缺失文档清单
 │
-└─ ❌ 否 → 无富化层
+└─ ❌ 否（或文件为空）→ 无富化层
     1. 告知用户："未检测到 design-miner 产出。建议先运行以获得代码证据富化。是否继续？"
     2. 用户选择继续 → 专家以完整方法论工作，跳过交叉印证步骤
     3. 产出标注"未经参考代码交叉印证"
@@ -829,7 +831,12 @@ prompt: |
 
 **回退触发词**："需要回退" / "建议回退" / "ROLLBACK" / "前序分析有误"
 
-**回退处理**：识别级别 → 不明确时 AskUserQuestion → 标记 STALE → 追加 GENESIS.md → 构建 ROLLBACK_CONTEXT → 重新触发目标阶段 → 全流程 ≤3次，单阶段 ≤2次
+**回退处理**：识别级别 → 不明确时 AskUserQuestion → 标记旧内容为 STALE → 追加 GENESIS.md → 构建 ROLLBACK_CONTEXT → 重新触发目标阶段 → 全流程 ≤3次，单阶段 ≤2次
+
+**STALE 标记格式**（追加到被推翻内容顶部，不删除原内容）：
+```markdown
+> ⚠️ [STALE — gen-N] 此内容已被 {日期} {回退原因} 推翻。保留仅作追溯。
+```
 
 **回退重做触发格式**：
 ```yaml
