@@ -34,7 +34,7 @@ Phase 2: C(架构抽象) ∥ G(跨域解构) ← 收到自包含简报
     ↓
 Phase 3: H(体系构建) → I(原则蒸馏·验证工作者·零上下文)
     ↓
-Phase 4: 协调器汇总五份产出
+Step 5: 增量输出（每轨道完成后立即追加）
 ```
 
 ## 专家一览
@@ -54,7 +54,9 @@ Phase 4: 协调器汇总五份产出
 ## 黑板结构（v3.0 新增文件）
 
 ```
-{项目}/.design-miner/blackboard/
+{项目}/.design-miner/
+├── GENESIS.md                # 🔴 世代日志（追加式，永不覆盖）
+└── blackboard/
 ├── context-map.md            # 🆕 文件→模块→专家映射表
 ├── synthesis-summary.md      # 🆕 协调器预合成简报(Phase 1→2 的 API)
 ├── pattern-analysis.md       # A: 模式分析(handoff 给 B)
