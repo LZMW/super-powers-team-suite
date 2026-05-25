@@ -1,4 +1,4 @@
-# Design-Miner 团队安装指南 v5.1
+# Design-Miner 团队安装指南 v5.2
 
 ## 安装步骤
 
