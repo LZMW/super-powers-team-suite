@@ -62,6 +62,12 @@ design-miner-team          design-interrogator-team        dev-genius-team
 3. 各团队的 `skills/<team>-coordinator/skill.md` 即为协调器 Skill
 4. 在 Claude Code 中通过 `/skill-name` 调用协调器
 
+## 🍜 投喂作者
+
+如果这个项目帮到了你，欢迎请我喝杯咖啡~
+
+![投喂作者](donate-qr.jpg)
+
 ## 许可证
 
 **GNU Affero General Public License v3.0 (AGPL-3.0)**
