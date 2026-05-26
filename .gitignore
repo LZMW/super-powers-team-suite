@@ -10,3 +10,7 @@ Thumbs.db
 
 # Logs
 *.log
+
+# 私有资产（不可公开上传）
+private-*/
+super-team-builder/
