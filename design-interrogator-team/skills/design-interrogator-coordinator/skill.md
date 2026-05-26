@@ -11,7 +11,7 @@ description: Design Interrogator (设计审问官) team coordinator skill. Analy
 
 **下游**: dev-genius-team（读取 `.di/phases/07_documentation/` 进行开发实现）。
 
-**推荐工作流链**: **DM(Stage 1-7) → DI(Phase 0-12) → DV(Gate 1-5)**。也可 di→dv（跳过 DM），不推荐未经 DI 直接 dv。
+**推荐工作流链**: **DM(Stage 1-7) → DI(Phase 0-12) → DV(Gate 1-6)**。也可 di→dv（跳过 DM），不推荐未经 DI 直接 dv。
 
 ---
 
@@ -104,7 +104,7 @@ prompt: |
 
 ### ⚠️ 原则4：灵活应变原则
 
-框架是指导不是枷锁。用户说"拷问我"→直接启动 Phase 5a。已有分析报告→跳过 Phase 3a。只优化UI→跳过研究和交互阶段。
+框架是指导不是枷锁。用户说"拷问我"→走 Track A 精简流程（3a→5a→9→10）。用户明确表示已有分析报告不需重做→跳过 Phase 3a。只优化UI→跳过研究和交互阶段。design-miner 的产出不视为 Phase 3a 的替代品——DI 始终独立完成源码分析。
 
 ---
 
@@ -456,7 +456,7 @@ Phase 12: 综合报告汇总 + 设计偏好捕获
 
 **读取规则**：以上 5 份标准文档默认全读——这是 DM 的固定契约。即使某份内容为空也要确认其存在。05-* 自定义文档按需读取。
 
-**关键约束**：无论上游是否存在，专家的核心工作流程完全相同。上游只是追加的印证维度。
+🔴 **强制规则**：无论上游是否存在，Phase 3a (analyst) 和 Phase 3b (researcher) 都必须执行。DM 分析的是参考项目，DI 分析的是用户当前指定的项目——对象不同，不可替代。上游只是追加的印证维度。
 
 ---
 
@@ -469,10 +469,11 @@ Phase 12: 综合报告汇总 + 设计偏好捕获
 **关键确认项**：
 - 任务范围（完整设计 / 仅架构 / 仅UX / 设计审查？）
 - 产品类型和目标用户群体
-- 平台限制（Web / iOS / Android / 响应式）
+- 平台限制（Web / iOS / Android / Desktop / 小程序？响应式还是自适应？有无离线需求？需兼容的最低设备性能？）
 - 技术栈偏好
-- 是否有参考项目源码
-- 上游 design-miner 产出路径（如有）
+- 🔴 需要源码分析的**项目路径**（DM 产出存在也需问——DI 的分析对象可能不同，必须独立分析）
+- 🎯 **分析聚焦重点**：用户最关心的维度/模块/问题是什么？哪些架构决策需要深度审问？哪些UX模式需要压力测试？（⚠️ 这直接决定 Phase 5a-8b 拷问流程的聚焦方向——聚焦越具体，拷问越深入）
+- 上游 design-miner 产出路径（如有，作为富化层叠加）
 
 **品味注入** 🔴 v3.1：
 
@@ -509,6 +510,8 @@ Phase 12: 综合报告汇总 + 设计偏好捕获
 └─ "用户研究" → researcher(3b)
 ```
 
+> 🔴 design-miner 产出存在与否不改变此决策树。Phase 3a/3b 始终按上述路径执行——DM 是富化层，不是 Phase 的替代品。
+
 **生成 context-map.md**：
 
 ```markdown
@@ -535,7 +538,7 @@ Phase 12: 综合报告汇总 + 设计偏好捕获
 
 ---
 
-#### 📘 Track A Phase 3a: 源码分析
+#### 📘 Track A Phase 3a: 源码分析 🔴 必选（DM 产出不替代此阶段）
 
 ```yaml
 subagent_type: "design-interrogator-analyst"
@@ -789,13 +792,14 @@ prompt: |
   - 消息: {项目}/.di/blackboard/inbox.md
 
   **📋 输出要求**（以下每个文件都必须使用 Write 工具创建）:
-  - INDEX.md（交付概要+文件清单+🔴 `最后更新: {ISO8601}` + 对dev-genius的交接说明）
+  - INDEX.md（交付概要+文件清单+🔴 `最后更新: {ISO8601}` + 对dev-genius的交接说明。如有超出标准 6 份的补充产出，在此引用）
   - ARCHITECTURE_SPEC.md（架构风格、分层设计、组件关系、模块接口、技术栈、部署方案、ADR）
   - UX_SPEC.md（用户画像、旅程图、可用性指标）
   - INTERACTION_SPEC.md（信息架构、用户流程、线框图、交互行为）
   - UI_SPEC.md（设计令牌、色彩字体、组件库、关键页面、WCAG自检）
   - DESIGN_DECISIONS.md（每个关键决策的选择/理由/替代/Critic审问结果/Strategist裁决）
   - VALIDATION_PLAN.md（北极星指标、A/B测试方案、可用性测试提纲）
+  - {自定义文档}.md（如有，在 INDEX.md 文件清单中列出——DV Planner 会按需读取）
 
   **⚠️ 编译原则**:
   - 不引入新内容，只编译黑板上已有的产出
@@ -896,13 +900,14 @@ prompt: |
 
 ## 📦 产出清单
 .di/phases/07_documentation/
-├── INDEX.md
-├── ARCHITECTURE_SPEC.md
+├── INDEX.md                    # 🔴 交付概要 + 完整文档清单（含自定义文档）
+├── ARCHITECTURE_SPEC.md        # 标准 6 份（DI 固定契约）
 ├── UX_SPEC.md
 ├── INTERACTION_SPEC.md
 ├── UI_SPEC.md
 ├── DESIGN_DECISIONS.md
-└── VALIDATION_PLAN.md
+├── VALIDATION_PLAN.md
+└── {自定义文档}.md              # 如有补充产出，在 INDEX.md 中引用
 
 ## 📋 下一步建议
 启动 dev-genius-coordinator，让其 Planner 读取 .di/phases/07_documentation/INDEX.md 开始开发

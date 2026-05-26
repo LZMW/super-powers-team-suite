@@ -370,9 +370,9 @@ TASK_CREATED → ASSIGNED → IN_PROGRESS → REVIEW → [PASS] → COMPLETED
 ```
 Stage 1: 需求沟通 + 品味注入 + 黑板规划 + 任务规划
     ↓
-Stage 2: A(pattern-recognizer) 单独执行
+Stage 2 🔴: A(pattern-recognizer) 单独执行
     ↓
-Stage 3: B(critical-thinker) ∥ D(interaction) ∥ E(perception) ∥ F(emotion)
+Stage 3 🔴: B(critical-thinker) ∥ D(interaction) ∥ E(perception) ∥ F(emotion)
     (B 读取 A 的产出做针对性批判；D/E/F 独立分析源码)
     ↓
 [基础架构分析到此] → 🔴 更新 01-架构设计分析.md（A+B 版）
@@ -391,6 +391,8 @@ Stage 6: H(methodologist) → I(rules-distiller)
     ↓
 Stage 7: 产出验证 + 🔴 增量输出（更新 00-综合报告.md + 补充未更新的产出文档 + 下游推荐）
 ```
+
+> 🔴 Stage 2 和 Stage 3 为必选阶段——它们是所有分析轨道的基础层，不可跳过。即使用户仅要求方法论萃取（Stage 5-6），也需先执行基础分析获得源码证据。
 
 ---
 
@@ -867,7 +869,7 @@ DM (设计挖掘) → DI (设计审问) → DV (开发实现)
 | **DI → DV** | ⭐⭐ 可接受 | 无参考项目时跳过 DM，直接从设计审问开始 |
 | **DM → DV** | ⭐ 不推荐 | 跳过设计审问直接开发，缺失关键的设计决策审问环节 |
 
-DI 协调器的 Step 0 会自动检测 `output/{project}-analysis/00-综合报告.md`，发现 DM 产出后作为富化层叠加到审问流程中。
+DI 协调器的 Phase 0 会自动检测 `output/{project}-analysis/00-综合报告.md` 顶部的索引表——索引表列出全部产出文档（标准 01-04 + 自定义 05-*），DI 据此全读标准文档、按需选读自定义文档，作为富化层叠加到审问流程中。🔴 **DM 产出是辅助证据，不能替代 DI 的独立源码分析（Phase 3a）——DI 必须始终执行完整方法论。**
 
 ---
 
