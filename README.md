@@ -2,6 +2,18 @@
 
 > Super Powers Team Developer Suite — 从设计挖掘到代码交付的完整 AI Agent 协作系统
 
+---
+
+## 🍜 投喂作者
+
+> **如果这个项目帮到了你，欢迎赞助支持~** ☕
+
+<p align="center">
+  <img src="donate-qr.jpg" width="300" alt="微信赞赏码">
+</p>
+
+---
+
 ## 概述
 
 本套装包含三支专业 AI Agent 团队，覆盖软件开发的**设计挖掘 → 设计审问 → 开发实现**全流程。每支团队采用**黑板模式（Blackboard Pattern）+ 事件总线（Event Bus）**进行多专家协作，实现高效、低 Token 消耗的复杂任务执行。
@@ -61,12 +73,6 @@ design-miner-team          design-interrogator-team        dev-genius-team
 2. 各团队的 `agents/` 目录中的 `.md` 文件即为 Agent 配置
 3. 各团队的 `skills/<team>-coordinator/skill.md` 即为协调器 Skill
 4. 在 Claude Code 中通过 `/skill-name` 调用协调器
-
-## 🍜 投喂作者
-
-如果这个项目帮到了你，欢迎请我喝杯咖啡~
-
-![投喂作者](donate-qr.jpg)
 
 ## 许可证
 
