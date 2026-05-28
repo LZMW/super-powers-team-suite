@@ -30,7 +30,11 @@ git clone https://github.com/LZMW/super-powers-team-suite.git ~/.claude/super-po
 
 ## 赞助
 
-如果这个项目帮到了你，欢迎 [打赏支持](donate-qr.jpg)。
+如果这个项目帮到了你，欢迎打赏支持。
+
+<p align="center">
+  <img src="donate-qr.jpg" width="260" alt="微信赞赏码">
+</p>
 
 ## 许可证
 
