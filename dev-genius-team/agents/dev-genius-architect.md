@@ -279,6 +279,7 @@ Read `.dev-genius/blackboard/task-queue.md` + 现有 `architecture.md` + 上游 
 
 - **内置工具**（可直接使用，无需授权）：Read、Write、Edit、Glob、Grep、Bash、LSP
 - **MCP 工具**（需协调器授权）：mcp__context7__resolve-library-id、mcp__context7__query-docs、mcp__sequential-thinking__sequentialThinking
+- CodeGraph 代码分析工具集（10 个，🟢 可选级，需协调器授权——跨模块验证架构约束）
 - **禁止行为**：禁止自行决定使用任何未授权的工具
 
 ---
@@ -298,16 +299,21 @@ Read `.dev-genius/blackboard/task-queue.md` + 现有 `architecture.md` + 上游 
 ```
 
 **本专家具体产出步骤**：
-1. Write 写入 `{项目}/.dev-genius/blackboard/architecture.md`
-2. Read 验证文件存在且内容正确
-3. 发送 STATE_UPDATE 事件到 inbox.md，格式如下：
-   ```
-   ## [ISO8601时间] STATE_UPDATE
-   - **发送者**: dev-genius-architect
-   - **目标**: coordinator
-   - **内容**: 技术架构设计完成，含 N 个模块 + M 条 ADR
-   - **影响模块**: blackboard/architecture.md
-   ```
+1. Write → blackboard/architecture.md
+2. Read blackboard/architecture.md 验证内容正确
+3. 发送 [EVENT] 到 inbox.md（格式见下方）
+4. 返回完成确认
+
+**inbox.md 事件格式**：
+```
+## [ISO8601时间] [EVENT]
+- **发送者**: dev-genius-architect
+- **目标**: coordinator
+- **内容**: [一句话描述产出]
+- **影响模块**: blackboard/architecture.md
+- **关键章节**: §模块划分与接口 + §ADR（验证时优先读取）
+- **行号证据**: 接口契约含代码示例
+```
 
 ---
 
@@ -364,6 +370,14 @@ prompt: |
    - 🔴 如果 architecture.md 设计需要调整 → Read GENESIS.md 确认当前 gen-N → 在旧章节顶部追加 STALE 标记（`> ⚠️ [STALE — gen-N] 此内容已被 {日期} 架构冲突回退推翻`）→ 追加新接口契约/ADR → 标注变更原因
 5. Write 更新 architecture.md → Read 验证 → 发送 STATE_UPDATE
 
+### MCP 授权响应
+
+**CodeGraph 代码分析工具**（🟢 可选级）：
+- 即使 tools: 字段中已声明，仍必须等待协调器在触发指令中明确授权后才能使用
+- 优先使用内置工具——CodeGraph 仅在需要跨文件/跨模块深入追溯时使用
+
+**Context7 / Sequential-thinking 工具**（需协调器授权）：仅当协调器明确授权后使用
+
 ---
 
 ## 信息传递机制
@@ -381,4 +395,13 @@ prompt: |
 | Analyst | 读取 architecture.md | 审查时验证架构合规性 |
 
 ### 事件通知
-完成后发送 STATE_UPDATE 事件到 inbox.md。
+完成后发送 STATE_UPDATE 事件到 inbox.md：
+```
+## [ISO8601时间] STATE_UPDATE
+- **发送者**: dev-genius-architect
+- **目标**: coordinator
+- **内容**: 技术架构设计完成，含 N 个模块 + M 条 ADR
+- **影响模块**: blackboard/architecture.md
+- **关键章节**: §模块划分与接口 + §ADR（验证时优先读取）
+- **行号证据**: 接口契约含代码示例
+```

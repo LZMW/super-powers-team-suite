@@ -300,6 +300,7 @@ Phase 4: 实现修复 — 写失败回归测试→实现修复→验证→更新
 
 - **内置工具**（可直接使用，无需授权）：Read、Write、Edit、Bash、Glob、Grep、LSP
 - **MCP 工具**（需协调器授权）：mcp__context7__resolve-library-id、mcp__context7__query-docs、mcp__web-search-prime__webSearchPrime、mcp__web-reader__webReader
+- CodeGraph 代码分析工具集（10 个，🟢 可选级，需协调器授权——跨文件追溯调用链和影响范围）
 - **禁止行为**：禁止自行决定使用任何未授权的工具
 
 ---
@@ -320,18 +321,21 @@ Phase 4: 实现修复 — 写失败回归测试→实现修复→验证→更新
 ```
 
 **本专家具体产出步骤**：
-1. Write 写入 `{项目}/.dev-genius/blackboard/code-state.md`
-2. Read 验证文件存在且内容正确
-3. 发送事件到 inbox.md：
-   - 功能完成：TASK_COMPLETE
-   - Bug 修复：LOOP_PROGRESS
-   ```
-   ## [ISO8601时间] [事件类型]
-   - **发送者**: dev-genius-developer
-   - **目标**: coordinator | broadcast
-   - **内容**: [任务完成/Bug修复 简要描述]
-   - **影响模块**: blackboard/code-state.md
-   ```
+1. Write → blackboard/code-state.md
+2. Read blackboard/code-state.md 验证内容正确
+3. 发送 [EVENT] 到 inbox.md（格式见下方）
+4. 返回完成确认
+
+**inbox.md 事件格式**：
+```
+## [ISO8601时间] [EVENT]
+- **发送者**: dev-genius-developer
+- **目标**: coordinator
+- **内容**: [一句话描述产出]
+- **影响模块**: blackboard/code-state.md
+- **关键章节**: §TDD证据 + §验收标准对照（验证时优先读取）
+- **行号证据**: RED/GREEN输出附测试命令
+```
 
 ---
 
@@ -383,6 +387,14 @@ prompt: |
 3. **记录证据**：code-state.md 含实际测试命令和输出
 4. **Write 产出** + **Read 验证** + **发送事件**
 
+### MCP 授权响应
+
+**CodeGraph 代码分析工具**（🟢 可选级）：
+- 即使 tools: 字段中已声明，仍必须等待协调器在触发指令中明确授权后才能使用
+- 优先使用内置工具——CodeGraph 仅在需要跨文件/跨模块深入追溯时使用
+
+**Context7 / Web-search / Web-reader 工具**（需协调器授权）：仅当协调器明确授权后使用
+
 ---
 
 ## 信息传递机制
@@ -403,3 +415,12 @@ prompt: |
 ### 事件通知
 - 功能完成：TASK_COMPLETE
 - Bug 修复待复测：LOOP_PROGRESS
+```
+## [ISO8601时间] TASK_COMPLETE
+- **发送者**: dev-genius-developer
+- **目标**: coordinator
+- **内容**: [任务完成 简要描述]
+- **影响模块**: blackboard/code-state.md
+- **关键章节**: §TDD证据 + §验收标准对照（验证时优先读取）
+- **行号证据**: RED/GREEN输出附测试命令
+```

@@ -268,6 +268,7 @@ design-interrogator-team 是统一上游，产出目录 `.di/phases/07_documenta
 
 - **内置工具**（可直接使用，无需授权）：Read、Write、Edit、Glob、Grep、Bash、LSP
 - **MCP 工具**（需协调器授权）：mcp__sequential-thinking__sequentialThinking
+- CodeGraph 代码分析工具集（10 个，🟢 可选级，需协调器授权——分析代码结构辅助任务分解）
 - **禁止行为**：禁止自行决定使用任何未授权的工具
 
 ---
@@ -287,16 +288,21 @@ design-interrogator-team 是统一上游，产出目录 `.di/phases/07_documenta
 ```
 
 **本专家具体产出步骤**：
-1. Write 写入 `{项目}/.dev-genius/blackboard/task-queue.md`
-2. Read 验证文件存在且内容正确
-3. 发送 STATE_UPDATE 事件到 inbox.md，格式如下：
-   ```
-   ## [ISO8601时间] STATE_UPDATE
-   - **发送者**: dev-genius-planner
-   - **目标**: coordinator
-   - **内容**: 任务队列已完成，共 N 个任务
-   - **影响模块**: blackboard/task-queue.md
-   ```
+1. Write → blackboard/task-queue.md
+2. Read blackboard/task-queue.md 验证内容正确
+3. 发送 [EVENT] 到 inbox.md（格式见下方）
+4. 返回完成确认
+
+**inbox.md 事件格式**：
+```
+## [ISO8601时间] [EVENT]
+- **发送者**: dev-genius-planner
+- **目标**: coordinator
+- **内容**: [一句话描述产出]
+- **影响模块**: blackboard/task-queue.md
+- **关键章节**: §任务清单 + §关键路径（验证时优先读取）
+- **行号证据**: 每个任务标注文件路径
+```
 
 ---
 
@@ -330,6 +336,14 @@ prompt: |
 6. **Read 验证**：确认文件存在且内容正确
 7. **发送事件**：发送 STATE_UPDATE 到 inbox.md
 
+### MCP 授权响应
+
+**CodeGraph 代码分析工具**（🟢 可选级）：
+- 即使 tools: 字段中已声明，仍必须等待协调器在触发指令中明确授权后才能使用
+- 优先使用内置工具——CodeGraph 仅在需要跨文件/跨模块深入追溯时使用
+
+**Sequential-thinking 工具**（需协调器授权）：仅当协调器明确授权后使用
+
 ---
 
 ## 信息传递机制
@@ -356,4 +370,6 @@ prompt: |
 - **目标**: coordinator
 - **内容**: 任务队列已完成，共 N 个任务
 - **影响模块**: blackboard/task-queue.md
+- **关键章节**: §任务清单 + §关键路径（验证时优先读取）
+- **行号证据**: 每个任务标注文件路径
 ```

@@ -332,6 +332,7 @@ Read code-state.md → architecture.md → task-queue.md → test-report.md
 
 - **内置工具**（可直接使用，无需授权）：Read、Write、Edit、Glob、Grep、Bash、LSP
 - **MCP 工具**（需协调器授权）：mcp__vision-server__analyze_image、mcp__web-reader__webReader
+- CodeGraph 代码分析工具集（10 个，🟢 可选级，需协调器授权——跨模块追溯代码问题根因）
 - **禁止行为**：禁止自行决定使用任何未授权的工具
 
 ---
@@ -351,16 +352,21 @@ Read code-state.md → architecture.md → task-queue.md → test-report.md
 ```
 
 **本专家具体产出步骤**：
-1. Write 写入 `{项目}/.dev-genius/blackboard/review-report.md`
-2. Read 验证文件存在且内容正确
-3. 发送 TASK_COMPLETE 事件到 inbox.md，格式如下：
-   ```
-   ## [ISO8601时间] TASK_COMPLETE
-   - **发送者**: dev-genius-analyst
-   - **目标**: coordinator
-   - **内容**: 审查完成，Critical: X, High: Y, 合并建议: [✅/🚫]
-   - **影响模块**: blackboard/review-report.md
-   ```
+1. Write → blackboard/review-report.md
+2. Read blackboard/review-report.md 验证内容正确
+3. 发送 [EVENT] 到 inbox.md（格式见下方）
+4. 返回完成确认
+
+**inbox.md 事件格式**：
+```
+## [ISO8601时间] [EVENT]
+- **发送者**: dev-genius-analyst
+- **目标**: coordinator
+- **内容**: [一句话描述产出]
+- **影响模块**: blackboard/review-report.md
+- **关键章节**: §Critical + §架构合规性（验证时优先读取）
+- **行号证据**: 每个问题附带文件:行号
+```
 
 ---
 
@@ -399,6 +405,14 @@ prompt: |
 4. **合并前检查**：5 项清单逐项标注 ✅/❌
 5. **Write 产出** + **Read 验证** + **发送 TASK_COMPLETE**
 
+### MCP 授权响应
+
+**CodeGraph 代码分析工具**（🟢 可选级）：
+- 即使 tools: 字段中已声明，仍必须等待协调器在触发指令中明确授权后才能使用
+- 优先使用内置工具——CodeGraph 仅在需要跨文件/跨模块深入追溯时使用
+
+**Vision-server / Web-reader 工具**（需协调器授权）：仅当协调器明确授权后使用
+
 ---
 
 ## 信息传递机制
@@ -417,4 +431,13 @@ prompt: |
 - 审查通过（0 Critical + 合并前检查全部 ✅）→ 协调器执行 Gate 6 汇总交付
 
 ### 事件通知
-完成后发送 TASK_COMPLETE 事件到 inbox.md。
+完成后发送 TASK_COMPLETE 事件到 inbox.md：
+```
+## [ISO8601时间] TASK_COMPLETE
+- **发送者**: dev-genius-analyst
+- **目标**: coordinator
+- **内容**: 审查完成，Critical: X, High: Y, 合并建议: [✅/🚫]
+- **影响模块**: blackboard/review-report.md
+- **关键章节**: §Critical + §架构合规性（验证时优先读取）
+- **行号证据**: 每个问题附带文件:行号
+```
