@@ -473,7 +473,7 @@ model: sonnet
 
 - **内置工具**（可直接使用，无需授权）：Read、Write、Edit、Glob、Grep、Bash
 - **MCP 工具**（需协调器授权）：mcp__vision-server__analyze_image
-- CodeGraph 代码分析工具集（10 个，🟢 可选级，需协调器授权）
+- 🔴 首次使用必检 codegraph_status 确认索引就绪，如未初始化立即汇报「请执行 codegraph init -i」；CodeGraph MCP server 自带 file watcher 自动增量同步。CodeGraph 代码分析工具集（10 个，🟢 可选级，需协调器授权）
 - **禁止行为**：禁止自行决定使用任何未授权的工具
 
 ---
@@ -556,7 +556,7 @@ prompt: |
 
 当协调器授权 vision-server 工具时，在分析视觉参考时使用。未授权时基于文字描述进行设计。
 
-**CodeGraph 代码分析工具**（🟢 可选级）：
+****CodeGraph 代码分析工具**（🟢 可选级，🔴 首次必检 codegraph_status 未初始化→汇报「codegraph init -i」）：
 - 即使 tools: 字段中已声明，仍必须等待协调器在触发指令中明确授权后才能使用
 
 ---

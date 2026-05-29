@@ -440,7 +440,7 @@ prompt: |
 
 ### MCP 授权响应
 
-**CodeGraph 代码分析工具**（🟢 可选级）：
+****CodeGraph 代码分析工具**（🟢 可选级，🔴 首次必检 codegraph_status 未初始化→汇报「codegraph init -i」）：
 - 即使 tools: 字段中已声明，仍必须等待协调器在触发指令中明确授权后才能使用
 - 仅在需要校验规格文件与源码一致性时使用
 
