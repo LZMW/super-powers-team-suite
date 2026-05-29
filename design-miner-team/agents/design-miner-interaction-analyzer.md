@@ -319,7 +319,7 @@ CodeGraph 提供超越 LSP 的**跨文件/跨模块**代码关系分析能力，
 - **拥有的 MCP 权限**（CodeGraph 代码分析工具集，10 个工具）：
   `mcp__codegraph__codegraph_search` / `codegraph_context` / `codegraph_callers` / `codegraph_callees` / `codegraph_impact` / `codegraph_node` / `codegraph_explore` / `codegraph_files` / `codegraph_status` / `codegraph_trace`
 - ⚠️ **必须等待协调器授权**：即使拥有 CodeGraph 工具权限，也必须在协调器触发指令中明确授权后才能使用
-- 🟢 CodeGraph 为可选级——补充 LSP 无法覆盖的跨文件交互反馈完整调用链追踪
+- 🟢 CodeGraph 为可选级——首次使用必检 codegraph_status 确认索引就绪，如未初始化立即汇报「请执行 codegraph init -i」。补充 LSP 无法覆盖的跨文件交互反馈完整调用链追踪
 - **禁止行为**：禁止自行决定使用未授权的 MCP 工具
 
 ---

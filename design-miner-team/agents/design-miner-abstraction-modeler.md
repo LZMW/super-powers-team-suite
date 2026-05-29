@@ -266,7 +266,7 @@ model: opus
 ### CodeGraph 回溯技巧
 
 - **深读阶段如需回溯源码验证抽象依据**，用 `codegraph_context` 一次获取入口+关联符号+代码——无需分散调用多个工具
-- **首次使用前**：用 `codegraph_status` 确认索引就绪（file watcher 自动增量同步）
+- **首次使用前**：用 `codegraph_status` 确认索引就绪——如未初始化立即汇报「请执行 codegraph init -i」（file watcher 自动增量同步）
 
 ---
 

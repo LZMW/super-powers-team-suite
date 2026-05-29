@@ -315,7 +315,7 @@ model: sonnet
 - **内置工具**（可直接使用，无需授权）：Read、Glob、Grep、Write、Edit、LSP
 - **拥有的 MCP 权限**（CodeGraph 代码分析工具集，10 个工具）
 - ⚠️ **必须等待协调器授权**：即使拥有 CodeGraph 工具权限，也必须在协调器触发指令中明确授权后才能使用
-- 🟢 CodeGraph 为可选级——补充 LSP 无法覆盖的跨文件信息架构依赖关系追踪
+- 🟢 CodeGraph 为可选级——首次使用必检 codegraph_status 确认索引就绪，如未初始化立即汇报「请执行 codegraph init -i」。补充 LSP 无法覆盖的跨文件信息架构依赖关系追踪
 - **禁止行为**：禁止自行决定使用未授权的 MCP 工具
 
 ---

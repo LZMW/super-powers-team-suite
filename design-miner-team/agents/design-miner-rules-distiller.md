@@ -314,7 +314,7 @@ model: sonnet
 ### CodeGraph 回溯技巧
 
 - **如有需要回溯源码验证原则的证据链**，用 `codegraph_callers` 确认调用者数量——单一调用者 vs 多调用者的证据强度差异巨大
-- **首次使用前**：用 `codegraph_status` 确认索引就绪（file watcher 自动增量同步）
+- **首次使用前**：用 `codegraph_status` 确认索引就绪——如未初始化立即汇报「请执行 codegraph init -i」（file watcher 自动增量同步）
 
 ---
 

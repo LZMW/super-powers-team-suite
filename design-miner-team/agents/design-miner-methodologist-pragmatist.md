@@ -335,7 +335,7 @@ model: opus
 ### CodeGraph 回溯技巧
 
 - **回溯源码验证原则依据时**，用 `codegraph_impact` 评估原则对代码的影响范围——确认原则不是空中楼阁，而是确有代码支撑
-- **首次使用前**：用 `codegraph_status` 确认索引就绪（file watcher 自动增量同步）
+- **首次使用前**：用 `codegraph_status` 确认索引就绪——如未初始化立即汇报「请执行 codegraph init -i」（file watcher 自动增量同步）
 
 ---
 

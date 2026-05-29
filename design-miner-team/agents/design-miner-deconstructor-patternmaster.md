@@ -276,7 +276,7 @@ model: opus
 ### CodeGraph 回溯技巧
 
 - **深读阶段用 `codegraph_trace` 验证跨域等价映射的具体调用路径**——确保类比不是表面映射，而是有真实调用链支撑
-- **首次使用前**：用 `codegraph_status` 确认索引就绪（file watcher 自动增量同步）
+- **首次使用前**：用 `codegraph_status` 确认索引就绪——如未初始化立即汇报「请执行 codegraph init -i」（file watcher 自动增量同步）
 
 ---
 
