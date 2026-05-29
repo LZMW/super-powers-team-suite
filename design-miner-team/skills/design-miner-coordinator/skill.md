@@ -165,6 +165,21 @@ gen 编号按完整 run（Stage 1-7）递增。同 gen 内的回退/重做不增
 3. 追加 GENESIS.md 记录
 4. 重新触发 B（critical-thinker），传递矛盾描述
 
+### ⚠️ 原则MCP：MCP 授权必询原则 🔴
+
+**协调器在触发任何需要 MCP 工具的专家之前，必须使用 AskUserQuestion 主动询问用户是否授权。** 不可假设用户默认同意，不可跳过询问直接写「🔓 MCP 授权（用户已同意）」。
+
+**授权流程**：
+1. 查阅 §2 MCP 能力速查表 → 确认该专家需要哪些 MCP 工具
+2. AskUserQuestion 询问用户 —— 三个选项：全部允许 / 仅必要工具 / 全部拒绝
+3. 用户同意 → prompt 中写入对应的 🔓 授权格式
+4. 用户拒绝 → 触发专家但不包含 MCP 授权，专家使用替代方案
+
+**🚨 禁止行为**：
+- ❌ 跳过 AskUserQuestion 直接写授权
+- ❌ 假设「上次授权过这次也可以」
+- ❌ 对所有专家一次性批量授权——每个专家单独询问
+
 ---
 
 ## 2️⃣ 快速参考
@@ -632,6 +647,8 @@ Stage 7b: 协调器 — 验证 + 阅读学习 + 下游推荐
 
 #### Stage 2 — A(pattern-recognizer) 单独执行
 
+**🔓 MCP 授权检查**: 如该专家需 MCP 工具（查 §2 MCP 速查表），先 AskUserQuestion 询问用户 → 同意后在 prompt 中包含对应授权格式。
+
 ```yaml
 subagent_type: "design-miner-pattern-recognizer"
 description: "识别源码中的设计模式与架构风格"
@@ -671,6 +688,9 @@ prompt: |
 #### Stage 3 — B(critical-thinker) + D/E/F 并行
 
 **B(critical-thinker) — 读 A 后针对性批判**：
+
+**🔓 MCP 授权检查**: 如该专家需 MCP 工具（查 §2 MCP 速查表），先 AskUserQuestion 询问用户 → 同意后在 prompt 中包含对应授权格式。
+
 ```yaml
 subagent_type: "design-miner-critical-thinker"
 description: "基于模式分析进行批判性审视"
@@ -712,6 +732,9 @@ prompt: |
 ```
 
 **D(interaction-analyzer)**：
+
+**🔓 MCP 授权检查**: 如该专家需 MCP 工具（查 §2 MCP 速查表），先 AskUserQuestion 询问用户 → 同意后在 prompt 中包含对应授权格式。
+
 ```yaml
 subagent_type: "design-miner-interaction-analyzer"
 description: "分析源码中的交互反馈实现"
@@ -747,6 +770,9 @@ prompt: |
 ```
 
 **E(perception-analyzer)**：
+
+**🔓 MCP 授权检查**: 如该专家需 MCP 工具（查 §2 MCP 速查表），先 AskUserQuestion 询问用户 → 同意后在 prompt 中包含对应授权格式。
+
 ```yaml
 subagent_type: "design-miner-perception-analyzer"
 description: "分析源码中的信息感知实现"
@@ -774,6 +800,9 @@ prompt: |
 ```
 
 **F(emotion-analyzer)**：
+
+**🔓 MCP 授权检查**: 如该专家需 MCP 工具（查 §2 MCP 速查表），先 AskUserQuestion 询问用户 → 同意后在 prompt 中包含对应授权格式。
+
 ```yaml
 subagent_type: "design-miner-emotion-analyzer"
 description: "分析源码中的情感与容错设计"
@@ -860,6 +889,9 @@ Stage 2-3 全部完成后，协调器执行：
 #### Stage 5 — C(abstraction-modeler) ∥ G(deconstructor-patternmaster)
 
 **C(abstraction-modeler) — 收到自包含简报**：
+
+**🔓 MCP 授权检查**: 如该专家需 MCP 工具（查 §2 MCP 速查表），先 AskUserQuestion 询问用户 → 同意后在 prompt 中包含对应授权格式。
+
 ```yaml
 subagent_type: "design-miner-abstraction-modeler"
 description: "从架构分析中抽象设计原则"
@@ -897,6 +929,9 @@ prompt: |
 ```
 
 **G(deconstructor-patternmaster)**：
+
+**🔓 MCP 授权检查**: 如该专家需 MCP 工具（查 §2 MCP 速查表），先 AskUserQuestion 询问用户 → 同意后在 prompt 中包含对应授权格式。
+
 ```yaml
 subagent_type: "design-miner-deconstructor-patternmaster"
 description: "跨轨道解构事实并识别元模式"
@@ -934,6 +969,9 @@ prompt: |
 #### Stage 6 — H(methodologist-pragmatist) → I(rules-distiller)
 
 **H 收到自包含简报**：
+
+**🔓 MCP 授权检查**: 如该专家需 MCP 工具（查 §2 MCP 速查表），先 AskUserQuestion 询问用户 → 同意后在 prompt 中包含对应授权格式。
+
 ```yaml
 subagent_type: "design-miner-methodologist-pragmatist"
 description: "构建方法论体系并验证可操作性"
@@ -972,6 +1010,9 @@ prompt: |
 ```
 
 **I(rules-distiller) — 验证工作者，必须全新启动**：
+
+**🔓 MCP 授权检查**: 如该专家需 MCP 工具（查 §2 MCP 速查表），先 AskUserQuestion 询问用户 → 同意后在 prompt 中包含对应授权格式。
+
 ```yaml
 subagent_type: "design-miner-rules-distiller"
 description: "交叉印证原则与历史规则"

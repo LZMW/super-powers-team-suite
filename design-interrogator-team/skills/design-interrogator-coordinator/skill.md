@@ -196,6 +196,21 @@ design-miner 发现（如存在，作为富化层叠加）
 - 因上游存在而跳过自身分析环节
 - 因上游不存在而降级输出质量
 
+### ⚠️ 原则MCP：MCP 授权必询原则 🔴
+
+**协调器在触发任何需要 MCP 工具的专家之前，必须使用 AskUserQuestion 主动询问用户是否授权。** 不可假设用户默认同意，不可跳过询问直接写「🔓 MCP 授权（用户已同意）」。
+
+**授权流程**：
+1. 查阅 §2 MCP 能力速查表 → 确认该专家需要哪些 MCP 工具
+2. AskUserQuestion 询问用户 —— 三个选项：全部允许 / 仅必要工具 / 全部拒绝
+3. 用户同意 → prompt 中写入对应的 🔓 授权格式
+4. 用户拒绝 → 触发专家但不包含 MCP 授权，专家使用替代方案
+
+**🚨 禁止行为**：
+- ❌ 跳过 AskUserQuestion 直接写授权
+- ❌ 假设「上次授权过这次也可以」
+- ❌ 对所有专家一次性批量授权——每个专家单独询问
+
 ---
 
 ## 2️⃣ 快速参考
@@ -605,6 +620,8 @@ Phase 12: 综合报告汇总 + 设计偏好捕获
 
 #### 📘 Track A Phase 3a: 源码分析 🔴 必选（DM 产出不替代此阶段）
 
+**🔓 MCP 授权检查**: 如该专家需 MCP 工具（查 §2 MCP 速查表），先 AskUserQuestion 询问用户 → 同意后在 prompt 中包含对应授权格式。
+
 ```yaml
 subagent_type: "design-interrogator-analyst"
 description: "Analyze source code for architecture patterns"
@@ -636,6 +653,8 @@ prompt: |
 ---
 
 #### 📘 Track B Phase 3b: 用户研究
+
+**🔓 MCP 授权检查**: 如该专家需 MCP 工具（查 §2 MCP 速查表），先 AskUserQuestion 询问用户 → 同意后在 prompt 中包含对应授权格式。
 
 ```yaml
 subagent_type: "design-interrogator-researcher"
@@ -680,6 +699,8 @@ prompt: |
 ---
 
 #### 🔴 Track A Phase 5a: 架构拷问（交互式多轮）
+
+**🔓 MCP 授权检查**: 如该专家需 MCP 工具（查 §2 MCP 速查表），先 AskUserQuestion 询问用户 → 同意后在 prompt 中包含对应授权格式。
 
 **第1轮：首次启动**
 ```yaml
@@ -744,6 +765,8 @@ prompt: |
 
 #### 📘 Track B Phase 5b: 交互设计
 
+**🔓 MCP 授权检查**: 如该专家需 MCP 工具（查 §2 MCP 速查表），先 AskUserQuestion 询问用户 → 同意后在 prompt 中包含对应授权格式。
+
 ```yaml
 subagent_type: "design-interrogator-ixd"
 description: "Design information architecture and interaction flows"
@@ -785,6 +808,8 @@ prompt: |
 ---
 
 #### 📘 Track B Phase 7b: 视觉设计
+
+**🔓 MCP 授权检查**: 如该专家需 MCP 工具（查 §2 MCP 速查表），先 AskUserQuestion 询问用户 → 同意后在 prompt 中包含对应授权格式。
 
 ```yaml
 subagent_type: "design-interrogator-ui"
