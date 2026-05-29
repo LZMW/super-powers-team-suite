@@ -67,23 +67,19 @@ F(源码状态分析师) 是唯一运行两次的专家——Gate 0 拍基准快
 
 #### 1. CodeGraph — 代码知识图谱
 
-预索引的代码知识图谱，提供跨文件调用链追踪、语义符号搜索、依赖关系分析。
+预索引的代码知识图谱，提供跨文件调用链追踪、语义符号搜索、依赖关系分析。**首次 `init -i` 全量索引后，MCP 服务器自带文件监听器自动增量同步——修改代码无需手动重建索引。**
 
 ```bash
-# 一键安装（推荐）
-curl -fsSL https://raw.githubusercontent.com/colbymchenry/codegraph/main/install.sh | sh
-
-# 或 npm
+# 全局安装
 npm i -g @colbymchenry/codegraph
 
-# 初始化项目
+# 进入项目，初始化并全量索引（仅首次需要）
 cd your-project && codegraph init -i
 ```
 
 > 仓库：[github.com/colbymchenry/codegraph](https://github.com/colbymchenry/codegraph)
-> 备用（Rust 版）：[github.com/grahambrooks/symgraph](https://github.com/grahambrooks/symgraph)
 
-Claude Code 配置（`~/.claude.json` 或 `claude mcp add`）：
+Claude Code 配置：
 ```json
 {
   "mcpServers": {
@@ -96,7 +92,9 @@ Claude Code 配置（`~/.claude.json` 或 `claude mcp add`）：
 }
 ```
 
-CodeGraph 工具（10 个）：`codegraph_search`, `codegraph_context`, `codegraph_callers`, `codegraph_callees`, `codegraph_impact`, `codegraph_node`, `codegraph_explore`, `codegraph_files`, `codegraph_status`, `codegraph_trace`
+核心工具（10 个）：`codegraph_search`（符号搜索）, `codegraph_context`（任务上下文）, `codegraph_callers`（调用者追溯）, `codegraph_callees`（被调用者追溯）, `codegraph_impact`（变更影响分析）, `codegraph_trace`（调用路径追踪）, `codegraph_files`（项目文件树）, `codegraph_explore`（符号关系探索）, `codegraph_node`（AST 节点详情）, `codegraph_status`（索引状态）
+
+> 🆕 额外实用工具：`codegraph affected` — 输入变更文件列表，输出受影响的测试文件。QA Tester 和 Analyst 可直接用它定位回归范围，比手工 grep 精准得多。
 
 适用团队：DM（全部 9 位分析专家）、DG（F 源码分析师、Architect）
 
