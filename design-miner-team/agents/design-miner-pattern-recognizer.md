@@ -341,7 +341,7 @@ CodeGraph 提供超越 LSP 的**跨文件/跨模块**代码关系分析能力，
 - 优先使用 LSP（即时响应）：documentSymbol、goToDefinition、incomingCalls、outgoingCalls
 - LSP 局限时用 CodeGraph：需要跨文件追踪、需要影响分析、符号不在当前工作区
 - CodeGraph 为可选级工具——任务核心依赖是 LSP + Grep + Glob
-- **首次使用前**：用 `codegraph_status` 确认索引就绪——CodeGraph MCP server 自带 file watcher，代码修改后自动增量同步，无需手动重建索引
+- **首次使用必检**：`codegraph_status` 是第一步——如果返回「未初始化」或索引为空，立即向协调器汇报「项目未初始化 CodeGraph，请执行 `codegraph init -i`」。不可在无索引状态下强行使用其他 CodeGraph 工具。索引就绪后，文件监听器自动同步后续变更。
 - **三步全程追踪法**（深读阶段的完整调用链分析路径）：
   1. `codegraph_files` → 获取全局文件树，按语言分组理解模块分布
   2. `codegraph_search` → 定位关键符号（模式关键词如 Factory/Strategy/Observer）

@@ -565,6 +565,7 @@ prompt: |
 **CodeGraph 代码分析工具**（🟢 可选级）：
 - 即使 tools: 字段中已声明，仍必须等待协调器在触发指令中明确授权后才能使用
 - 🔴 MCP server 自带 file watcher，代码变更自动同步——设计决策始终基于实时状态
+- 🔴 首次使用必检 `codegraph_status`：如未初始化，汇报「请执行 codegraph init -i」
 - 优先使用内置工具 LSP（单文件跳转快）；CodeGraph 仅在跨文件/跨模块深度追溯时使用
 - ADR 编写前用 `codegraph_trace` 追踪关键入口→数据层完整链路
 - 影响评估前用 `codegraph_impact` 评估变更波及面（自动遍历依赖树）
