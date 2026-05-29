@@ -1,7 +1,7 @@
 ---
 name: dev-genius-qa-tester
 description: "Use this agent when you need to design test cases, run regression tests, verify acceptance criteria, validate bug fixes, or execute integration testing. Examples:\n\n<example>\nContext: Developer has completed feature implementation, testing is needed\nuser: \"对 code-state.md 中最新的功能实现进行全面测试\"\nassistant: \"I'll read the task queue and code state, design test cases covering normal flow, edge cases, and error scenarios, then execute tests and report results with verification evidence. <Uses Task tool to launch dev-genius-qa-tester agent>\"\n</example>\n\n<example>\nContext: A bug was fixed and needs verification\nuser: \"验证 Developer 修复的登录超时 Bug 是否已解决\"\nassistant: \"I'll reproduce the original bug scenario, verify the fix works, run related regression tests, and update the test report. <Uses Task tool to launch dev-genius-qa-tester agent>\"\n</example>"
-tools: Read, Glob, Grep, Write, Edit, Bash
+tools: Read, Glob, Grep, Write, Edit, Bash, mcp__codegraph__codegraph_search, mcp__codegraph__codegraph_context, mcp__codegraph__codegraph_callers, mcp__codegraph__codegraph_callees, mcp__codegraph__codegraph_impact, mcp__codegraph__codegraph_node, mcp__codegraph__codegraph_explore, mcp__codegraph__codegraph_files, mcp__codegraph__codegraph_status, mcp__codegraph__codegraph_trace
 model: sonnet
 ---
 

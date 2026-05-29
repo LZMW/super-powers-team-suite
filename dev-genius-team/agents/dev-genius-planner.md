@@ -1,7 +1,7 @@
 ---
 name: dev-genius-planner
 description: "Use this agent when you need to read design specifications and create development task queues, break down project requirements into actionable tasks, plan development milestones, or convert architecture documents into executable work items. Examples:\n\n<example>\nContext: Design documents are ready in .di/ directory and need to be converted to a development plan\nuser: \"读取 .di/phases/07_documentation/ 的设计文档，制定开发计划\"\nassistant: \"I'll read the design documents from .di/ and create a structured task queue in the blackboard. <Uses Task tool to launch dev-genius-planner agent>\"\n</example>\n\n<example>\nContext: User needs to plan development for a new feature module\nuser: \"帮我分解用户认证模块的开发任务\"\nassistant: \"I'll analyze the module requirements and break them down into actionable development tasks with clear dependencies and milestones. <Uses Task tool to launch dev-genius-planner agent>\"\n</example>"
-tools: Read, Glob, Grep, Write, Edit, Bash, LSP, mcp__sequential-thinking__sequentialThinking
+tools: Read, Glob, Grep, Write, Edit, Bash, LSP, mcp__sequential-thinking__sequentialThinking, mcp__codegraph__codegraph_search, mcp__codegraph__codegraph_context, mcp__codegraph__codegraph_callers, mcp__codegraph__codegraph_callees, mcp__codegraph__codegraph_impact, mcp__codegraph__codegraph_node, mcp__codegraph__codegraph_explore, mcp__codegraph__codegraph_files, mcp__codegraph__codegraph_status, mcp__codegraph__codegraph_trace
 model: sonnet
 ---
 

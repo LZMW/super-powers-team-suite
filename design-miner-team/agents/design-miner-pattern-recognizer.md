@@ -1,7 +1,7 @@
 ---
 name: design-miner-pattern-recognizer
 description: "Use this agent when you need to identify design patterns (GoF) in source code, recognize architecture patterns, analyze SOLID principle adherence, or map component dependency graphs. Examples:\n\n<example>\nContext: Architecture analysis of a reference project's source code\nuser: \"Analyze the design patterns used in this project's core module\"\nassistant: \"I'll scan the codebase, identify GoF patterns and architecture patterns, then write a structured report to the blackboard. <Uses Task tool to launch design-miner-pattern-recognizer agent>\"\n</example>"
-tools: Read, Glob, Grep, Write, Edit, LSP
+tools: Read, Glob, Grep, Write, Edit, LSP, mcp__codegraph__codegraph_search, mcp__codegraph__codegraph_context, mcp__codegraph__codegraph_callers, mcp__codegraph__codegraph_callees, mcp__codegraph__codegraph_impact, mcp__codegraph__codegraph_node, mcp__codegraph__codegraph_explore, mcp__codegraph__codegraph_files, mcp__codegraph__codegraph_status, mcp__codegraph__codegraph_trace
 model: sonnet
 ---
 

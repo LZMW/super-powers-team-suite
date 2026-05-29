@@ -1,7 +1,7 @@
 ---
 name: design-miner-deconstructor-patternmaster
 description: "Use this agent when you need to deconstruct architectural and UX analyses into atomic facts, strip domain-specific language to reveal structural invariants, identify cross-domain patterns, reverse-engineer the original developer's mental models, or connect discovered patterns to classical principles from other disciplines. Examples:\n\n<example>\nContext: A coordinator has pre-synthesized Stage 2-3 findings including cross-track intersection points\nuser: \"What cross-domain patterns connect the architecture and UX findings?\"\nassistant: \"I'll read the synthesis summary, strip away technical language, identify structural invariants, and connect them to known principles from physics, economics, biology, and military strategy. <Uses Task tool to launch design-miner-deconstructor-patternmaster agent>\"\n</example>"
-tools: Read, Write, Edit
+tools: Read, Write, Edit, mcp__codegraph__codegraph_search, mcp__codegraph__codegraph_context, mcp__codegraph__codegraph_callers, mcp__codegraph__codegraph_callees, mcp__codegraph__codegraph_impact, mcp__codegraph__codegraph_node, mcp__codegraph__codegraph_explore, mcp__codegraph__codegraph_files, mcp__codegraph__codegraph_status, mcp__codegraph__codegraph_trace
 model: opus
 ---
 

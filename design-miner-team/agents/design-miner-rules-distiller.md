@@ -1,7 +1,7 @@
 ---
 name: design-miner-rules-distiller
 description: "Use this agent when you need to cross-check newly extracted design principles against accumulated rules, determine whether a principle qualifies for promotion to a reusable rule, identify principle overlaps or conflicts across multiple project analyses, or suggest rule upgrades (append/revise/new section/new file). Examples:\n\n<example>\nContext: An abstraction-modeler and methodologist have extracted design principles; verification against existing rules is needed\nuser: \"Check if these newly extracted principles overlap with our existing rules\"\nassistant: \"I'll cross-read all extracted principles against existing rule files, identify duplicates, flag new principles that qualify for rule promotion, and produce a verdict table. As a verification worker, I start from a clean context. <Uses Task tool to launch design-miner-rules-distiller agent>\"\n</example>"
-tools: Read, Glob, Grep, Write, Edit
+tools: Read, Glob, Grep, Write, Edit, mcp__codegraph__codegraph_search, mcp__codegraph__codegraph_context, mcp__codegraph__codegraph_callers, mcp__codegraph__codegraph_callees, mcp__codegraph__codegraph_impact, mcp__codegraph__codegraph_node, mcp__codegraph__codegraph_explore, mcp__codegraph__codegraph_files, mcp__codegraph__codegraph_status, mcp__codegraph__codegraph_trace
 model: sonnet
 ---
 

@@ -1,7 +1,7 @@
 ---
 name: dev-genius-developer
 description: "Use this agent when you need to implement features based on task queue and architecture specs, fix bugs with systematic debugging, write tests following TDD cycle, or refactor code. Examples:\n\n<example>\nContext: Task queue and architecture are ready, user needs to implement a feature\nuser: \"实现 task-queue.md 中的第 3 号任务：用户登录模块\"\nassistant: \"I'll read the task specifications and architecture, then implement the login module following TDD: write failing test first, minimal implementation, then refactor. <Uses Task tool to launch dev-genius-developer agent>\"\n</example>\n\n<example>\nContext: QA found a bug that needs fixing\nuser: \"修复 test-report.md 中报告的登录超时 Bug\"\nassistant: \"I'll systematically debug: reproduce the bug, trace root cause, write a failing regression test, implement the fix, and verify. <Uses Task tool to launch dev-genius-developer agent>\"\n</example>"
-tools: Read, Glob, Grep, Write, Edit, Bash, LSP, mcp__context7__resolve-library-id, mcp__context7__query-docs, mcp__web-search-prime__webSearchPrime, mcp__web-reader__webReader
+tools: Read, Glob, Grep, Write, Edit, Bash, LSP, mcp__context7__resolve-library-id, mcp__context7__query-docs, mcp__web-search-prime__webSearchPrime, mcp__web-reader__webReader, mcp__codegraph__codegraph_search, mcp__codegraph__codegraph_context, mcp__codegraph__codegraph_callers, mcp__codegraph__codegraph_callees, mcp__codegraph__codegraph_impact, mcp__codegraph__codegraph_node, mcp__codegraph__codegraph_explore, mcp__codegraph__codegraph_files, mcp__codegraph__codegraph_status, mcp__codegraph__codegraph_trace
 model: sonnet
 ---
 

@@ -1,7 +1,7 @@
 ---
 name: design-miner-abstraction-modeler
 description: "Use this agent when you need to distill concrete design decisions into abstract methodology, extract language/framework-independent design principles from architectural analysis, or formulate reusable architectural guidelines at both technical and meta levels. Examples:\n\n<example>\nContext: A coordinator has pre-synthesized Stage 2-3 findings and dispatches an abstraction task\nuser: \"Extract the underlying design philosophy from this analysis\"\nassistant: \"I'll read the synthesis summary, strip away language/framework specifics, and distill the pure design skeleton into layered principles (technical + meta), explicitly declaring my analytical perspective. <Uses Task tool to launch design-miner-abstraction-modeler agent>\"\n</example>"
-tools: Read, Write, Edit
+tools: Read, Write, Edit, mcp__codegraph__codegraph_search, mcp__codegraph__codegraph_context, mcp__codegraph__codegraph_callers, mcp__codegraph__codegraph_callees, mcp__codegraph__codegraph_impact, mcp__codegraph__codegraph_node, mcp__codegraph__codegraph_explore, mcp__codegraph__codegraph_files, mcp__codegraph__codegraph_status, mcp__codegraph__codegraph_trace
 model: opus
 ---
 

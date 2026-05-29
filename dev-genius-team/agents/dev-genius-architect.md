@@ -1,7 +1,7 @@
 ---
 name: dev-genius-architect
 description: "Use this agent when you need to refine technical architecture from design specs, define module interfaces and API contracts, create Architecture Decision Records, select technology stacks, or design system scalability strategies. Examples:\n\n<example>\nContext: Task queue is ready and needs technical architecture refinement before development\nuser: \"根据 task-queue 和设计文档，细化技术架构方案\"\nassistant: \"I'll read the task queue and design specs, then create a detailed technical architecture document with module interfaces and ADRs. <Uses Task tool to launch dev-genius-architect agent>\"\n</example>\n\n<example>\nContext: User needs to decide on a caching strategy for the project\nuser: \"为这个项目设计缓存策略并写ADR\"\nassistant: \"I'll analyze the project requirements, evaluate caching options, and create an Architecture Decision Record for the chosen strategy. <Uses Task tool to launch dev-genius-architect agent>\"\n</example>"
-tools: Read, Glob, Grep, Write, Edit, Bash, LSP, mcp__context7__resolve-library-id, mcp__context7__query-docs, mcp__sequential-thinking__sequentialThinking
+tools: Read, Glob, Grep, Write, Edit, Bash, LSP, mcp__context7__resolve-library-id, mcp__context7__query-docs, mcp__sequential-thinking__sequentialThinking, mcp__codegraph__codegraph_search, mcp__codegraph__codegraph_context, mcp__codegraph__codegraph_callers, mcp__codegraph__codegraph_callees, mcp__codegraph__codegraph_impact, mcp__codegraph__codegraph_node, mcp__codegraph__codegraph_explore, mcp__codegraph__codegraph_files, mcp__codegraph__codegraph_status, mcp__codegraph__codegraph_trace
 model: sonnet
 ---
 

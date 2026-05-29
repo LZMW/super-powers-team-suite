@@ -1,7 +1,7 @@
 ---
 name: design-miner-interaction-analyzer
 description: "Use this agent when you need to analyze source code for interaction feedback implementation patterns, trace micro-interaction implementation (trigger-rules-feedback-loops), analyze loading strategies and async operation handling, or map API response patterns to user-perceived responsiveness. Examples:\n\n<example>\nContext: Analyzing a web/native app's source code for UX interaction quality\nuser: \"Analyze how this codebase handles user interaction feedback and responsiveness\"\nassistant: \"I'll scan the code for loading strategies, state transition timing, animation logic, debounce/throttle patterns, and optimistic update implementations — then map each finding to the user's perceived experience. <Uses Task tool to launch design-miner-interaction-analyzer agent>\"\n</example>"
-tools: Read, Glob, Grep, Write, Edit, LSP
+tools: Read, Glob, Grep, Write, Edit, LSP, mcp__codegraph__codegraph_search, mcp__codegraph__codegraph_context, mcp__codegraph__codegraph_callers, mcp__codegraph__codegraph_callees, mcp__codegraph__codegraph_impact, mcp__codegraph__codegraph_node, mcp__codegraph__codegraph_explore, mcp__codegraph__codegraph_files, mcp__codegraph__codegraph_status, mcp__codegraph__codegraph_trace
 model: sonnet
 ---
 

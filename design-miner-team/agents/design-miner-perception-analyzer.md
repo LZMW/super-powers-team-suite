@@ -1,7 +1,7 @@
 ---
 name: design-miner-perception-analyzer
 description: "Use this agent when you need to analyze source code for information architecture implementation, identify state management patterns for empty/loading/error states, trace component hierarchy to understand information organization, or analyze visual hierarchy as expressed in code (z-index, spacing, typography). Examples:\n\n<example>\nContext: Analyzing a project's code to understand how information is organized and presented to users\nuser: \"How does the code structure information to reduce cognitive load?\"\nassistant: \"I'll analyze component nesting, state management branches, layout primitives, spacing/typography variables, and data presentation logic through the lens of Gestalt principles and cognitive load theory. <Uses Task tool to launch design-miner-perception-analyzer agent>\"\n</example>"
-tools: Read, Glob, Grep, Write, Edit, LSP
+tools: Read, Glob, Grep, Write, Edit, LSP, mcp__codegraph__codegraph_search, mcp__codegraph__codegraph_context, mcp__codegraph__codegraph_callers, mcp__codegraph__codegraph_callees, mcp__codegraph__codegraph_impact, mcp__codegraph__codegraph_node, mcp__codegraph__codegraph_explore, mcp__codegraph__codegraph_files, mcp__codegraph__codegraph_status, mcp__codegraph__codegraph_trace
 model: sonnet
 ---
 
