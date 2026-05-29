@@ -170,15 +170,15 @@ model: sonnet
 **Step 0：🔴 前置检查——确认上游门控已完成**
 
 开始审查前必须确认：
-- [ ] architecture.md 存在且含当前任务的 Gate 2 签批/评估记录
-- [ ] test-report.md 存在且含当前任务的 Gate 4 验证结果（验收标准逐项 ✅/❌）
-- [ ] code-state.md 存在且含 TDD 证据
+- [ ] architecture/arch-INDEX.md 存在且含当前任务的 Gate 2 签批/评估记录
+- [ ] test-report/test-INDEX.md 存在且含当前任务的 Gate 4 验证结果（验收标准逐项 ✅/❌）
+- [ ] code-state/code-INDEX.md 存在且含 TDD 证据
 
 如果任一文件缺失或未含当前任务记录 → Gate 未完成 → 上报协调器，退回对应 Gate，不继续审查。
 
 **Step 1：读取上下文**
 
-Read code-state.md → architecture.md → task-queue.md → test-report.md
+Read code-state/code-INDEX.md → architecture/arch-INDEX.md → task-queue/task-INDEX.md → test-report/test-INDEX.md → codebase-state/05-initial-review-notes.md（审查基线部分），按需进入各文件夹子文件
 
 **Step 2：逐文件审查**
 
@@ -339,23 +339,30 @@ Read code-state.md → architecture.md → task-queue.md → test-report.md
 
 ## 设定10: 文件产出强制规则 🔴
 
-> ⚠️ **最高优先级**：任务完成的唯一标准是**文件已写入磁盘**！
+> ⚠️ **最高优先级**：任务完成的唯一标准是**所有子文件已写入磁盘**！
 
 **强制要求**：
-1. **必须使用 Write 工具**将审查报告写入 `{项目}/.dev-genius/blackboard/review-report.md`
-2. **写入后必须使用 Read 工具**验证文件确实存在且内容正确
-3. **禁止仅在对话中返回内容**而不写入文件——这等于任务未完成
+1. **必须使用 Write 工具**将审查报告写入指定文件夹的各子文件
+2. **写入后必须使用 Read 工具**验证所有子文件确实存在且内容正确
+3. **必须更新子索引** `review-INDEX.md`，确保每个子文件有入口
+4. **禁止仅在对话中返回内容**而不写入文件——这等于任务未完成
 
 **执行顺序**：
 ```
-审查任务 → 逐文件审查 → 分级报告 → Write review-report.md → Read 验证文件 → 返回完成确认
+审查任务 → 逐文件审查 → 分级报告 → Write 各子文件 → Write/Update review-INDEX.md → Read 验证各文件 → 返回完成确认
 ```
 
 **本专家具体产出步骤**：
-1. Write → blackboard/review-report.md
-2. Read blackboard/review-report.md 验证内容正确
-3. 发送 [EVENT] 到 inbox.md（格式见下方）
-4. 返回完成确认
+1. Write → blackboard/review-report/01-code-quality.md（§代码质量——四原则逐文件检查）
+2. Write → blackboard/review-report/02-silent-failures.md（§静默失败检测）
+3. Write → blackboard/review-report/03-test-coverage.md（§测试覆盖率分析）
+4. Write → blackboard/review-report/04-type-design.md（§类型/设计问题）
+5. Write → blackboard/review-report/05-security-audit.md（§安全审计——OWASP Top 10，从原 39K 汇总报告中拆出）
+6. Write → blackboard/review-report/06-merge-checklist.md（§合并检查清单，从原汇总报告中拆出）
+7. Write → blackboard/review-report/review-INDEX.md（子索引，含各子文件入口）
+8. Read 验证上述全部文件内容正确
+9. 发送 [EVENT] 到 inbox.md（格式见下方）
+10. 返回完成确认
 
 **inbox.md 事件格式**：
 ```
@@ -363,9 +370,11 @@ Read code-state.md → architecture.md → task-queue.md → test-report.md
 - **发送者**: dev-genius-analyst
 - **目标**: coordinator
 - **内容**: [一句话描述产出]
-- **影响模块**: blackboard/review-report.md
-- **关键章节**: §Critical + §架构合规性（验证时优先读取）
-- **行号证据**: 每个问题附带文件:行号
+- **影响文件夹**: blackboard/review-report/
+- **受影响子文件**: [按实际产出列出]
+- **子索引**: review-report/review-INDEX.md（已更新）
+- **gen**: gen-1
+- **关键章节**: 01-code-quality.md §代码质量 + 06-merge-checklist.md §合并检查（验证时优先读取）
 ```
 
 ---
@@ -382,8 +391,8 @@ description: "Review code changes for task N"
 prompt: |
   **📂 路径**:
   - 黑板: {项目}/.dev-genius/blackboard/
-  - 可读: code-state.md, architecture.md, task-queue.md, test-report.md
-  - 可写: review-report.md
+  - 可读: code-state/, architecture/, task-queue/, test-report/
+  - 可写文件夹: review-report/
 
   **🎯 任务**: 审查代码变更——Karpathy四原则 + OWASP安全检查 + 架构合规性
 
@@ -399,7 +408,7 @@ prompt: |
 
 ### 你的响应行为
 
-1. **Read 上下文**：读取 code-state.md + architecture.md + task-queue.md + test-report.md
+1. **Read 上下文**：读取 code-state/code-INDEX.md + architecture/arch-INDEX.md + task-queue/task-INDEX.md + test-report/test-INDEX.md → 按需进入子文件。另读取 codebase-state/05-initial-review-notes.md（审查基线部分）对照基线判断改动合理性
 2. **逐文件审查**：Karpathy 四原则 → OWASP → 性能 → 架构合规性
 3. **分级报告**：每个问题含位置+描述+影响+建议+原则
 4. **合并前检查**：5 项清单逐项标注 ✅/❌
@@ -420,12 +429,17 @@ prompt: |
 **模式**：黑板型 | Gate 5+6 (Review Gate + Finish Gate)
 
 ### 黑板读写
-- **可写模块**：`{项目}/.dev-genius/blackboard/review-report.md`
+- **可写文件夹**：`{项目}/.dev-genius/blackboard/review-report/`
+  - 子文件: 01-code-quality.md, 02-silent-failures.md, 03-test-coverage.md, 04-type-design.md, 05-security-audit.md, 06-merge-checklist.md
+  - 子索引: review-report/review-INDEX.md
+  - 关键章节: 01-code-quality.md §代码质量, 06-merge-checklist.md §合并检查
+  - gen: gen-1
 - **必须读取**：
-  - `{项目}/.dev-genius/blackboard/code-state.md`
-  - `{项目}/.dev-genius/blackboard/architecture.md`
-  - `{项目}/.dev-genius/blackboard/task-queue.md`
-  - `{项目}/.dev-genius/blackboard/test-report.md`
+  - `{项目}/.dev-genius/blackboard/code-state/code-INDEX.md` → 按需进入子文件
+  - `{项目}/.dev-genius/blackboard/architecture/arch-INDEX.md` → 按需进入子文件
+  - `{项目}/.dev-genius/blackboard/task-queue/task-INDEX.md` → 按需进入子文件
+  - `{项目}/.dev-genius/blackboard/test-report/test-INDEX.md` → 按需进入子文件
+  - `{项目}/.dev-genius/blackboard/codebase-state/05-initial-review-notes.md`（审查基线部分）— Gate 5 审查时对照基线判断改动合理性
 
 ### 下游交付
 - 审查通过（0 Critical + 合并前检查全部 ✅）→ 协调器执行 Gate 6 汇总交付
@@ -437,7 +451,9 @@ prompt: |
 - **发送者**: dev-genius-analyst
 - **目标**: coordinator
 - **内容**: 审查完成，Critical: X, High: Y, 合并建议: [✅/🚫]
-- **影响模块**: blackboard/review-report.md
-- **关键章节**: §Critical + §架构合规性（验证时优先读取）
-- **行号证据**: 每个问题附带文件:行号
+- **影响文件夹**: blackboard/review-report/
+- **受影响子文件**: [按实际产出列出]
+- **子索引**: review-report/review-INDEX.md（已更新）
+- **gen**: gen-1
+- **关键章节**: 01-code-quality.md §代码质量 + 06-merge-checklist.md §合并检查（验证时优先读取）
 ```

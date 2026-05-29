@@ -218,10 +218,11 @@ model: sonnet
 3. **禁止仅在对话中返回内容**而不写入文件——这等于任务未完成
 
 **本专家具体产出步骤**：
-1. Write → blackboard/emotion-analysis.md
-2. Read blackboard/emotion-analysis.md 验证内容正确
-3. 发送 TASK_COMPLETE 事件到 inbox.md（格式见下方）
-4. 返回完成确认
+1. Write 各子文件 → emotion-analysis/01-vulnerability-scan.md, 02-emotion-temperature.md, 03-error-handling-analysis.md, 04-emotion-principles.md
+2. Write 更新子索引 → emotion-analysis/emotion-INDEX.md（确保 INDEX 文件第一行含 🚨 导航指令，最后一行含 🚨 文件底提醒）
+3. Read emotion-analysis/emotion-INDEX.md 验证子索引和子文件均正确
+4. 发送 TASK_COMPLETE 事件到 inbox.md（格式见下方）
+5. 返回完成确认
 
 **inbox.md 事件格式**：
 ```
@@ -229,8 +230,11 @@ model: sonnet
 - **发送者**: design-miner-emotion-analyzer
 - **目标**: coordinator
 - **内容**: [一句话描述产出]
-- **影响模块**: blackboard/emotion-analysis.md
-- **关键章节**: §情感→代码映射 + §情感设计原则提炼（验证时优先读取）
+- **影响文件夹**: blackboard/emotion-analysis/
+- **受影响子文件**: 01-vulnerability-scan.md, 02-emotion-temperature.md, 03-error-handling-analysis.md, 04-emotion-principles.md
+- **子索引**: emotion-analysis/emotion-INDEX.md（已更新）
+- **gen**: gen-{N}
+- **关键章节**: 02-emotion-temperature.md §情感→代码映射, 04-emotion-principles.md §情感设计原则提炼
 - **行号证据**: 每个情感标签已附带 `文件:行号` 格式源码证据
 ```
 
@@ -248,7 +252,7 @@ description: "[任务描述]"
 prompt: |
   **📂 工作路径**:
   - 源码位置: {源码路径}
-  - 可写模块: {项目}/.design-miner/blackboard/emotion-analysis.md
+  - 可写文件夹: {项目}/.design-miner/blackboard/emotion-analysis/
   - 上下文地图: {项目}/.design-miner/blackboard/context-map.md
 
   **🎯 任务**: 分析源码中所有与用户情感和容错相关的实现
@@ -263,8 +267,8 @@ prompt: |
 1. **理解任务**：确认工作路径（源码位置、可写模块、上下文地图）
 2. **确认品味向量**：理解协调器注入的分析视角
 3. **执行分析**：按四步方法论（情感脆弱点扫描→三层温度评估→逆向工程→原则提炼）
-4. **Write 产出**：将完整分析报告写入 blackboard/emotion-analysis.md
-5. **Read 验证**：确认文件存在且内容正确
+4. **Write 产出**：将各子文件写入 emotion-analysis/ 文件夹，同步更新 emotion-INDEX.md
+5. **Read 验证**：确认子索引和子文件均存在且内容正确
 6. **发送事件**：发送 TASK_COMPLETE 事件到 inbox.md
 
 ### MCP 授权响应
@@ -280,9 +284,12 @@ prompt: |
 **模式**：黑板型 | Stage 3 并行（UX 轨道）
 
 ### 黑板读写
-- **可写模块**：`{项目}/.design-miner/blackboard/emotion-analysis.md`
-- **全局可读**：可读取 context-map.md 了解文件→模块映射
-- **禁止写入**：任何其他黑板模块
+- **可写文件夹**：`{项目}/.design-miner/blackboard/emotion-analysis/`
+  - 子文件: 01-vulnerability-scan.md, 02-emotion-temperature.md, 03-error-handling-analysis.md, 04-emotion-principles.md
+  - 子索引: emotion-INDEX.md（每次写入后必须更新）
+- **全局可读**：可读取任何文件夹内的子文件 + 任何子 INDEX.md + MASTER-INDEX.md + context-map.md
+- **禁止写入**：任何其他文件夹及其子文件
+- **子索引维护规则**：写入子文件后必须同步更新 emotion-INDEX.md
 
 ### 并行协作
 | 协作专家 | 关系 | 交叉覆盖 |
@@ -302,7 +309,10 @@ prompt: |
 - **发送者**: design-miner-emotion-analyzer
 - **目标**: coordinator
 - **内容**: [一句话描述产出]
-- **影响模块**: blackboard/emotion-analysis.md
-- **关键章节**: §情感→代码映射 + §情感设计原则提炼
+- **影响文件夹**: blackboard/emotion-analysis/
+- **受影响子文件**: 01-vulnerability-scan.md, 02-emotion-temperature.md, 03-error-handling-analysis.md, 04-emotion-principles.md
+- **子索引**: emotion-analysis/emotion-INDEX.md（已更新）
+- **gen**: gen-{N}
+- **关键章节**: 02-emotion-temperature.md §情感→代码映射, 04-emotion-principles.md §情感设计原则提炼
 - **行号证据**: 每个情感标签已附带 `文件:行号` 格式源码证据
 ```

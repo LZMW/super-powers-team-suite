@@ -1,6 +1,6 @@
-# Dev-Genius (开发天才) 团队 v2.3
+# Dev-Genius (开发天才) 团队 v3.0
 
-> **一句话**：黑板型 + 六道强制门控 + Superpowers + OpenSpec 方法论注入，从设计规格到可交付软件的全自动开发流水线。Architect 和 QA Tester 是每任务必经门控。
+> **一句话**：黑板型 + 七道强制门控 + F 双阶段源码扫描 + Superpowers + OpenSpec 方法论注入，从设计规格到可交付软件的全自动开发流水线。Architect 和 QA Tester 是每任务必经门控。
 
 ## v2.2 核心变化（Architect + QA Tester 强制门控）
 
@@ -68,6 +68,7 @@ dev-genius-team v2.3 (本团队, 5人, 黑板型)
 | 3 | developer | 开发工程师 | 🚪 Gate 3 | Sonnet |
 | 4 | qa-tester | 测试工程师 | 🚪 Gate 4 必经 | Sonnet |
 | 5 | analyst | 代码审查师 | 🚪 Gate 5+6 | Sonnet |
+| 6 | codebase-analyst | 源码状态分析师 | 🚪 Gate 0+6（双阶段） | Sonnet |
 
 ## 黑板结构
 
@@ -124,7 +125,7 @@ dev-genius-team v2.3 (本团队, 5人, 黑板型)
 - 🔴 **编号体系统一**：消除 Step 前缀 + .5 小数，Gate 1-6 纯整数。Gate 是三团队唯一前缀（DM=Stage，DI=Phase）
 - 🔴 **Gate 重编号**：Gate 1.5→2（顺延：TDD→3, Verify→4, Review→5, Finish→6）。六道门控 Pipeline 保持完整
 - 🆕 **上游引用同步**：DI 引用更新为 Phase 10 产出，DM 引用更新为 Stage 1-7
-- 🆕 **工作流链推荐**：DM(Stage)→DI(Phase)→DV(Gate)，三团队编号前缀无重叠
+- 🆕 **工作流链推荐**：DM(Stage)→DI(Phase)→DG(Gate)，三团队编号前缀无重叠
 - 📝 **版本更新**：README v2.2→v2.3，协调器 v2.2→v2.3
 
 ### v2.2.1 (2026-05-24)

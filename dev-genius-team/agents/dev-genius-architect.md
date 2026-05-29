@@ -153,7 +153,7 @@ model: sonnet
 
 **Step 1：读取上下文**
 
-Read `.dev-genius/blackboard/task-queue.md` + 现有 `architecture.md` + 上游 `.di/phases/07_documentation/ARCHITECTURE_SPEC.md` + `DESIGN_DECISIONS.md`（如有）
+Read `.dev-genius/blackboard/task-queue/task-INDEX.md` + 现有 `architecture/arch-INDEX.md` + 上游 `.di/phases/07_documentation/00-INDEX.md` → 按需进入文件夹读 ARCHITECTURE_SPEC.md、DESIGN_DECISIONS.md
 
 **Step 2：按级别执行**
 
@@ -286,23 +286,30 @@ Read `.dev-genius/blackboard/task-queue.md` + 现有 `architecture.md` + 上游 
 
 ## 设定10: 文件产出强制规则 🔴
 
-> ⚠️ **最高优先级**：任务完成的唯一标准是**文件已写入磁盘**！
+> ⚠️ **最高优先级**：任务完成的唯一标准是**所有子文件已写入磁盘**！
 
 **强制要求**：
-1. **必须使用 Write 工具**将产出内容写入指定路径的文件
-2. **写入后必须使用 Read 工具**验证文件确实存在且内容正确
-3. **禁止仅在对话中返回内容**而不写入文件——这等于任务未完成
+1. **必须使用 Write 工具**将产出内容写入指定文件夹的各子文件
+2. **写入后必须使用 Read 工具**验证所有子文件确实存在且内容正确
+3. **必须更新子索引** `arch-INDEX.md`，确保每个子文件有入口
+4. **禁止仅在对话中返回内容**而不写入文件——这等于任务未完成
 
 **执行顺序**：
 ```
-设计任务 → 生成架构 → Write 写入文件 → Read 验证文件 → 返回完成确认
+设计任务 → 生成架构/模块/接口/ADR/签批 → Write 各子文件 → Write/Update arch-INDEX.md → Read 验证各文件 → 返回完成确认
 ```
 
 **本专家具体产出步骤**：
-1. Write → blackboard/architecture.md
-2. Read blackboard/architecture.md 验证内容正确
-3. 发送 [EVENT] 到 inbox.md（格式见下方）
-4. 返回完成确认
+1. Write → blackboard/architecture/01-architecture-style.md（§架构风格）
+2. Write → blackboard/architecture/02-module-layers.md（§模块分层）
+3. Write → blackboard/architecture/03-component-relations.md（§组件关系）
+4. Write → blackboard/architecture/04-api-contracts.md（§接口契约）
+5. Write → blackboard/architecture/05-adrs.md（§架构决策记录——累积追加）
+6. Write → blackboard/architecture/06-signoff-records.md（§签批记录——累积追加）
+7. Write → blackboard/architecture/arch-INDEX.md（子索引，含各子文件入口）
+8. Read 验证上述全部文件内容正确
+9. 发送 [EVENT] 到 inbox.md（格式见下方）
+10. 返回完成确认
 
 **inbox.md 事件格式**：
 ```
@@ -310,9 +317,11 @@ Read `.dev-genius/blackboard/task-queue.md` + 现有 `architecture.md` + 上游 
 - **发送者**: dev-genius-architect
 - **目标**: coordinator
 - **内容**: [一句话描述产出]
-- **影响模块**: blackboard/architecture.md
-- **关键章节**: §模块划分与接口 + §ADR（验证时优先读取）
-- **行号证据**: 接口契约含代码示例
+- **影响文件夹**: blackboard/architecture/
+- **受影响子文件**: [按实际产出列出]
+- **子索引**: architecture/arch-INDEX.md（已更新）
+- **gen**: gen-1
+- **关键章节**: 05-adrs.md §架构决策记录 + 06-signoff-records.md §签批记录（验证时优先读取）
 ```
 
 ---
@@ -329,8 +338,8 @@ description: "Architecture gate for task N"
 prompt: |
   **📂 路径**:
   - 黑板: {项目}/.dev-genius/blackboard/
-  - 可读: task-queue.md, architecture.md, .di/phases/07_documentation/
-  - 可写: architecture.md（累积追加，勿覆写）
+  - 可读: task-queue/, architecture/, .di/phases/07_documentation/
+  - 可写文件夹: architecture/（各子文件按需追加，勿覆写）
 
   **🎯 任务**: [具体架构设计任务]
 
@@ -385,14 +394,21 @@ prompt: |
 **模式**：黑板型 | 架构环节
 
 ### 黑板读写
-- **可写模块**：`{项目}/.dev-genius/blackboard/architecture.md`
-- **必须读取**：`{项目}/.dev-genius/blackboard/task-queue.md`、`.di/phases/07_documentation/ARCHITECTURE_SPEC.md`、`DESIGN_DECISIONS.md`
+- **可写文件夹**：`{项目}/.dev-genius/blackboard/architecture/`
+  - 子文件: 01-architecture-style.md, 02-module-layers.md, 03-component-relations.md, 04-api-contracts.md, 05-adrs.md, 06-signoff-records.md
+  - 子索引: architecture/arch-INDEX.md
+  - 关键章节: 05-adrs.md §架构决策记录, 06-signoff-records.md §签批记录
+  - gen: gen-1
+- **必须读取**：
+  - `{项目}/.dev-genius/blackboard/task-queue/task-INDEX.md` + 按需进入子文件
+  - `.di/phases/07_documentation/00-INDEX.md` → 按需进入各文件夹 INDEX 读子文件（ARCHITECTURE_SPEC.md、DESIGN_DECISIONS.md）
+  - `{项目}/.dev-genius/blackboard/codebase-state/02-module-map.md` + `codebase-state/03-existing-patterns.md`（了解现有结构）
 
 ### 下游依赖
 | 下游专家 | 读取方式 | 用途 |
 |----------|----------|------|
-| Developer | 读取 architecture.md | 遵循模块接口契约和架构约束 |
-| Analyst | 读取 architecture.md | 审查时验证架构合规性 |
+| Developer | 读取 architecture/arch-INDEX.md → 按需进入子文件 | 遵循模块接口契约和架构约束 |
+| Analyst | 读取 architecture/arch-INDEX.md → 按需进入子文件 | 审查时验证架构合规性 |
 
 ### 事件通知
 完成后发送 STATE_UPDATE 事件到 inbox.md：
@@ -401,7 +417,9 @@ prompt: |
 - **发送者**: dev-genius-architect
 - **目标**: coordinator
 - **内容**: 技术架构设计完成，含 N 个模块 + M 条 ADR
-- **影响模块**: blackboard/architecture.md
-- **关键章节**: §模块划分与接口 + §ADR（验证时优先读取）
-- **行号证据**: 接口契约含代码示例
+- **影响文件夹**: blackboard/architecture/
+- **受影响子文件**: [按实际产出列出]
+- **子索引**: architecture/arch-INDEX.md（已更新）
+- **gen**: gen-1
+- **关键章节**: 05-adrs.md §架构决策记录 + 06-signoff-records.md §签批记录（验证时优先读取）
 ```

@@ -307,24 +307,29 @@ Phase 4: 实现修复 — 写失败回归测试→实现修复→验证→更新
 
 ## 设定10: 文件产出强制规则 🔴
 
-> ⚠️ **最高优先级**：任务完成的唯一标准是**文件已写入磁盘** + **测试通过有证据**！
+> ⚠️ **最高优先级**：任务完成的唯一标准是**所有子文件已写入磁盘** + **测试通过有证据**！
 
 **强制要求**：
-1. **必须使用 Write 工具**将实现状态写入 `{项目}/.dev-genius/blackboard/code-state.md`
-2. **写入后必须使用 Read 工具**验证文件确实存在且内容正确
-3. **code-state.md 必须含实际测试命令和输出**——非口头声称
-4. **禁止仅在对话中返回内容**而不写入文件——这等于任务未完成
+1. **必须使用 Write 工具**将实现状态写入指定文件夹的各子文件
+2. **写入后必须使用 Read 工具**验证所有子文件确实存在且内容正确
+3. **各子文件必须含实际测试命令和输出**——非口头声称
+4. **必须更新子索引** `code-INDEX.md`，确保每个子文件有入口
+5. **禁止仅在对话中返回内容**而不写入文件——这等于任务未完成
 
 **执行顺序**：
 ```
-实现功能 → 运行测试 → 记录证据 → Write code-state.md → Read 验证 → 返回完成确认
+实现功能 → 运行测试 → 记录证据 → Write 各子文件 → Write/Update code-INDEX.md → Read 验证各文件 → 返回完成确认
 ```
 
 **本专家具体产出步骤**：
-1. Write → blackboard/code-state.md
-2. Read blackboard/code-state.md 验证内容正确
-3. 发送 [EVENT] 到 inbox.md（格式见下方）
-4. 返回完成确认
+1. Write → blackboard/code-state/01-acceptance-checklist.md（§验收对照）
+2. Write → blackboard/code-state/02-changed-files.md（§变更文件清单）
+3. Write → blackboard/code-state/03-tdd-evidence.md（§TDD证据——含测试命令和输出）
+4. Write → blackboard/code-state/04-coverage-analysis.md（§覆盖率分析）
+5. Write → blackboard/code-state/code-INDEX.md（子索引，含各子文件入口）
+6. Read 验证上述全部文件内容正确
+7. 发送 [EVENT] 到 inbox.md（格式见下方）
+8. 返回完成确认
 
 **inbox.md 事件格式**：
 ```
@@ -332,9 +337,11 @@ Phase 4: 实现修复 — 写失败回归测试→实现修复→验证→更新
 - **发送者**: dev-genius-developer
 - **目标**: coordinator
 - **内容**: [一句话描述产出]
-- **影响模块**: blackboard/code-state.md
-- **关键章节**: §TDD证据 + §验收标准对照（验证时优先读取）
-- **行号证据**: RED/GREEN输出附测试命令
+- **影响文件夹**: blackboard/code-state/
+- **受影响子文件**: [按实际产出列出]
+- **子索引**: code-state/code-INDEX.md（已更新）
+- **gen**: gen-1
+- **关键章节**: 03-tdd-evidence.md §TDD证据 + 01-acceptance-checklist.md §验收对照（验证时优先读取）
 ```
 
 ---
@@ -351,8 +358,8 @@ description: "Implement task N with TDD cycle"
 prompt: |
   **📂 路径**:
   - 黑板: {项目}/.dev-genius/blackboard/
-  - 可读: task-queue.md, architecture.md
-  - 可写: code-state.md
+  - 可读: task-queue/, architecture/
+  - 可写文件夹: code-state/
 
   **🎯 任务**: 实现 task-queue.md 中的第 N 号任务
 
@@ -384,7 +391,7 @@ prompt: |
 
 1. **Read 上下文**：读取 task-queue.md + architecture.md（+ test-report.md 如 Bug 修复）
 2. **TDD 执行**：RED → GREEN → REFACTOR（功能开发）/ 系统化调试四阶段（Bug 修复）
-3. **记录证据**：code-state.md 含实际测试命令和输出
+3. **记录证据**：code-state/ 文件夹各子文件含实际测试命令和输出，更新 code-INDEX.md
 4. **Write 产出** + **Read 验证** + **发送事件**
 
 ### MCP 授权响应
@@ -402,15 +409,19 @@ prompt: |
 **模式**：黑板型 | Gate 3 (TDD Gate) + 局部闭环 (Dev↔QA)
 
 ### 黑板读写
-- **可写模块**：`{项目}/.dev-genius/blackboard/code-state.md`
-- **必须读取**：`{项目}/.dev-genius/blackboard/task-queue.md`、`architecture.md`
-- **Bug 修复时读取**：`{项目}/.dev-genius/blackboard/test-report.md`
+- **可写文件夹**：`{项目}/.dev-genius/blackboard/code-state/`
+  - 子文件: 01-acceptance-checklist.md, 02-changed-files.md, 03-tdd-evidence.md, 04-coverage-analysis.md
+  - 子索引: code-state/code-INDEX.md
+  - 关键章节: 03-tdd-evidence.md §TDD证据, 01-acceptance-checklist.md §验收对照
+  - gen: gen-1
+- **必须读取**：`{项目}/.dev-genius/blackboard/task-queue/task-INDEX.md`、`architecture/arch-INDEX.md` → 按需进入子文件
+- **Bug 修复时读取**：`{项目}/.dev-genius/blackboard/test-report/test-INDEX.md` → 按需进入子文件
 
 ### 下游依赖
 | 下游专家 | 读取方式 | 用途 |
 |----------|----------|------|
-| QA Tester | 读取 code-state.md | 了解实现状态 → 设计测试用例 |
-| Analyst | 读取 code-state.md | 获取变更文件清单 → 逐文件审查 |
+| QA Tester | 读取 code-state/code-INDEX.md → 按需进入子文件 | 了解实现状态 → 设计测试用例 |
+| Analyst | 读取 code-state/code-INDEX.md → 按需进入子文件 | 获取变更文件清单 → 逐文件审查 |
 
 ### 事件通知
 - 功能完成：TASK_COMPLETE
@@ -420,7 +431,9 @@ prompt: |
 - **发送者**: dev-genius-developer
 - **目标**: coordinator
 - **内容**: [任务完成 简要描述]
-- **影响模块**: blackboard/code-state.md
-- **关键章节**: §TDD证据 + §验收标准对照（验证时优先读取）
-- **行号证据**: RED/GREEN输出附测试命令
+- **影响文件夹**: blackboard/code-state/
+- **受影响子文件**: [按实际产出列出]
+- **子索引**: code-state/code-INDEX.md（已更新）
+- **gen**: gen-1
+- **关键章节**: 03-tdd-evidence.md §TDD证据 + 01-acceptance-checklist.md §验收对照（验证时优先读取）
 ```

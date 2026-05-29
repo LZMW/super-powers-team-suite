@@ -1,6 +1,6 @@
-# Design-Miner (设计挖掘) 团队 v5.3
+# Design-Miner (设计挖掘) 团队 v6.1
 
-> **一句话**：三轨道并行 + Pre-Synthesis + 品味注入 + Review-Execution 分离 + 增强手艺结构 + 模板完整对齐，从参考项目源码中挖掘架构智慧、UX 模式和跨领域元方法论。
+> **一句话**：三轨道并行 + Pre-Synthesis + 品味注入 + Review-Execution 分离 + 增强手艺结构 + 模板完整对齐 + 汇总专家 J，从参考项目源码中挖掘架构智慧、UX 模式和跨领域元方法论。
 
 ## v5.1 模板对齐（super-team-builder v4.2 blackboard-coordinator-template）
 
@@ -34,7 +34,9 @@ Stage 5: C(架构抽象) ∥ G(跨域解构) ← 收到自包含简报
     ↓
 Stage 6: H(体系构建) → I(原则蒸馏·验证工作者·零上下文)
     ↓
-Stage 7: 交付 — 产出验证 + 增量输出 + 下游推荐
+Stage 7a 🔴: J(汇总专家) — 读取全部黑板 → 写入全部产出文档
+    ↓
+Stage 7b 🔴: 协调器 — 验证 + 阅读学习 + 下游推荐
 ```
 
 ## 专家一览
@@ -50,38 +52,140 @@ Stage 7: 交付 — 产出验证 + 增量输出 + 下游推荐
 | G | deconstructor-patternmaster | 元方法论 | 解构与模式识别 | Stage 5 | Opus |
 | H | methodologist-pragmatist | 元方法论 | 体系构建与评判 | Stage 6 | Opus |
 | I | rules-distiller | 综合 | 原则蒸馏者 | Stage 6 | Sonnet |
+| J | summarizer | 综合 | 汇总专家 | Stage 7a | Opus |
 
-## 黑板结构（v3.0 新增文件）
+## 黑板结构（v6.0 文件夹组模式）
 
 ```
 {项目}/.design-miner/
-├── GENESIS.md                # Stage 7: 世代日志（追加式，永不覆盖）
+├── GENESIS.md                       # 世代日志（追加式，永不覆盖）
 └── blackboard/
-    ├── context-map.md            # Stage 1: 文件→模块→专家映射表
-    ├── synthesis-summary.md      # Stage 4: 预合成简报(Stage 2-3→5)
-    ├── pattern-analysis.md       # A(Stage 2): 模式分析(handoff 给 B)
-    ├── critical-review.md        # B(Stage 3): 批判审视(基于 A 的 handoff)
-    ├── abstract-principles.md    # C(Stage 5): 四段式架构报告(双层级)
-    ├── interaction-analysis.md   # D(Stage 3): 交互反馈分析
-    ├── perception-analysis.md    # E(Stage 3): 信息感知分析
-    ├── emotion-analysis.md       # F(Stage 3): 情感容错分析
-    ├── deconstructed-facts.md    # G(Stage 5): 跨域解构+模式识别
-    ├── methodology-system.md     # H(Stage 6): 方法论体系
-    ├── rules-crosscheck.md       # I(Stage 6): 独立验证+原则印证
-    ├── INDEX.md                  # Stage 1: 全局索引（全程维护）
-    └── inbox.md                  # 事件总线
+    ├── MASTER-INDEX.md              # 跨 gen 总索引（协调器维护）
+    ├── inbox.md                     # 事件总线
+    ├── context-map.md               # 🟢 低保留，每次 run 重建
+    ├── synthesis-summary.md         # 🟢 低保留，每次 run 重建
+    │
+    ├── pattern-analysis/            # 🟡 A: 模式识别
+    │   ├── pattern-INDEX.md
+    │   ├── 01-tech-fingerprint.md
+    │   ├── 02-design-patterns.md
+    │   ├── 03-architecture-patterns.md
+    │   ├── 04-solid-analysis.md
+    │   └── 05-dependency-topology.md
+    │
+    ├── critical-review/             # 🟡 B: 批判审视
+    │   ├── critical-INDEX.md
+    │   ├── 01-executive-summary.md
+    │   ├── 02-tradeoff-analysis.md
+    │   ├── 03-gaps-and-omissions.md
+    │   ├── 04-counterfactual.md
+    │   └── 05-tech-debt.md
+    │
+    ├── abstract-principles/         # 🔴 C: 抽象建模
+    │   ├── abstract-INDEX.md
+    │   ├── 01-core-design-philosophy.md
+    │   ├── 02-design-deconstruction.md
+    │   ├── 03-principles/
+    │   │   ├── principles-INDEX.md
+    │   │   └── principle-01-xxx.md
+    │   └── 04-architecture-quotes.md
+    │
+    ├── interaction-analysis/        # 🟡 D: 交互反馈
+    │   ├── interaction-INDEX.md
+    │   ├── 01-overview.md
+    │   ├── 02-sensation-code-mapping.md
+    │   ├── 03-micro-interactions.md
+    │   └── 04-interaction-principles.md
+    │
+    ├── perception-analysis/         # 🟡 E: 信息感知
+    │   ├── perception-INDEX.md
+    │   ├── 01-info-architecture.md
+    │   ├── 02-state-coverage.md
+    │   ├── 03-perception-trace.md
+    │   └── 04-perception-principles.md
+    │
+    ├── emotion-analysis/            # 🟡 F: 情感容错
+    │   ├── emotion-INDEX.md
+    │   ├── 01-vulnerability-scan.md
+    │   ├── 02-emotion-temperature.md
+    │   ├── 03-error-handling-analysis.md
+    │   └── 04-emotion-principles.md
+    │
+    ├── deconstructed-facts/         # 🟡 G: 跨域解构
+    │   ├── deconstructed-INDEX.md
+    │   ├── 01-fact-inventory.md
+    │   ├── 02-cross-track-patterns.md
+    │   ├── 03-mental-models.md
+    │   └── 04-classical-connections.md
+    │
+    ├── methodology-system/          # 🔴 H: 方法论体系
+    │   ├── methodology-INDEX.md
+    │   ├── 01-core-philosophy.md
+    │   ├── 02-principles/
+    │   │   ├── principles-INDEX.md
+    │   │   └── principle-01-xxx.md
+    │   ├── 03-toolkit/
+    │   │   ├── toolkit-INDEX.md
+    │   │   └── tool-a-xxx.md
+    │   ├── 04-anti-patterns.md
+    │   └── 05-cross-domain.md
+    │
+    └── rules-crosscheck/            # 🔴 I: 原则蒸馏
+        ├── rules-INDEX.md
+        ├── 01-verdict-summary.md
+        ├── 02-detailed-verdicts/
+        │   ├── verdicts-INDEX.md
+        │   └── verdict-01-xxx.md
+        ├── 03-statistics.md
+        └── 04-rollback-items.md
 ```
 
-## 产出
+> **v6.0 升级**：从单文件模式升级为文件夹组模式。子索引使用模块前缀命名（如 pattern-INDEX.md），避免同名幻觉。MASTER-INDEX.md 作为跨 gen 总索引。
+
+### 保留分层
+
+| 级别 | 文件夹 | 含义 |
+|------|--------|------|
+| 🔴 高保留 | methodology-system, abstract-principles, rules-crosscheck | 跨项目可复用原则/方法论，跨 gen 持续累积 |
+| 🟡 中保留 | pattern-analysis, critical-review, interaction-analysis, perception-analysis, emotion-analysis, deconstructed-facts | 项目级别分析事实，跨 gen 持续累积 |
+| 🟢 低保留 | context-map, synthesis-summary | 临时工作文件，每次 run 重建 |
+
+## 产出（v6.0 文件夹组模式）
 
 ```
 output/{project}-analysis/
-├── 00-综合报告.md           # 含品味向量回顾 + 视角局限性声明
-├── 01-架构设计分析.md       # A+B+C 整合
-├── 02-UX工程分析.md         # D+E+F 整合
-├── 03-元方法论萃取.md       # G+H 整合
-└── 04-原则交叉印证.md       # I 独立产出(验证工作者视角)
+├── 00-综合报告.md                # 索引表（下游 DI 入口）
+├── 00-session-log.md             # 会话记录（追加式）
+│
+├── 01-architecture/              # 架构设计分析
+│   ├── architecture-INDEX.md
+│   ├── pattern-analysis.md       # A: 模式分析
+│   ├── critical-review.md        # B: 批判审视
+│   └── abstract-principles.md    # C: 抽象原则提炼
+│
+├── 02-ux-engineering/            # UX 工程分析
+│   ├── ux-INDEX.md
+│   ├── interaction-analysis.md   # D: 交互反馈
+│   ├── perception-analysis.md    # E: 信息感知
+│   └── emotion-analysis.md       # F: 情感容错
+│
+├── 03-methodology/               # 元方法论萃取
+│   ├── methodology-INDEX.md
+│   ├── deconstructed-facts.md     # G: 跨域解构
+│   └── methodology-system.md      # H: 方法论体系
+│
+├── 04-rules-crosscheck/          # 原则交叉印证
+│   ├── rules-INDEX.md
+│   ├── verdict-summary.md        # 裁决汇总表
+│   ├── detailed-verdicts.md      # 详细裁决
+│   ├── statistics.md             # 统计
+│   └── rollback-items.md         # 回退项
+│
+└── 05-{自定义主题}/              # 非标准分类时自动创建
+    └── custom-INDEX.md
 ```
+
+> **v6.0 升级**：按专家来源拆分（01 拆 A/B/C 三个文件），下游按需读取。00-综合报告.md 保留原名确保 DI 向后兼容。
 
 ## 下游团队与工作流链
 
@@ -90,14 +194,14 @@ output/{project}-analysis/
 **三团队完整链路**：
 
 ```
-DM (设计挖掘) → DI (设计审问) → DV (开发实现)
+DM (设计挖掘) → DI (设计审问) → DG (开发实现)
 ```
 
 | 路径 | 推荐度 | 说明 |
 |------|--------|------|
-| **DM → DI → DV** | ⭐⭐⭐ 推荐 | 完整项目链路：挖掘→审问→实现 |
-| **DI → DV** | ⭐⭐ 可接受 | 无参考项目时跳过 DM |
-| **DM → DV** | ⭐ 不推荐 | 跳过设计审问，缺失关键决策环节 |
+| **DM → DI → DG** | ⭐⭐⭐ 推荐 | 完整项目链路：挖掘→审问→实现 |
+| **DI → DG** | ⭐⭐ 可接受 | 无参考项目时跳过 DM |
+| **DM → DG** | ⭐ 不推荐 | 跳过设计审问，缺失关键决策环节 |
 
 ## 关键设计原则
 
@@ -122,9 +226,25 @@ DM (设计挖掘) → DI (设计审问) → DV (开发实现)
 
 ## 更新日志
 
+### v6.1 (2026-05-29)
+- 🆕 **汇总专家 J (summarizer)**：新增 Opus 级汇总专家，Stage 7a 读取全部黑板 → 写入全部产出文档
+- 🔧 **协调器进化**：Stage 7b 不再写产出文档，改为「验证 + 阅读学习 + 交付」
+- 🆕 **阅读学习能力**：协调器主动阅读 J 的产出，将项目分析结论加载到上下文，后续工作精准引用
+- 🔧 **Stage 7 拆分**：7a (J:汇总) → 7b (协调器:验证+学习+交付)
+- 📝 **10 位专家全部就位**：A-I 挖掘 + J 汇总
+
+### v6.0 (2026-05-29)
+- 🔴 **文件夹组模式**：黑板从 9 个单文件升级为 9 个文件夹组（子文件 + 子索引 + MASTER-INDEX）
+- 🆕 **MASTER-INDEX.md**：新增跨 gen 总索引，协调器全程维护
+- 🆕 **子索引前缀命名**：所有子索引使用模块前缀（如 pattern-INDEX.md），避免 LLM 同名幻觉
+- 🆕 **保留分层**：🔴 高保留 / 🟡 中保留 / 🟢 低保留，二次运行不删不归档
+- 🔧 **gen 按 run 递增**：一次完整 Stage 1-7 = 一个 gen，STALE 状态由子 INDEX 控制
+- 🔧 **inbox 事件格式升级**：增加受影响子文件、子索引、gen 编号字段
+- 🔧 **Stage 7 验证升级**：从单文件验证改为子 INDEX + 子文件验证
+
 ### v5.3 (2026-05-26)
-- 🔴 **编号体系统一**：Step/Phase 双前缀 + .5 小数 → 统一 **Stage 1-7**。Stage 是三团队唯一前缀（DI 用 Phase，DV 用 Gate），避免 AI 幻觉
-- 🆕 **下游声明**：明确下游为 design-interrogator-team，添加三团队工作流链（DM→DI→DV）推荐路径
+- 🔴 **编号体系统一**：Step/Phase 双前缀 + .5 小数 → 统一 **Stage 1-7**。Stage 是三团队唯一前缀（DI 用 Phase，DG 用 Gate），避免 AI 幻觉
+- 🆕 **下游声明**：明确下游为 design-interrogator-team，添加三团队工作流链（DM→DI→DG）推荐路径
 - 🔧 **任务映射修正**：仅架构分析拆为基础（A+B）和完整（A+B+C），与流程图一致
 - 📝 **版本更新**：README v5.2→v5.3，协调器 v5.2→v5.3
 

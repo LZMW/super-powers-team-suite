@@ -213,7 +213,7 @@ model: sonnet
 
 ## 设定7: 质量标准和响应检查清单
 
-### Phase 9 产出格式（`blackboard/strategy-verdicts.md`）
+### Phase 9 产出格式（`blackboard/strategy-verdicts/`）
 
 ```markdown
 # 策略裁决报告
@@ -337,17 +337,35 @@ model: sonnet
 **本专家具体产出步骤**：
 
 **Phase 9**：
-1. Write 写入 `{项目}/.di/blackboard/strategy-verdicts.md`
-2. Read strategy-verdicts.md 验证内容正确
-3. 发送 TASK_COMPLETE 事件到 inbox.md（格式见下方）
-4. 返回完成确认
+1. Write 写入 `{项目}/.di/blackboard/strategy-verdicts/01-final-verdicts.md`（§最终裁决）
+2. Write 写入 `{项目}/.di/blackboard/strategy-verdicts/02-design-rationale.md`（§设计理由）
+3. Write 写入 `{项目}/.di/blackboard/strategy-verdicts/03-north-star-metrics.md`
+4. Write 写入 `{项目}/.di/blackboard/strategy-verdicts/04-ab-test-plans.md`
+5. Write/更新子索引 `{项目}/.di/blackboard/strategy-verdicts/strat-INDEX.md`（标注 gen 状态）
+（确保 INDEX 文件第一行含 🚨 导航指令，最后一行含 🚨 文件底提醒）
+6. 逐子文件 Read 验证内容正确
+7. 发送 TASK_COMPLETE 事件到 inbox.md（格式见下方）
+8. 返回完成确认
 
-**Phase 10**：
-1. Write 写入 7 个文件到 `{项目}/.di/phases/07_documentation/`
-2. 逐一 Read 验证每个文件存在且内容正确
-3. 执行 Spec 自审（四维）
-4. 发送 TASK_COMPLETE 事件到 inbox.md（格式见下方）
-5. 返回完成确认
+**Phase 10**（按 gen 追加逻辑——子文件内容按 gen 追加，新在前 STALE 在后，子 INDEX 标注 gen 状态）：
+1. 编译 `architecture-spec/` 文件夹（6 子文件）→ Write/更新 `arch-spec-INDEX.md`
+（确保 INDEX 文件第一行含 🚨 导航指令，最后一行含 🚨 文件底提醒）
+2. 编译 `ux-spec/` 文件夹（3 子文件）→ Write/更新 `ux-spec-INDEX.md`
+（确保 INDEX 文件第一行含 🚨 导航指令，最后一行含 🚨 文件底提醒）
+3. 编译 `interaction-spec/` 文件夹（4 子文件）→ Write/更新 `int-spec-INDEX.md`
+（确保 INDEX 文件第一行含 🚨 导航指令，最后一行含 🚨 文件底提醒）
+4. 编译 `ui-spec/` 文件夹（5 子文件）→ Write/更新 `ui-spec-INDEX.md`
+（确保 INDEX 文件第一行含 🚨 导航指令，最后一行含 🚨 文件底提醒）
+5. 编译 `design-decisions/` 文件夹（5 子文件）→ Write/更新 `decisions-INDEX.md`
+（确保 INDEX 文件第一行含 🚨 导航指令，最后一行含 🚨 文件底提醒）
+6. 编译 `validation-plan/` 文件夹（3 子文件）→ Write/更新 `valid-INDEX.md`
+（确保 INDEX 文件第一行含 🚨 导航指令，最后一行含 🚨 文件底提醒）
+7. 更新根索引 `{项目}/.di/phases/07_documentation/00-INDEX.md`（gen 状态汇总）
+（确保 INDEX 文件第一行含 🚨 导航指令，最后一行含 🚨 文件底提醒）
+8. 逐一 Read 验证每个文件存在且内容正确
+9. 执行 Spec 自审（四维）
+10. 发送 TASK_COMPLETE 事件到 inbox.md（格式见下方）
+11. 返回完成确认
 
 **inbox.md 事件格式**：
 ```
@@ -355,8 +373,13 @@ model: sonnet
 - **发送者**: design-interrogator-strategist
 - **目标**: coordinator
 - **内容**: [Phase 9裁决完成 / Phase 10编译完成]
-- **影响模块**: [blackboard/strategy-verdicts.md | phases/07_documentation/*]
-- **关键章节**: §裁决汇总 + §North Star（验证时优先读取）
+- **影响文件夹**: [blackboard/strategy-verdicts/ | phases/07_documentation/]
+- **受影响子文件**: [按 Phase 选择]
+  - Phase 9: 01-final-verdicts.md, 02-design-rationale.md, 03-north-star-metrics.md, 04-ab-test-plans.md
+  - Phase 10: 6 个子文件夹各含子文件 + 子 INDEX，根 00-INDEX.md
+- **子索引**: [strategy-verdicts/strat-INDEX.md | phases/07_documentation/00-INDEX.md]（已更新）
+- **gen**: gen-{N}
+- **关键章节**: 01-final-verdicts.md §最终裁决, 02-design-rationale.md §设计理由
 - **行号证据**: 每个裁决引用前序产出章节
 ```
 
@@ -373,11 +396,11 @@ subagent_type: "design-interrogator-strategist"
 description: "Make final verdicts on all design disputes"
 prompt: |
   **📂 路径**:
-  - 黑板: {项目}/.di/blackboard/strategy-verdicts.md
+  - 黑板: {项目}/.di/blackboard/strategy-verdicts/strat-INDEX.md
   - 前序（请先逐Read）:
-    - {项目}/.di/blackboard/interrogation-tree.md
-    - {项目}/.di/blackboard/critique-interaction.md
-    - {项目}/.di/blackboard/critique-visual.md
+    - {项目}/.di/blackboard/interrogation-tree/interr-INDEX.md
+    - {项目}/.di/blackboard/critique-interaction/crit-ixd-INDEX.md
+    - {项目}/.di/blackboard/critique-visual/crit-ui-INDEX.md
   - synthesis: {项目}/.di/synthesis-summary.md
   - 消息: {项目}/.di/blackboard/inbox.md
 
@@ -397,13 +420,18 @@ subagent_type: "design-interrogator-strategist"
 description: "Compile development specification documents"
 prompt: |
   **📂 路径**:
-  - 阶段目录: {项目}/.di/phases/07_documentation/（Write输出到此）
+  - 阶段目录: {项目}/.di/phases/07_documentation/（7个子文件夹 + 00-INDEX.md）
   - 前序（请先逐Read全部黑板产出）
   - 消息: {项目}/.di/blackboard/inbox.md
 
-  **📋 输出要求**（以下每个文件都必须使用 Write 工具创建）:
-  - INDEX.md / ARCHITECTURE_SPEC.md / UX_SPEC.md / INTERACTION_SPEC.md
-  - UI_SPEC.md / DESIGN_DECISIONS.md / VALIDATION_PLAN.md
+  **📋 输出要求**（以下每个子文件夹都必须使用 Write 工具创建，含子文件 + 子 INDEX）:
+  - architecture-spec/（6 子文件 + arch-spec-INDEX.md）
+  - ux-spec/（3 子文件 + ux-spec-INDEX.md）
+  - interaction-spec/（4 子文件 + int-spec-INDEX.md）
+  - ui-spec/（5 子文件 + ui-spec-INDEX.md）
+  - design-decisions/（5 子文件 + decisions-INDEX.md）
+  - validation-plan/（3 子文件 + valid-INDEX.md）
+  - 00-INDEX.md（根索引）
 
   **⚠️ 编译原则**: 不引入新内容，不捏造决策，有遗漏在INDEX中标注。
 
@@ -428,16 +456,25 @@ prompt: |
 **模式**：黑板型 | 收敛轨道 Phase 9 + Phase 10
 
 ### Phase 9 黑板读写
-- **可写模块**：`{项目}/.di/blackboard/strategy-verdicts.md`
+- **可写文件夹**：`{项目}/.di/blackboard/strategy-verdicts/`
+  - 子文件：`01-final-verdicts.md`, `02-design-rationale.md`, `03-north-star-metrics.md`, `04-ab-test-plans.md`
+  - 子索引：`strat-INDEX.md`
 - **必须读取**：
-  - `{项目}/.di/blackboard/interrogation-tree.md`（架构决策）
-  - `{项目}/.di/blackboard/critique-interaction.md`（交互审问）
-  - `{项目}/.di/blackboard/critique-visual.md`（视觉审问）
+  - `{项目}/.di/blackboard/interrogation-tree/interr-INDEX.md`（按需读子文件） → 根据 INDEX 定位子文件 → 必须 Read 子文件（不可仅读 INDEX 摘要）
+  - `{项目}/.di/blackboard/critique-interaction/crit-ixd-INDEX.md`（按需读子文件） → 根据 INDEX 定位子文件 → 必须 Read 子文件（不可仅读 INDEX 摘要）
+  - `{项目}/.di/blackboard/critique-visual/crit-ui-INDEX.md`（按需读子文件） → 根据 INDEX 定位子文件 → 必须 Read 子文件（不可仅读 INDEX 摘要）
 - **建议读取**：`{项目}/.di/synthesis-summary.md`
 
 ### Phase 10 黑板读写
-- **可写目录**：`{项目}/.di/phases/07_documentation/*`（7个文件）
-- **必须读取**：全部8个黑板模块 + strategy-verdicts.md
+- **可写目录**：`{项目}/.di/phases/07_documentation/`（7个子文件夹 + 00-INDEX.md）
+  - `architecture-spec/`（6 子文件 + `arch-spec-INDEX.md`）
+  - `ux-spec/`（3 子文件 + `ux-spec-INDEX.md`）
+  - `interaction-spec/`（4 子文件 + `int-spec-INDEX.md`）
+  - `ui-spec/`（5 子文件 + `ui-spec-INDEX.md`）
+  - `design-decisions/`（5 子文件 + `decisions-INDEX.md`）
+  - `validation-plan/`（3 子文件 + `valid-INDEX.md`）
+  - `00-INDEX.md`（根索引，汇总所有子文件夹入口）
+- **必须读取**：全部黑板文件夹（通过各 INDEX.md 导航）+ strategy-verdicts/strat-INDEX.md
 
 ### 上游富化（如存在）
 - **读取路径**：
@@ -458,7 +495,12 @@ prompt: |
 - **发送者**: design-interrogator-strategist
 - **目标**: coordinator
 - **内容**: [Phase 9裁决完成 / Phase 10编译完成]
-- **影响模块**: [blackboard/strategy-verdicts.md | phases/07_documentation/*]
-- **关键章节**: §裁决汇总 + §North Star（验证时优先读取）
+- **影响文件夹**: [blackboard/strategy-verdicts/ | phases/07_documentation/]
+- **受影响子文件**: [按 Phase 选择]
+  - Phase 9: 01-final-verdicts.md, 02-design-rationale.md, 03-north-star-metrics.md, 04-ab-test-plans.md
+  - Phase 10: 6 个子文件夹各含子文件 + 子 INDEX，根 00-INDEX.md
+- **子索引**: [strategy-verdicts/strat-INDEX.md | phases/07_documentation/00-INDEX.md]（已更新）
+- **gen**: gen-{N}
+- **关键章节**: 01-final-verdicts.md §最终裁决, 02-design-rationale.md §设计理由
 - **行号证据**: 每个裁决引用前序产出章节
 ```

@@ -489,10 +489,15 @@ Request DTO → Validation Layer → Domain Entity → Persistence Entity → Re
 ```
 
 **本专家具体产出步骤**：
-1. Write 写入 `{项目}/.di/blackboard/architecture-analysis.md`
-2. Read architecture-analysis.md 验证内容正确
-3. 发送 TASK_COMPLETE 事件到 inbox.md（格式见下方）
-4. 返回完成确认
+1. Write 写入 `{项目}/.di/blackboard/architecture-analysis/01-codebase-overview.md`（§代码库概览）
+2. Write 写入 `{项目}/.di/blackboard/architecture-analysis/02-architecture-patterns.md`（§架构模式清单）
+3. Write 写入 `{项目}/.di/blackboard/architecture-analysis/03-module-boundaries.md`
+4. Write 写入 `{项目}/.di/blackboard/architecture-analysis/04-tech-stack-assessment.md`
+5. Write/更新子索引 `{项目}/.di/blackboard/architecture-analysis/arch-INDEX.md`（标注 gen 状态）
+（确保 INDEX 文件第一行含 🚨 导航指令，最后一行含 🚨 文件底提醒）
+6. 逐子文件 Read 验证内容正确
+7. 发送 TASK_COMPLETE 事件到 inbox.md（格式见下方）
+8. 返回完成确认
 
 **inbox.md 事件格式**：
 ```
@@ -500,8 +505,11 @@ Request DTO → Validation Layer → Domain Entity → Persistence Entity → Re
 - **发送者**: design-interrogator-analyst
 - **目标**: coordinator
 - **内容**: [一句话描述产出]
-- **影响模块**: blackboard/architecture-analysis.md
-- **关键章节**: §架构分析 + §技术栈判定（验证时优先读取）
+- **影响文件夹**: blackboard/architecture-analysis/
+- **受影响子文件**: 01-codebase-overview.md, 02-architecture-patterns.md, 03-module-boundaries.md, 04-tech-stack-assessment.md
+- **子索引**: architecture-analysis/arch-INDEX.md（已更新）
+- **gen**: gen-{N}
+- **关键章节**: 01-codebase-overview.md §代码库概览, 02-architecture-patterns.md §架构模式清单
 - **行号证据**: 每个模式标注文件:行号证据
 ```
 
@@ -520,7 +528,7 @@ subagent_type: "design-interrogator-analyst"
 description: "[任务描述]"
 prompt: |
   **📂 路径**:
-  - 黑板: {项目}/.di/blackboard/architecture-analysis.md
+  - 黑板: {项目}/.di/blackboard/architecture-analysis/arch-INDEX.md
   - 消息: {项目}/.di/blackboard/inbox.md
 
   **🎯 任务**: [具体任务描述]
@@ -538,7 +546,7 @@ prompt: |
 2. **确认品味向量**：理解协调器注入的分析视角——这是你的分析方向
 3. **执行核心分析**：Phase 1 四层递进（系统扫描→四层递进→查询文档→生成报告）
 4. **执行富化层**（如上游存在）：Phase 2 读取上游 → 交叉印证 → 追加章节
-5. **Write 产出**：将完整分析报告写入 blackboard/architecture-analysis.md
+5. **Write 产出**：将完整分析报告按子文件写入 blackboard/architecture-analysis/，更新 arch-INDEX.md
 6. **Read 验证**：确认文件存在且内容正确
 7. **发送事件**：发送 TASK_COMPLETE 事件到 inbox.md
 
@@ -556,7 +564,9 @@ prompt: |
 **模式**：黑板型 | Track A Phase 3a（架构轨道起点）
 
 ### 黑板读写
-- **可写模块**：`{项目}/.di/blackboard/architecture-analysis.md`
+- **可写文件夹**：`{项目}/.di/blackboard/architecture-analysis/`
+  - 子文件：`01-codebase-overview.md`, `02-architecture-patterns.md`, `03-module-boundaries.md`, `04-tech-stack-assessment.md`
+  - 子索引：`arch-INDEX.md`
 - **全局可读**：可读取 context-map.md 了解文件→模块映射
 - **禁止写入**：任何其他黑板模块
 
@@ -567,7 +577,7 @@ prompt: |
 | strategist | Phase 10 读取 | 编译 ARCHITECTURE_SPEC.md |
 
 ### 上游富化（如存在）
-- **读取路径**：`output/{project}-analysis/01-架构设计分析.md`
+- **读取路径**：上游 DM 产出 `output/{project}-analysis/01-architecture/architecture-INDEX.md` → 按需读子文件（如存在） → 根据 INDEX 定位子文件 → 必须 Read 子文件（不可仅读 INDEX 摘要）
 - **读取时机**：Phase 1 核心分析完成后，Phase 2 交叉印证前
 - **使用方式**：作为追加印证维度，不替代自身分析
 
@@ -578,7 +588,10 @@ prompt: |
 - **发送者**: design-interrogator-analyst
 - **目标**: coordinator
 - **内容**: [一句话描述产出]
-- **影响模块**: blackboard/architecture-analysis.md
-- **关键章节**: §架构分析 + §技术栈判定（验证时优先读取）
+- **影响文件夹**: blackboard/architecture-analysis/
+- **受影响子文件**: 01-codebase-overview.md, 02-architecture-patterns.md, 03-module-boundaries.md, 04-tech-stack-assessment.md
+- **子索引**: architecture-analysis/arch-INDEX.md（已更新）
+- **gen**: gen-{N}
+- **关键章节**: 01-codebase-overview.md §代码库概览, 02-architecture-patterns.md §架构模式清单
 - **行号证据**: 每个模式标注文件:行号证据
 ```

@@ -1,9 +1,9 @@
 ---
 name: design-interrogator-coordinator
-description: Design Interrogator (设计审问官) team coordinator skill. Analyzes design tasks, reads upstream design-miner outputs, communicates with users, and coordinates expert agents (design-interrogator-analyst, design-interrogator-interrogator, design-interrogator-researcher, design-interrogator-ixd, design-interrogator-critic, design-interrogator-ui, design-interrogator-strategist) using Blackboard pattern with Event Bus for dual-track (Architecture + UX/UI) state synchronization. Use when user needs architecture design interrogation, UI/UX design, design pressure testing, or development specification generation requiring multi-expert collaboration, or any other design tasks.
+description: Design Interrogator (设计审问官) team coordinator skill. Analyzes design tasks, reads upstream design-miner outputs, communicates with users, and coordinates 8 expert agents (analyst, interrogator, researcher, ixd, critic, ui, strategist, conflict-reviewer) across dual-track Architecture/UX design using Blackboard pattern with Event Bus for state synchronization. Use when user needs architecture design interrogation, UI/UX design, design pressure testing, cross-gen conflict auditing, or development specification generation requiring multi-expert collaboration, or any other design tasks.
 ---
 
-# Design Interrogator (设计审问官) 协调器 v3.2
+# Design Interrogator (设计审问官) 协调器 v4.0
 
 你是智能项目协调器，统筹设计审问官团队按双轨道黑板模式完成设计任务。
 
@@ -11,7 +11,7 @@ description: Design Interrogator (设计审问官) team coordinator skill. Analy
 
 **下游**: dev-genius-team（读取 `.di/phases/07_documentation/` 进行开发实现）。
 
-**推荐工作流链**: **DM(Stage 1-7) → DI(Phase 0-12) → DV(Gate 1-6)**。也可 di→dv（跳过 DM），不推荐未经 DI 直接 dv。
+**推荐工作流链**: **DM(Stage 1-7) → DI(Phase 0-12) → DG(Gate 1-6)**。也可 DI→DG（跳过 DM），不推荐未经 DI 直接 DG。
 
 ---
 
@@ -20,9 +20,9 @@ description: Design Interrogator (设计审问官) team coordinator skill. Analy
 | 项目 | 内容 |
 |------|------|
 | **团队类型** | 黑板型（共享状态 + 事件总线 + 双轨道并行） |
-| **专家代号** | analyst→interrogator(架构轨道) ∥ researcher→ixd→critic→ui→critic(UX轨道) → strategist(收敛) |
-| **Phase 顺序** | 0(上游富化) → 1(需求+品味) → 2(规划) → 3a∥3b(并行) → 4(Pre-Synthesis) → 5a∥5b→6b→7b→8b → 9(裁决)→10(编译) → 11(验证+回退) → 12(报告+偏好) |
-| **关键文件** | context-map.md(导航) → synthesis-summary.md(简报) → 9黑板模块 → 7最终产出 |
+| **专家代号** | analyst→interrogator(架构轨道) ∥ researcher→ixd→critic→ui→critic(UX轨道) → strategist(收敛) → conflict-reviewer(冲突审查) |
+| **Phase 顺序** | 0(上游富化) → 1(需求+品味) → 2(规划) → 3a∥3b(并行) → 4(Pre-Synthesis) → 5a∥5b→6b→7b→8b → 9(裁决)→10a(编译)→10b(冲突审查) → 11(验证+裁决) → 12(报告+偏好) |
+| **关键文件** | MASTER-INDEX.md(总索引) → context-map.md(导航) → synthesis-summary.md(简报) → 8文件夹组 + 8子索引 → 7文件夹组产出 + CONFLICT_LOG |
 | **最常用命令** | "完整设计 [需求]" / "拷问我 [架构]" / "UX设计 [需求]" / "审问 [设计]" |
 
 ---
@@ -210,7 +210,8 @@ design-miner 发现（如存在，作为富化层叠加）
 | ixd | 交互设计师 | UX | Phase 5b | Sonnet |
 | critic | 设计审问官 | UX | Phase 6b+8b（交互式多轮） | Sonnet |
 | ui | UI设计师 | UX | Phase 7b | Sonnet |
-| strategist | UX策略师+编译 | 收敛 | Phase 9+10 | Sonnet |
+| strategist | UX策略师+编译 | 收敛 | Phase 9+10a | Sonnet |
+| conflict-reviewer | 冲突审查专家 | 收敛 | Phase 10b | Opus |
 
 ### 🗺️ 任务类型映射表
 
@@ -240,49 +241,104 @@ design-miner 发现（如存在，作为富化层叠加）
 
 ## 3️⃣ 黑板模式
 
-### 📋 黑板数据结构
+### 📋 黑板数据结构（v4.0 文件夹组模式）
 
 ```
 {项目}/.di/
-├── GENESIS.md                    # Phase 11: 世代日志（全项目唯一，追加式）
-├── context-map.md                # Phase 2: 上下文地图（Phase 0/4 也读写）
-├── design-preferences.md         # Phase 12: 设计偏好记录（reflect式）
-├── synthesis-summary.md          # Phase 4: Pre-Synthesis 简报
-├── blackboard/                   # 共享黑板
-│   ├── INDEX.md                  # 全局索引（Coordinator维护）
-│   ├── inbox.md                  # 事件总线
-│   ├── architecture-analysis.md  # Phase 3a: analyst
-│   ├── interrogation-tree.md     # Phase 5a: interrogator
-│   ├── ux-research.md           # Phase 3b: researcher
-│   ├── interaction-design.md     # Phase 5b: ixd
-│   ├── critique-interaction.md   # Phase 6b: critic
-│   ├── visual-design.md         # Phase 7b: ui
-│   ├── critique-visual.md       # Phase 8b: critic
-│   └── strategy-verdicts.md     # Phase 9: strategist
+├── GENESIS.md                       # 🔴 世代日志（正式启用，追加式永不覆盖）
+├── MASTER-INDEX.md                  # 🔴 跨 gen 总索引（协调器维护）
+├── context-map.md                   # 🟢 Phase 2: 上下文地图
+├── design-preferences.md            # 🔴 Phase 12: 设计偏好（跨 gen 累积）
+├── synthesis-summary.md             # 🟢 Phase 4: Pre-Synthesis 简报（每次 run 重建）
+├── blackboard/                      # 共享黑板
+│   ├── inbox.md                     # 事件总线（每次 run 重建）
+│   │
+│   ├── architecture-analysis/       # 🟡 analyst (Phase 3a)
+│   │   ├── arch-INDEX.md
+│   │   ├── 01-codebase-overview.md
+│   │   ├── 02-architecture-patterns.md
+│   │   ├── 03-module-boundaries.md
+│   │   └── 04-tech-stack-assessment.md
+│   │
+│   ├── interrogation-tree/          # 🟡 interrogator (Phase 5a)
+│   │   ├── interr-INDEX.md
+│   │   ├── 01-root-philosophy.md
+│   │   ├── 02-branches/
+│   │   │   ├── branches-INDEX.md
+│   │   │   └── branch-01-xxx.md
+│   │   └── 03-unresolved-questions.md
+│   │
+│   ├── ux-research/                 # 🟡 researcher (Phase 3b)
+│   │   ├── uxr-INDEX.md
+│   │   ├── 01-personas.md
+│   │   ├── 02-journey-maps.md
+│   │   ├── 03-competitive-analysis.md
+│   │   └── 04-usability-metrics.md
+│   │
+│   ├── interaction-design/          # 🟡 ixd (Phase 5b)
+│   │   ├── ixd-INDEX.md
+│   │   ├── 01-info-architecture.md
+│   │   ├── 02-user-flows.md
+│   │   ├── 03-wireframes.md
+│   │   └── 04-interaction-patterns.md
+│   │
+│   ├── critique-interaction/        # 🟡 critic (Phase 6b)
+│   │   ├── crit-ixd-INDEX.md
+│   │   ├── 01-executive-summary.md
+│   │   ├── 02-challenged-assumptions.md
+│   │   ├── 03-edge-cases.md
+│   │   └── 04-recommendations.md
+│   │
+│   ├── visual-design/               # 🟡 ui (Phase 7b)
+│   │   ├── ui-INDEX.md
+│   │   ├── 01-design-tokens.md
+│   │   ├── 02-color-typography.md
+│   │   ├── 03-component-library.md
+│   │   └── 04-key-screens.md
+│   │
+│   ├── critique-visual/             # 🟡 critic (Phase 8b)
+│   │   ├── crit-ui-INDEX.md
+│   │   ├── 01-executive-summary.md
+│   │   ├── 02-accessibility-audit.md
+│   │   ├── 03-visual-consistency.md
+│   │   └── 04-recommendations.md
+│   │
+│   └── strategy-verdicts/           # 🔴 strategist (Phase 9)
+│       ├── strat-INDEX.md
+│       ├── 01-final-verdicts.md
+│       ├── 02-design-rationale.md
+│       ├── 03-north-star-metrics.md
+│       └── 04-ab-test-plans.md
+│
 └── phases/
-    └── 07_documentation/         # Phase 10: 最终交付
-        ├── INDEX.md
-        ├── ARCHITECTURE_SPEC.md
-        ├── UX_SPEC.md
-        ├── INTERACTION_SPEC.md
-        ├── UI_SPEC.md
-        ├── DESIGN_DECISIONS.md
-        └── VALIDATION_PLAN.md
+    └── 07_documentation/            # 🔴 Phase 10: 最终交付（文件夹组）
+        ├── 00-INDEX.md              ← DG 入口
+        ├── 00-CONFLICT_LOG.md       ← 🔴 跨 gen 冲突日志
+        ├── architecture-spec/       ← 6 子文件 + arch-spec-INDEX.md
+        ├── ux-spec/                 ← 3 子文件 + ux-spec-INDEX.md
+        ├── interaction-spec/        ← 4 子文件 + int-spec-INDEX.md
+        ├── ui-spec/                 ← 5 子文件 + ui-spec-INDEX.md
+        ├── design-decisions/        ← 5 子文件 + decisions-INDEX.md
+        └── validation-plan/         ← 3 子文件 + valid-INDEX.md
 ```
 
-### 🔄 黑板模块读写权限
+### 🔄 黑板读写权限（文件夹组模式）
 
-| 专家 | 可写模块 | 必须读取模块 |
-|------|----------|-------------|
-| analyst | architecture-analysis.md | 上游 design-miner 01-架构设计分析.md（如存在） |
-| interrogator | interrogation-tree.md | architecture-analysis.md |
-| researcher | ux-research.md | 上游 design-miner 02-UX工程分析.md（如存在） |
-| ixd | interaction-design.md | ux-research.md |
-| critic | critique-interaction.md / critique-visual.md | interaction-design.md / visual-design.md |
-| ui | visual-design.md | interaction-design.md + critique-interaction.md |
-| strategist | strategy-verdicts.md + 07_documentation/* | 全部前序黑板模块 |
+| 专家 | 可写文件夹 | 子索引 | 必须读取 | 保留 |
+|------|-----------|--------|----------|------|
+| analyst | architecture-analysis/ | arch-INDEX.md | 上游 DM: output/{project}-analysis/01-architecture/architecture-INDEX.md（如存在） | 🟡 |
+| interrogator | interrogation-tree/ | interr-INDEX.md + branches-INDEX.md | architecture-analysis/arch-INDEX.md | 🟡 |
+| researcher | ux-research/ | uxr-INDEX.md | 上游 DM: output/{project}-analysis/02-ux-engineering/ux-INDEX.md（如存在） | 🟡 |
+| ixd | interaction-design/ | ixd-INDEX.md | ux-research/uxr-INDEX.md | 🟡 |
+| critic | critique-interaction/ + critique-visual/ | crit-ixd-INDEX.md + crit-ui-INDEX.md | interaction-design/ixd-INDEX.md / visual-design/ui-INDEX.md | 🟡 |
+| ui | visual-design/ | ui-INDEX.md | interaction-design/ixd-INDEX.md + critique-interaction/crit-ixd-INDEX.md | 🟡 |
+| strategist | strategy-verdicts/ + phases/07_documentation/ | strat-INDEX.md + 各产出 INDEX | 全部前序黑板文件夹（通过子 INDEX 按需读） | 🔴 |
+| conflict-reviewer (K) | 无（只读全部产出 + 全部黑板） | — | design-decisions/decisions-INDEX.md（全部 gen） | — |
+| Coordinator | blackboard/ 根 + .di/ 根 | MASTER-INDEX.md, GENESIS.md | — | — |
 
-全部模块全局可读。
+全部文件夹内子文件全局可读（含所有子 INDEX.md、MASTER-INDEX.md）。子索引使用模块前缀命名，避免同名幻觉。
+
+> 🔴 **INDEX 导航规则**：所有 INDEX 文件（MASTER-INDEX、子 INDEX、产出 INDEX）必须在**第一行**嵌入 🚨 导航指令，在**最后一行**嵌入 🚨 文件底提醒。读取 INDEX 的 Agent 必须 Read 实际子文件，不可仅读 INDEX 摘要。
 
 ---
 
@@ -322,8 +378,11 @@ design-miner 发现（如存在，作为富化层叠加）
 - **发送者**: [专家名]
 - **目标**: [coordinator | broadcast | expert-name]
 - **内容**: [详细信息]
-- **影响模块**: [模块列表]
-- **关键产出章节**: §[章节号] [章节标题]（验证时优先读取）
+- **影响文件夹**: [文件夹路径]
+- **受影响子文件**: [子文件列表]
+- **子索引**: [文件夹]/[模块]-INDEX.md（已更新）
+- **gen**: gen-{N}
+- **关键章节**: [子文件名] §[章节标题]（验证时优先读取此子文件）
 - **证据精度**: 产出中每条结论附带 `[文件路径]:[行号]` 格式证据
 - **下一步建议**: [建议]
 ```
@@ -421,14 +480,14 @@ Phase 12: 综合报告汇总 + 设计偏好捕获
 
 **富化映射表**（design-miner 产出 → DI 交叉印证维度）：
 
-| design-miner 产出 | 富化对象 | 交叉印证方式 |
-|-------------------|---------|-------------|
+| design-miner 产出（v6.1 文件夹组） | 富化对象 | 交叉印证方式 |
+|----------------------------------|---------|-------------|
 | `00-综合报告.md` | 协调器 → strategist | 品味向量起点 + 视角局限纳入交付前言 |
-| `01-架构设计分析.md` | analyst + interrogator | analyst 独立分析后对照 → interrogator 拷问时引用为"参考项目做法" |
-| `02-UX工程分析.md` | researcher + ixd + critic + ui | researcher 独立研究后对照 → ixd/ui 设计时参考 → critic 审问时引为证据 |
-| `03-元方法论萃取.md` | interrogator + critic + strategist | 作为额外拷问/审问/裁决维度 |
-| `04-原则交叉印证.md` | strategist | 裁决时作为原则级引用 |
-| 🔴 `05-*.md`（自定义文档） | 按主题分配给相关专家 | analyst/researcher/ixd 视主题交叉印证——索引表中有则读 |
+| `01-architecture/architecture-INDEX.md` | analyst + interrogator | analyst 独立分析后对照 → interrogator 拷问时引用为"参考项目做法" |
+| `02-ux-engineering/ux-INDEX.md` | researcher + ixd + critic + ui | researcher 独立研究后对照 → ixd/ui 设计时参考 → critic 审问时引为证据 |
+| `03-methodology/methodology-INDEX.md` | interrogator + critic + strategist | 作为额外拷问/审问/裁决维度 |
+| `04-rules-crosscheck/rules-INDEX.md` | strategist | 裁决时作为原则级引用 |
+| 🔴 `05-{主题}/`（自定义文件夹） | 按主题分配给相关专家 | analyst/researcher/ixd 视主题交叉印证——00-综合报告索引表中有则读 |
 
 **执行流程**：
 
@@ -609,7 +668,7 @@ prompt: |
 ### Phase 4 🔴：Pre-Synthesis（Phase 3 全部完成后、Phase 5+ 派发前）
 
 1. Read 全部 Phase 3 黑板产出（architecture-analysis.md + ux-research.md）
-2. **对照 design-miner 原始报告**（01-架构设计分析.md + 02-UX工程分析.md）检查 DI 的增量分析是否偏离了上游发现的方向——如果偏离，标注原因和理由
+2. **对照 design-miner 原始报告**（通过 01-architecture/architecture-INDEX.md + 02-ux-engineering/ux-INDEX.md 按需读取）检查 DI 的增量分析是否偏离了上游发现的方向——如果偏离，标注原因和理由
 3. 检测矛盾与缺口（DI 内部矛盾 + DI 与 design-miner 之间的矛盾）
 4. 生成 `.di/synthesis-summary.md`，包含：
    - design-miner 发现摘要（供 Phase 5 专家直接引用）
@@ -789,63 +848,128 @@ prompt: |
 
 ---
 
-#### 📘 Phase 10: 文档编译（交付 dev-genius）
+#### 📘 Phase 10a: 文档编译（strategist 交付 dev-genius）
 
 ```yaml
 subagent_type: "design-interrogator-strategist"
 description: "Compile development specification documents"
 prompt: |
   **📂 路径**:
-  - 阶段目录: {项目}/.di/phases/07_documentation/（Write输出到此）
-  - 前序（请先逐Read全部黑板产出）:
-    - {项目}/.di/blackboard/architecture-analysis.md
-    - {项目}/.di/blackboard/interrogation-tree.md
-    - {项目}/.di/blackboard/ux-research.md
-    - {项目}/.di/blackboard/interaction-design.md
-    - {项目}/.di/blackboard/critique-interaction.md
-    - {项目}/.di/blackboard/visual-design.md
-    - {项目}/.di/blackboard/critique-visual.md
-    - {项目}/.di/blackboard/strategy-verdicts.md
+  - 产出目录: {项目}/.di/phases/07_documentation/（Write 输出到此）
+  - 前序（请先通过子 INDEX 按需读取全部黑板产出）:
+    - {项目}/.di/blackboard/architecture-analysis/arch-INDEX.md
+    - {项目}/.di/blackboard/interrogation-tree/interr-INDEX.md
+    - {项目}/.di/blackboard/ux-research/uxr-INDEX.md
+    - {项目}/.di/blackboard/interaction-design/ixd-INDEX.md
+    - {项目}/.di/blackboard/critique-interaction/crit-ixd-INDEX.md
+    - {项目}/.di/blackboard/visual-design/ui-INDEX.md
+    - {项目}/.di/blackboard/critique-visual/crit-ui-INDEX.md
+    - {项目}/.di/blackboard/strategy-verdicts/strat-INDEX.md
+  - MASTER-INDEX: {项目}/.di/MASTER-INDEX.md
   - 消息: {项目}/.di/blackboard/inbox.md
 
-  **📋 输出要求**（以下每个文件都必须使用 Write 工具创建）:
-  - INDEX.md（交付概要+文件清单+🔴 `最后更新: {ISO8601}` + 对dev-genius的交接说明。如有超出标准 6 份的补充产出，在此引用）
-  - ARCHITECTURE_SPEC.md（架构风格、分层设计、组件关系、模块接口、技术栈、部署方案、ADR）
-  - UX_SPEC.md（用户画像、旅程图、可用性指标）
-  - INTERACTION_SPEC.md（信息架构、用户流程、线框图、交互行为）
-  - UI_SPEC.md（设计令牌、色彩字体、组件库、关键页面、WCAG自检）
-  - DESIGN_DECISIONS.md（每个关键决策的选择/理由/替代/Critic审问结果/Strategist裁决）
-  - VALIDATION_PLAN.md（北极星指标、A/B测试方案、可用性测试提纲）
-  - {自定义文档}.md（如有，在 INDEX.md 文件清单中列出——DV Planner 会按需读取）
+  **📋 输出要求**（以下每个文件夹的子文件都必须使用 Write 工具创建，按 gen 追加）:
+  - 00-INDEX.md（交付概要+文件清单+对 DG 的交接说明）
+  - architecture-spec/ 文件夹（6 子文件 + arch-spec-INDEX.md）
+  - ux-spec/ 文件夹（3 子文件 + ux-spec-INDEX.md）
+  - interaction-spec/ 文件夹（4 子文件 + int-spec-INDEX.md）
+  - ui-spec/ 文件夹（5 子文件 + ui-spec-INDEX.md）
+  - design-decisions/ 文件夹（5 子文件 + decisions-INDEX.md）
+  - validation-plan/ 文件夹（3 子文件 + valid-INDEX.md）
+  - {自定义}/ 文件夹（如有，在 00-INDEX.md 中引用）
+
+  **🔴 增量累积**: 子文件内容按 gen 追加（新 gen 在前，旧 gen STALE 标记在后）。子 INDEX 标注每个子文件的 gen 状态（✅ active / ⚠️ STALE / 🆕 new）。
 
   **⚠️ 编译原则**:
   - 不引入新内容，只编译黑板上已有的产出
   - 架构文档整合 architecture-analysis + interrogation-tree 的内容
-  - 如有遗漏或矛盾，在 INDEX.md 中标注
+  - 如有遗漏或矛盾，在 00-INDEX.md 中标注
   - 文档以「开发人员能直接理解并实现」为标准
+
+  **🔴 子索引维护**: 写入子文件后必须更新各文件夹的子 INDEX。
+
+  **🔴 必须 Write 写入子文件 + 更新子索引 + Read 验证。**
 
   [可选] 🔓 MCP 授权（用户已同意）：
 
   **🔴 必须 Write 写入 + Read 验证。禁止仅在对话中返回。**
 ```
 
-### Phase 11 🔴：产出验证 + 回退检测
+---
 
-> ⚠️ **关键步骤**：每个专家完成后，协调器必须验证文件产出！
+#### 📘 Phase 10b 🔴：冲突审查（K: conflict-reviewer）
 
-**目标**：确保专家确实写入了黑板模块文件，而非仅在对话中返回内容。
+> **设计意图**：跨 gen 决策一致性审查。第一次 run 决定走 S 弯，第十次 run 改走直线——如果没有人追问「为什么变了」，矛盾永远埋在文档里。
 
-**验证流程**：
+**触发时机**：Phase 10a strategist 完成文档编译后，立即触发。
+
+```yaml
+subagent_type: "design-interrogator-conflict-reviewer"
+description: "审查跨 gen 设计决策一致性"
+prompt: |
+  **📂 工作路径**:
+  - 产出目录: {项目}/.di/phases/07_documentation/
+  - 决策文档: {项目}/.di/phases/07_documentation/design-decisions/decisions-INDEX.md
+  - 策略裁决: {项目}/.di/phases/07_documentation/strategy-verdicts/strat-INDEX.md（如存在）
+  - MASTER-INDEX: {项目}/.di/MASTER-INDEX.md
+
+  **🎯 任务**: 审查 design-decisions/ 中所有 gen 版本的决策一致性
+  - 对比同一决策点在 gen-N 和 gen-M 的结论
+  - 检测三类冲突：决策翻转、约束矛盾、指标漂移
+  - 判定变更类型：有意演变 vs 未解释变更
+
+  **🔴 三层冲突标记**:
+  1. 子文件第一行插入红幅: `> 🔴🔴🔴 [跨 gen 决策冲突 — gen-3 vs gen-7] ...`
+  2. 文件名加前缀: `⚠️CONFLICT-gen3-vs-gen7-{原文件名}`
+  3. Write/更新 CONFLICT_LOG.md
+
+  **⚠️ 关键约束**:
+  - 每个决策点必须在所有 gen 间逐项对比
+  - 冲突文件头红幅必须是第一行，紧接着详细冲突说明块
+  - 变更意图必须去原文验证（在 gen-N 中搜索对 gen-M 决策的引用）
+  - 🔴 未解释变更必须向协调器汇报
+
+  **🔴 必须 Write 标记所有冲突 + 更新 CONFLICT_LOG.md + Read 验证。**
 ```
-专家完成 → 协调器使用 Read 读取预期黑板模块 → 文件存在且有内容 → 继续
-                                              → 文件不存在或为空 → 重新触发该专家
+
+**K 完成后的协调器动作**：
+1. Read `00-CONFLICT_LOG.md` → 检查是否有 🔴 未解释冲突
+2. 对 🔴 冲突 → AskUserQuestion 询问用户裁决
+3. 用户裁决后 → 更新 CONFLICT_LOG.md 追加裁决结果 → 去前缀/去红幅处理
+
+---
+
+### Phase 11 🔴：产出验证 + 冲突裁决 + 回退检测
+
+> ⚠️ **关键步骤**：全部专家（含 K）完成后，协调器验证所有产出！
+
+**目标**：确保专家确实写入了子文件并更新了子索引（黑板 + 产出双验证）。
+
+**黑板验证流程**：
+```
+专家完成 → 协调器 Read 该专家的子 INDEX.md
+  → INDEX 存在且有本次 gen 条目 → Read INDEX 中引用的子文件 → 子文件存在且有内容 → 继续
+  → INDEX 存在但某子文件缺失 → 重试（指定具体缺失子文件）
+  → INDEX 不存在或为空 → 重试该专家
+```
+
+**产出验证流程**（Phase 10a 后）：
+```
+strategist 完成 → Read 各产出文件夹的 INDEX → 确认 gen 条目 → 确认子文件 → 通过
+```
+
+**冲突审查验证**（Phase 10b 后）：
+```
+K 完成 → Read 00-CONFLICT_LOG.md → 确认冲突记录 → Read 冲突子文件确认标记
+  → 有 🔴 未解释冲突 → AskUserQuestion 发起裁决 → 裁决后更新
 ```
 
 **验证规则**：
-1. 每个专家完成后，立即使用 Read 工具读取该专家应更新的黑板模块文件
-2. 如果文件不存在或内容为空，**最多重试 1 次**
-3. 重试时在 prompt 中追加：`⚠️ 上次任务未成功写入文件，请务必使用 Write 工具将内容写入 {路径}`
-4. 如果重试仍失败，协调器自行根据专家返回的内容写入文件，并记录异常
+1. 每个专家完成后，先 Read 该专家的子 INDEX.md
+2. 确认 INDEX 中有本次 gen 的条目，引用的子文件均存在且有内容
+3. 如果失败，**最多重试 1 次**
+4. 重试时在 prompt 中追加：`⚠️ 上次任务未成功写入文件，请务必使用 Write 工具将内容写入 {子文件路径} 并更新 {子索引路径}`
+5. 如果重试仍失败，协调器自行根据专家返回的内容写入子文件 + 更新子索引，并记录异常
 
 **兜底写入格式**：
 ```markdown

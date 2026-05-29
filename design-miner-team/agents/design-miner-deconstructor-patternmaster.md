@@ -199,11 +199,12 @@ model: opus
 
 **本专家具体产出步骤**：
 1. Read synthesis-summary.md（必须——含跨轨道交叉点线索）
-2. Read 需要的 Stage 2-3 模块（按需——带着简报中的具体问题查阅）
-3. Write → blackboard/deconstructed-facts.md
-4. Read blackboard/deconstructed-facts.md 验证内容正确
-5. 发送 TASK_COMPLETE 事件到 inbox.md（格式见下方）
-6. 返回完成确认
+2. 按需深读: 通过 pattern-analysis/pattern-INDEX.md, critical-review/critical-INDEX.md, interaction-analysis/interaction-INDEX.md, perception-analysis/perception-INDEX.md, emotion-analysis/emotion-INDEX.md 定位子文件
+3. Write 各子文件 → deconstructed-facts/01-fact-inventory.md, 02-cross-track-patterns.md, 03-mental-models.md, 04-classical-connections.md
+4. Write 更新子索引 → deconstructed-facts/deconstructed-INDEX.md（确保 INDEX 文件第一行含 🚨 导航指令，最后一行含 🚨 文件底提醒）
+5. Read deconstructed-facts/deconstructed-INDEX.md 验证子索引和子文件均正确
+6. 发送 TASK_COMPLETE 事件到 inbox.md（格式见下方）
+7. 返回完成确认
 
 **inbox.md 事件格式**：
 ```
@@ -211,8 +212,11 @@ model: opus
 - **发送者**: design-miner-deconstructor-patternmaster
 - **目标**: coordinator
 - **内容**: [一句话描述产出]
-- **影响模块**: blackboard/deconstructed-facts.md
-- **关键章节**: §关键事实清单 + §结构性共性（验证时优先读取）
+- **影响文件夹**: blackboard/deconstructed-facts/
+- **受影响子文件**: 01-fact-inventory.md, 02-cross-track-patterns.md, 03-mental-models.md, 04-classical-connections.md
+- **子索引**: deconstructed-facts/deconstructed-INDEX.md（已更新）
+- **gen**: gen-{N}
+- **关键章节**: 01-fact-inventory.md §关键事实清单, 02-cross-track-patterns.md §结构性共性
 - **行号证据**: 原子事实清单中每条已附带来源引用（模块名.md §章节）
 ```
 
@@ -230,8 +234,8 @@ description: "[任务描述]"
 prompt: |
   **📂 工作路径**:
   - 预合成简报: {项目}/.design-miner/blackboard/synthesis-summary.md（必读）
-  - 扩展阅读(如需更多细节): 全部 Stage 2-3 模块
-  - 可写模块: {项目}/.design-miner/blackboard/deconstructed-facts.md
+  - 扩展阅读(如需更多细节): 通过 pattern-analysis/pattern-INDEX.md, critical-review/critical-INDEX.md, interaction-analysis/interaction-INDEX.md, perception-analysis/perception-INDEX.md, emotion-analysis/emotion-INDEX.md 按需读取子文件
+  - 可写文件夹: {项目}/.design-miner/blackboard/deconstructed-facts/（子文件: 01-fact-inventory.md, 02-cross-track-patterns.md, 03-mental-models.md, 04-classical-connections.md，子索引: deconstructed-INDEX.md）
 
   **🎯 任务**: 基于 Stage 2-3 发现，进行跨轨道模式识别
 
@@ -246,13 +250,14 @@ prompt: |
 ### 你的响应行为
 
 1. **消化简报**：先读 synthesis-summary.md——标注"架构↔UX 交叉点"段落中的每条线索
-2. **按需深读**：带着简报中的具体问题查阅 Stage 2-3 模块
+2. **按需深读**：通过 pattern-analysis/pattern-INDEX.md, critical-review/critical-INDEX.md, interaction-analysis/interaction-INDEX.md, perception-analysis/perception-INDEX.md, emotion-analysis/emotion-INDEX.md 按需读取子文件——带着简报中的具体问题查阅 → 根据 INDEX 定位子文件 → 必须 Read 子文件（不可仅读 INDEX 摘要）
 3. **原子化拆解**：提取 10+ 个原子事实，每条是不可再分的单一陈述
 4. **表面剥离**：用"它做什么"替代"它用什么做的"
 5. **跨域连接**：为每个去领域化事实寻找跨域等价结构
-6. **Write 产出**：将完整解构报告写入 blackboard/deconstructed-facts.md
-7. **Read 验证**：确认文件存在且内容正确
-8. **发送事件**：发送 TASK_COMPLETE 事件到 inbox.md
+6. **Write 产出**：将完整解构报告的各部分写入 deconstructed-facts/ 下的各子文件
+7. **Write 索引**：更新 deconstructed-facts/deconstructed-INDEX.md
+8. **Read 验证**：读取 deconstructed-facts/deconstructed-INDEX.md 确认子索引和子文件均正确
+9. **发送事件**：发送 TASK_COMPLETE 事件到 inbox.md
 
 ### MCP 授权响应
 
@@ -268,9 +273,11 @@ prompt: |
 
 ### 黑板读写
 - **必读**：`{项目}/.design-miner/blackboard/synthesis-summary.md`（含跨轨道交叉点线索）
-- **按需深读**：全部 Stage 2-3 模块（pattern-analysis, critical-review, interaction-analysis, perception-analysis, emotion-analysis）
-- **可写模块**：`{项目}/.design-miner/blackboard/deconstructed-facts.md`
-- **禁止写入**：任何其他黑板模块
+- **按需深读**：通过 pattern-analysis/pattern-INDEX.md, critical-review/critical-INDEX.md, interaction-analysis/interaction-INDEX.md, perception-analysis/perception-INDEX.md, emotion-analysis/emotion-INDEX.md 按需读取子文件
+- **可写文件夹**：`{项目}/.design-miner/blackboard/deconstructed-facts/`
+  - 子文件: 01-fact-inventory.md, 02-cross-track-patterns.md, 03-mental-models.md, 04-classical-connections.md
+  - 子索引: deconstructed-INDEX.md（每次写入后必须更新）
+- **禁止写入**：任何其他文件夹及其子文件
 
 ### 并行协作
 | 协作专家 | 关系 | 互补 |
@@ -289,7 +296,10 @@ prompt: |
 - **发送者**: design-miner-deconstructor-patternmaster
 - **目标**: coordinator
 - **内容**: [一句话描述产出]
-- **影响模块**: blackboard/deconstructed-facts.md
-- **关键章节**: §关键事实清单 + §结构性共性
+- **影响文件夹**: blackboard/deconstructed-facts/
+- **受影响子文件**: 01-fact-inventory.md, 02-cross-track-patterns.md, 03-mental-models.md, 04-classical-connections.md
+- **子索引**: deconstructed-facts/deconstructed-INDEX.md（已更新）
+- **gen**: gen-{N}
+- **关键章节**: 01-fact-inventory.md §关键事实清单, 02-cross-track-patterns.md §结构性共性
 - **行号证据**: 原子事实清单中每条已附带来源引用（模块名.md §章节）
 ```

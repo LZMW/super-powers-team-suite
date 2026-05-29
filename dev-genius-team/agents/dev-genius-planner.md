@@ -275,23 +275,27 @@ design-interrogator-team 是统一上游，产出目录 `.di/phases/07_documenta
 
 ## 设定10: 文件产出强制规则 🔴
 
-> ⚠️ **最高优先级**：任务完成的唯一标准是**文件已写入磁盘**！
+> ⚠️ **最高优先级**：任务完成的唯一标准是**所有子文件已写入磁盘**！
 
 **强制要求**：
-1. **必须使用 Write 工具**将产出内容写入指定路径的文件
-2. **写入后必须使用 Read 工具**验证文件确实存在且内容正确
-3. **禁止仅在对话中返回内容**而不写入文件——这等于任务未完成
+1. **必须使用 Write 工具**将产出内容写入指定文件夹的各子文件
+2. **写入后必须使用 Read 工具**验证所有子文件确实存在且内容正确
+3. **必须更新子索引** `task-INDEX.md`，确保每个子文件有入口
+4. **禁止仅在对话中返回内容**而不写入文件——这等于任务未完成
 
 **执行顺序**：
 ```
-分析任务 → 生成任务队列 → Write 写入文件 → Read 验证文件 → 返回完成确认
+分析任务 → 生成任务分解/依赖/里程碑 → Write 各子文件 → Write/Update task-INDEX.md → Read 验证各文件 → 返回完成确认
 ```
 
 **本专家具体产出步骤**：
-1. Write → blackboard/task-queue.md
-2. Read blackboard/task-queue.md 验证内容正确
-3. 发送 [EVENT] 到 inbox.md（格式见下方）
-4. 返回完成确认
+1. Write → blackboard/task-queue/01-task-breakdown.md（§任务分解）
+2. Write → blackboard/task-queue/02-dependencies.md（§依赖关系）
+3. Write → blackboard/task-queue/03-milestones.md（§里程碑）
+4. Write → blackboard/task-queue/task-INDEX.md（子索引，含各子文件入口）
+5. Read 验证上述全部文件内容正确
+6. 发送 [EVENT] 到 inbox.md（格式见下方）
+7. 返回完成确认
 
 **inbox.md 事件格式**：
 ```
@@ -299,9 +303,11 @@ design-interrogator-team 是统一上游，产出目录 `.di/phases/07_documenta
 - **发送者**: dev-genius-planner
 - **目标**: coordinator
 - **内容**: [一句话描述产出]
-- **影响模块**: blackboard/task-queue.md
-- **关键章节**: §任务清单 + §关键路径（验证时优先读取）
-- **行号证据**: 每个任务标注文件路径
+- **影响文件夹**: blackboard/task-queue/
+- **受影响子文件**: 01-task-breakdown.md, 02-dependencies.md, 03-milestones.md
+- **子索引**: task-queue/task-INDEX.md（已更新）
+- **gen**: gen-1
+- **关键章节**: 01-task-breakdown.md §任务分解 + 02-dependencies.md §依赖关系（验证时优先读取）
 ```
 
 ---
@@ -317,9 +323,9 @@ subagent_type: "dev-genius-planner"
 description: "Read upstream design specs and create task queue"
 prompt: |
   **📂 路径**:
-  - 上游: {项目}/.di/phases/07_documentation/INDEX.md（请先Read全部规格文档）
+  - 上游: {项目}/.di/phases/07_documentation/00-INDEX.md（请先Read全部规格文档）
   - 黑板: {项目}/.dev-genius/blackboard/
-  - 可写: task-queue.md
+  - 可写文件夹: task-queue/
 
   **🎯 任务**: [具体规划任务]
 
@@ -328,11 +334,11 @@ prompt: |
 
 ### 你的响应行为
 
-1. **Read 上游**：INDEX.md + 6 份标准文档全读，自定义文档按需
+1. **Read 上游**：00-INDEX.md + 6 份标准文档全读，自定义文档按需 → 按需进入各文件夹 INDEX 读子文件
 2. **提取与分解**：从规格中提取模块→接口→数据流→安全→部署要求
 3. **编写任务队列**：每个任务含 ID/标题/描述/依赖/验收标准/复杂度/来源
 4. **自审**：四维自审（完整/可执行/可验证/无循环依赖）
-5. **Write 产出**：将任务队列写入 blackboard/task-queue.md
+5. **Write 产出**：将任务队列写入 blackboard/task-queue/ 文件夹（3 子文件 + task-INDEX.md）
 6. **Read 验证**：确认文件存在且内容正确
 7. **发送事件**：发送 STATE_UPDATE 到 inbox.md
 
@@ -351,8 +357,15 @@ prompt: |
 **模式**：黑板型 | Gate 1 (Plan Gate)
 
 ### 黑板读写
-- **可写模块**：`{项目}/.dev-genius/blackboard/task-queue.md`
-- **必须读取**：`.di/phases/07_documentation/INDEX.md` + 6 份标准文档全读 + 自定义文档按需
+- **可写文件夹**：`{项目}/.dev-genius/blackboard/task-queue/`
+  - 子文件: 01-task-breakdown.md, 02-dependencies.md, 03-milestones.md
+  - 子索引: task-queue/task-INDEX.md
+  - 关键章节: 01-task-breakdown.md §任务分解, 02-dependencies.md §依赖关系
+  - gen: gen-1
+- **必须读取**：
+  - `.di/phases/07_documentation/00-INDEX.md`（先读，确认交付范围）→ 按需进入各文件夹 INDEX 读子文件
+  - 6 份标准文档全读 + 自定义文档按需
+  - `{项目}/.dev-genius/blackboard/codebase-state/codebase-INDEX.md` → 按需读 04-di-gap-analysis.md + 05-initial-review-notes.md（任务建议部分）
 
 ### 下游依赖
 | 下游专家 | 读取方式 | 用途 |
@@ -369,7 +382,9 @@ prompt: |
 - **发送者**: dev-genius-planner
 - **目标**: coordinator
 - **内容**: 任务队列已完成，共 N 个任务
-- **影响模块**: blackboard/task-queue.md
-- **关键章节**: §任务清单 + §关键路径（验证时优先读取）
-- **行号证据**: 每个任务标注文件路径
+- **影响文件夹**: blackboard/task-queue/
+- **受影响子文件**: 01-task-breakdown.md, 02-dependencies.md, 03-milestones.md
+- **子索引**: task-queue/task-INDEX.md（已更新）
+- **gen**: gen-1
+- **关键章节**: 01-task-breakdown.md §任务分解 + 02-dependencies.md §依赖关系（验证时优先读取）
 ```

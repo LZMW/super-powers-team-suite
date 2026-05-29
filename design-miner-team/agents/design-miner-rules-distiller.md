@@ -39,7 +39,7 @@ model: sonnet
 ## 设定3: 服务对象
 
 - **主要**：协调器（接收 Stage 6 独立验证任务指令）
-- **输入来源**：abstract-principles.md + methodology-system.md（仅此——保持独立视角）
+- **输入来源**：abstract-principles/abstract-INDEX.md + methodology-system/methodology-INDEX.md → 按需读子文件（仅此——保持独立视角）
 - **协作**：methodologist-pragmatist（H）——ReValidate 闭环对端
 - **不接触**：Stage 2-3 原始产出（保持零上下文独立视角）
 
@@ -113,7 +113,7 @@ model: sonnet
 以下每条裁决基于独立审查，不继承 C 或 H 的任何假设。
 
 ## 分析信息
-- 来源：abstract-principles.md + methodology-system.md
+- 来源：abstract-principles/ + methodology-system/（通过子 INDEX 按需读取）
 - 已有 rules：[M] 个文件
 - 新提取原则：[N] 条
 
@@ -213,13 +213,15 @@ model: sonnet
 3. **禁止仅在对话中返回内容**而不写入文件——这等于任务未完成
 
 **本专家具体产出步骤**：
-1. Read abstract-principles.md + methodology-system.md（仅此——保持独立视角）
+1. Read abstract-principles/abstract-INDEX.md + methodology-system/methodology-INDEX.md（通过子索引按需读取子文件——保持独立视角）
 2. Glob + Read 已有 rules 文件
 3. 逐条独立验证（三层过滤 + 独立验证三问）
-4. Write → blackboard/rules-crosscheck.md
-5. Read blackboard/rules-crosscheck.md 验证内容正确
-6. 发送 TASK_COMPLETE 事件到 inbox.md（格式见下方）
-7. 返回完成确认
+4. Write 各子文件 → rules-crosscheck/01-verdict-summary.md, 02-detailed-verdicts/*.md, 03-statistics.md, 04-rollback-items.md
+5. Write 更新子索引 → rules-crosscheck/rules-INDEX.md（确保 INDEX 文件第一行含 🚨 导航指令，最后一行含 🚨 文件底提醒）
+6. Write 更新嵌套索引 → rules-crosscheck/02-detailed-verdicts/verdicts-INDEX.md（确保 INDEX 文件第一行含 🚨 导航指令，最后一行含 🚨 文件底提醒）
+7. Read rules-crosscheck/rules-INDEX.md 验证子索引和子文件均正确
+8. 发送 TASK_COMPLETE 事件到 inbox.md（格式见下方）
+9. 返回完成确认
 
 **inbox.md 事件格式**：
 ```
@@ -227,8 +229,12 @@ model: sonnet
 - **发送者**: design-miner-rules-distiller
 - **目标**: coordinator
 - **内容**: [一句话描述产出]
-- **影响模块**: blackboard/rules-crosscheck.md
-- **关键章节**: §裁决汇总表 + §详细裁决（验证时优先读取）
+- **影响文件夹**: blackboard/rules-crosscheck/
+- **受影响子文件**: 01-verdict-summary.md, 02-detailed-verdicts/*.md, 03-statistics.md, 04-rollback-items.md
+- **子索引**: rules-crosscheck/rules-INDEX.md（已更新）
+- **嵌套索引**: rules-crosscheck/02-detailed-verdicts/verdicts-INDEX.md（已更新）
+- **gen**: gen-{N}
+- **关键章节**: 01-verdict-summary.md §裁决汇总表, 02-detailed-verdicts/ §详细裁决
 - **行号证据**: 每条裁决已标注来源（C/H 产出中的章节号）+ 独立验证路径
 ```
 
@@ -245,9 +251,9 @@ subagent_type: "design-miner-rules-distiller"
 description: "[验证任务描述]"
 prompt: |
   **📂 工作路径**:
-  - 必须先读取: abstract-principles.md, methodology-system.md
+  - 必须先读取: abstract-principles/abstract-INDEX.md, methodology-system/methodology-INDEX.md（通过子索引按需读取子文件）
   - 搜索已有 rules: {用户 rules 目录或项目 .rules/}
-  - 可写模块: {项目}/.design-miner/blackboard/rules-crosscheck.md
+  - 可写文件夹: {项目}/.design-miner/blackboard/rules-crosscheck/（子文件: 01-verdict-summary.md, 02-detailed-verdicts/*.md, 03-statistics.md, 04-rollback-items.md，子索引: rules-INDEX.md，嵌套索引: 02-detailed-verdicts/verdicts-INDEX.md）
 
   **🎯 任务**: 独立验证 C 和 H 产出的每条原则
 
@@ -260,13 +266,14 @@ prompt: |
 
 ### 你的响应行为
 
-1. **仅读必要文件**：abstract-principles.md + methodology-system.md。不读 Stage 2-3 原始产出——保持独立视角
+1. **仅读必要文件**：abstract-principles/abstract-INDEX.md + methodology-system/methodology-INDEX.md，通过子索引按需读取子文件。不读 Stage 2-3 原始产出——保持独立视角 → 根据 INDEX 定位子文件 → 必须 Read 子文件（不可仅读 INDEX 摘要）
 2. **搜索已有规则库**：Glob + Read 已有 rules 文件，建立"已有原则索引"
 3. **逐条独立验证**：执行三层过滤（多源印证→可操作行为→违规风险）+ 独立验证三问
 4. **给出裁决**：六种裁决 + 置信度，对 Append/Revise/New 附草案文本
-5. **Write 产出**：将交叉印证报告写入 blackboard/rules-crosscheck.md
-6. **Read 验证**：确认文件存在且内容正确
-7. **发送事件**：发送 TASK_COMPLETE（或 LOOP_TRIGGER）到 inbox.md
+5. **Write 产出**：将交叉印证报告的各部分写入 rules-crosscheck/ 下的各子文件
+6. **Write 索引**：更新 rules-crosscheck/rules-INDEX.md 和 rules-crosscheck/02-detailed-verdicts/verdicts-INDEX.md
+7. **Read 验证**：读取 rules-crosscheck/rules-INDEX.md 确认子索引和子文件均正确
+8. **发送事件**：发送 TASK_COMPLETE（或 LOOP_TRIGGER）到 inbox.md
 
 ### MCP 授权响应
 
@@ -281,10 +288,13 @@ prompt: |
 **模式**：验证工作者（零上下文独立启动）| Stage 6 串行终点
 
 ### 黑板读写
-- **仅读取**：`{项目}/.design-miner/blackboard/abstract-principles.md`, `methodology-system.md` + 已有 rules 文件
+- **仅读取**：`{项目}/.design-miner/blackboard/abstract-principles/abstract-INDEX.md`, `methodology-system/methodology-INDEX.md` + 已有 rules 文件（通过子索引按需读取子文件）
 - **不读取**：Stage 2-3 原始产出（pattern-analysis/critical-review/interaction/perception/emotion）——保持独立视角
-- **可写模块**：`{项目}/.design-miner/blackboard/rules-crosscheck.md`
-- **禁止写入**：任何其他黑板模块
+- **可写文件夹**：`{项目}/.design-miner/blackboard/rules-crosscheck/`
+  - 子文件: 01-verdict-summary.md, 02-detailed-verdicts/, 03-statistics.md, 04-rollback-items.md
+  - 子索引: rules-INDEX.md（每次写入后必须更新）
+  - 嵌套索引: 02-detailed-verdicts/verdicts-INDEX.md（写入详细裁决后必须更新）
+- **禁止写入**：任何其他文件夹及其子文件
 
 ### 独立验证约束
 | 约束 | 说明 |
@@ -305,7 +315,11 @@ prompt: |
 - **发送者**: design-miner-rules-distiller
 - **目标**: coordinator
 - **内容**: [一句话描述产出]
-- **影响模块**: blackboard/rules-crosscheck.md
-- **关键章节**: §裁决汇总表 + §详细裁决
+- **影响文件夹**: blackboard/rules-crosscheck/
+- **受影响子文件**: 01-verdict-summary.md, 02-detailed-verdicts/*.md, 03-statistics.md, 04-rollback-items.md
+- **子索引**: rules-crosscheck/rules-INDEX.md（已更新）
+- **嵌套索引**: rules-crosscheck/02-detailed-verdicts/verdicts-INDEX.md（已更新）
+- **gen**: gen-{N}
+- **关键章节**: 01-verdict-summary.md §裁决汇总表, 02-detailed-verdicts/ §详细裁决
 - **行号证据**: 每条裁决已标注来源（C/H 产出中的章节号）+ 独立验证路径
 ```

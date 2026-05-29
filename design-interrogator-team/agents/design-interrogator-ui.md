@@ -77,7 +77,7 @@ model: sonnet
 
 #### Phase 1：核心设计（始终执行，方法论完整）
 
-**Step 1**：Read `blackboard/interaction-design.md` + `critique-interaction.md`——已裁决的交互方案。
+**Step 1**：Read `blackboard/interaction-design/ixd-INDEX.md` + `critique-interaction/crit-ixd-INDEX.md`——已裁决的交互方案，按需读子文件。
 
 **Step 2**：基于品牌调性 + 视觉设计方法论（格式塔、WCAG 2.1 AA、令牌驱动）进行独立视觉设计。
 
@@ -276,10 +276,15 @@ model: sonnet
 ```
 
 **本专家具体产出步骤**：
-1. Write 写入 `{项目}/.di/blackboard/visual-design.md`
-2. Read visual-design.md 验证内容正确
-3. 发送 TASK_COMPLETE 事件到 inbox.md（格式见下方）
-4. 返回完成确认
+1. Write 写入 `{项目}/.di/blackboard/visual-design/01-design-tokens.md`（§设计令牌）
+2. Write 写入 `{项目}/.di/blackboard/visual-design/02-color-typography.md`
+3. Write 写入 `{项目}/.di/blackboard/visual-design/03-component-library.md`（§组件库）
+4. Write 写入 `{项目}/.di/blackboard/visual-design/04-key-screens.md`
+5. Write/更新子索引 `{项目}/.di/blackboard/visual-design/ui-INDEX.md`（标注 gen 状态）
+（确保 INDEX 文件第一行含 🚨 导航指令，最后一行含 🚨 文件底提醒）
+6. 逐子文件 Read 验证内容正确
+7. 发送 TASK_COMPLETE 事件到 inbox.md（格式见下方）
+8. 返回完成确认
 
 **inbox.md 事件格式**：
 ```
@@ -287,8 +292,11 @@ model: sonnet
 - **发送者**: design-interrogator-ui
 - **目标**: coordinator
 - **内容**: [一句话描述产出]
-- **影响模块**: blackboard/visual-design.md
-- **关键章节**: §设计令牌 + §组件库（验证时优先读取）
+- **影响文件夹**: blackboard/visual-design/
+- **受影响子文件**: 01-design-tokens.md, 02-color-typography.md, 03-component-library.md, 04-key-screens.md
+- **子索引**: visual-design/ui-INDEX.md（已更新）
+- **gen**: gen-{N}
+- **关键章节**: 01-design-tokens.md §设计令牌, 03-component-library.md §组件库
 - **行号证据**: 每个设计决策标注参考来源
 ```
 
@@ -305,8 +313,8 @@ subagent_type: "design-interrogator-ui"
 description: "[任务描述]"
 prompt: |
   **📂 路径**:
-  - 黑板: {项目}/.di/blackboard/visual-design.md
-  - 前序: {项目}/.di/blackboard/interaction-design.md + critique-interaction.md（请先Read）
+  - 黑板: {项目}/.di/blackboard/visual-design/ui-INDEX.md
+  - 前序: {项目}/.di/blackboard/interaction-design/ixd-INDEX.md + critique-interaction/crit-ixd-INDEX.md（请先Read）
   - 消息: {项目}/.di/blackboard/inbox.md
   - 上下文: {项目}/.di/context-map.md
 
@@ -323,7 +331,7 @@ prompt: |
 2. **Read 前序**：读取 interaction-design.md + critique-interaction.md
 3. **执行核心设计**：Phase 1 独立设计（令牌→组件→页面→WCAG自检）
 4. **执行富化层**（如上游存在）：Phase 2 读取上游 → 借鉴/规避分析
-5. **Write 产出**：将完整视觉设计方案写入 blackboard/visual-design.md
+5. **Write 产出**：将完整视觉设计方案按子文件写入 blackboard/visual-design/，更新 ui-INDEX.md
 6. **Read 验证**：确认文件存在且内容正确
 7. **发送事件**：发送 TASK_COMPLETE 事件到 inbox.md
 
@@ -341,8 +349,10 @@ prompt: |
 **模式**：黑板型 | Track B Phase 7b
 
 ### 黑板读写
-- **可写模块**：`{项目}/.di/blackboard/visual-design.md`
-- **必须读取**：`{项目}/.di/blackboard/interaction-design.md`、`{项目}/.di/blackboard/critique-interaction.md`
+- **可写文件夹**：`{项目}/.di/blackboard/visual-design/`
+  - 子文件：`01-design-tokens.md`, `02-color-typography.md`, `03-component-library.md`, `04-key-screens.md`
+  - 子索引：`ui-INDEX.md`
+- **必须读取**：`{项目}/.di/blackboard/interaction-design/ixd-INDEX.md`（按需读子文件）、`{项目}/.di/blackboard/critique-interaction/crit-ixd-INDEX.md`（按需读子文件） → 根据 INDEX 定位子文件 → 必须 Read 子文件（不可仅读 INDEX 摘要）
 - **建议读取**：`{项目}/.di/context-map.md`
 
 ### 上游富化（如存在）
@@ -363,7 +373,10 @@ prompt: |
 - **发送者**: design-interrogator-ui
 - **目标**: coordinator
 - **内容**: [一句话描述产出]
-- **影响模块**: blackboard/visual-design.md
-- **关键章节**: §设计令牌 + §组件库（验证时优先读取）
+- **影响文件夹**: blackboard/visual-design/
+- **受影响子文件**: 01-design-tokens.md, 02-color-typography.md, 03-component-library.md, 04-key-screens.md
+- **子索引**: visual-design/ui-INDEX.md（已更新）
+- **gen**: gen-{N}
+- **关键章节**: 01-design-tokens.md §设计令牌, 03-component-library.md §组件库
 - **行号证据**: 每个设计决策标注参考来源
 ```

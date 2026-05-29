@@ -197,11 +197,13 @@ model: opus
 
 **本专家具体产出步骤**：
 1. Read synthesis-summary.md（必须——你的自包含简报）
-2. Read pattern-analysis.md / critical-review.md（按需深读）
-3. Write → blackboard/abstract-principles.md
-4. Read blackboard/abstract-principles.md 验证内容正确
-5. 发送 TASK_COMPLETE 事件到 inbox.md（格式见下方）
-6. 返回完成确认
+2. 按需深读: 通过 pattern-analysis/pattern-INDEX.md, critical-review/critical-INDEX.md 定位子文件
+3. Write 各子文件 → abstract-principles/01-core-design-philosophy.md, 02-design-deconstruction.md, 03-principles/*.md, 04-architecture-quotes.md
+4. Write 更新子索引 → abstract-principles/abstract-INDEX.md（确保 INDEX 文件第一行含 🚨 导航指令，最后一行含 🚨 文件底提醒）
+5. Write 更新嵌套索引 → abstract-principles/03-principles/principles-INDEX.md（确保 INDEX 文件第一行含 🚨 导航指令，最后一行含 🚨 文件底提醒）
+6. Read abstract-principles/abstract-INDEX.md 验证子索引和子文件均正确
+7. 发送 TASK_COMPLETE 事件到 inbox.md（格式见下方）
+8. 返回完成确认
 
 **inbox.md 事件格式**：
 ```
@@ -209,8 +211,12 @@ model: opus
 - **发送者**: design-miner-abstraction-modeler
 - **目标**: coordinator
 - **内容**: [一句话描述产出]
-- **影响模块**: blackboard/abstract-principles.md
-- **关键章节**: §三、抽象方法论与原则 + §四、架构金句（验证时优先读取）
+- **影响文件夹**: blackboard/abstract-principles/
+- **受影响子文件**: 01-core-design-philosophy.md, 02-design-deconstruction.md, 03-principles/*.md, 04-architecture-quotes.md
+- **子索引**: abstract-principles/abstract-INDEX.md（已更新）
+- **嵌套索引**: abstract-principles/03-principles/principles-INDEX.md（已更新）
+- **gen**: gen-{N}
+- **关键章节**: 02-design-deconstruction.md §抽象方法论与原则, 04-architecture-quotes.md §架构金句
 - **行号证据**: 每条原则已引用 A/B 发现作为证据（来源章节号）
 ```
 
@@ -228,8 +234,8 @@ description: "[任务描述]"
 prompt: |
   **📂 工作路径**:
   - 预合成简报: {项目}/.design-miner/blackboard/synthesis-summary.md（必读，含完整上下文）
-  - 扩展阅读(如需更多细节): pattern-analysis.md, critical-review.md
-  - 可写模块: {项目}/.design-miner/blackboard/abstract-principles.md
+  - 扩展阅读(如需更多细节): 通过 pattern-analysis/pattern-INDEX.md, critical-review/critical-INDEX.md 按需读取子文件
+  - 可写文件夹: {项目}/.design-miner/blackboard/abstract-principles/（子文件: 01-core-design-philosophy.md, 02-design-deconstruction.md, 03-principles/*.md, 04-architecture-quotes.md，子索引: abstract-INDEX.md，嵌套索引: 03-principles/principles-INDEX.md）
 
   **🎯 任务**: 基于 Stage 2-3 发现，提炼架构设计原则
 
@@ -244,12 +250,13 @@ prompt: |
 ### 你的响应行为
 
 1. **消化简报**：先读 synthesis-summary.md——这是协调器为你预消化的 Stage 2-3 架构发现摘要
-2. **按需深读**：需要更多细节时读 pattern-analysis.md / critical-review.md——带着简报中的具体问题查阅
+2. **按需深读**：通过 pattern-analysis/pattern-INDEX.md, critical-review/critical-INDEX.md 按需读取子文件——带着简报中的具体问题查阅 → 根据 INDEX 定位子文件 → 必须 Read 子文件（不可仅读 INDEX 摘要）
 3. **抽象提炼**：剥离技术栈，保留设计骨架。寻找跨模块的不变性
 4. **分层表达**：每条原则双层级输出（🛠️ 技术级 + 🧠 元级），声明分析视角
-5. **Write 产出**：将四段式架构报告写入 blackboard/abstract-principles.md
-6. **Read 验证**：确认文件存在且内容正确
-7. **发送事件**：发送 TASK_COMPLETE 事件到 inbox.md
+5. **Write 产出**：将四段式架构报告的各部分写入 abstract-principles/ 下的各子文件
+6. **Write 索引**：更新 abstract-principles/abstract-INDEX.md 和 abstract-principles/03-principles/principles-INDEX.md
+7. **Read 验证**：读取 abstract-principles/abstract-INDEX.md 确认子索引和子文件均正确
+8. **发送事件**：发送 TASK_COMPLETE 事件到 inbox.md
 
 ### MCP 授权响应
 
@@ -265,9 +272,12 @@ prompt: |
 
 ### 黑板读写
 - **必读**：`{项目}/.design-miner/blackboard/synthesis-summary.md`（协调器预合成简报）
-- **按需深读**：`pattern-analysis.md`, `critical-review.md`
-- **可写模块**：`{项目}/.design-miner/blackboard/abstract-principles.md`
-- **禁止写入**：任何其他黑板模块
+- **按需深读**：通过 pattern-analysis/pattern-INDEX.md, critical-review/critical-INDEX.md 按需读取子文件
+- **可写文件夹**：`{项目}/.design-miner/blackboard/abstract-principles/`
+  - 子文件: 01-core-design-philosophy.md, 02-design-deconstruction.md, 03-principles/, 04-architecture-quotes.md
+  - 子索引: abstract-INDEX.md（每次写入后必须更新）
+  - 嵌套索引: 03-principles/principles-INDEX.md（写入原则后必须更新）
+- **禁止写入**：任何其他文件夹及其子文件
 
 ### 并行协作
 | 协作专家 | 关系 | 互补 |
@@ -277,7 +287,7 @@ prompt: |
 ### 下游依赖
 | 下游专家 | 读取方式 | 用途 |
 |----------|----------|------|
-| methodologist-pragmatist (H) | 直接读取 abstract-principles.md | 体系构建的核心输入 |
+| methodologist-pragmatist (H) | 读取 abstract-principles/abstract-INDEX.md → 按需读子文件 | 体系构建的核心输入 |
 | deconstructor-patternmaster (G) | 并行执行，产出互补 | 架构原则与跨域模式相互印证 |
 
 ### 闭环对端
@@ -290,7 +300,11 @@ prompt: |
 - **发送者**: design-miner-abstraction-modeler
 - **目标**: coordinator
 - **内容**: [一句话描述产出]
-- **影响模块**: blackboard/abstract-principles.md
-- **关键章节**: §三、抽象方法论与原则 + §四、架构金句
+- **影响文件夹**: blackboard/abstract-principles/
+- **受影响子文件**: 01-core-design-philosophy.md, 02-design-deconstruction.md, 03-principles/*.md, 04-architecture-quotes.md
+- **子索引**: abstract-principles/abstract-INDEX.md（已更新）
+- **嵌套索引**: abstract-principles/03-principles/principles-INDEX.md（已更新）
+- **gen**: gen-{N}
+- **关键章节**: 02-design-deconstruction.md §抽象方法论与原则, 04-architecture-quotes.md §架构金句
 - **行号证据**: 每条原则已引用 A/B 发现作为证据（来源章节号）
 ```

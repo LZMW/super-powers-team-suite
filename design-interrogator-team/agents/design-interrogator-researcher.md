@@ -243,10 +243,15 @@ model: sonnet
 ```
 
 **本专家具体产出步骤**：
-1. Write 写入 `{项目}/.di/blackboard/ux-research.md`
-2. Read ux-research.md 验证内容正确
-3. 发送 TASK_COMPLETE 事件到 inbox.md（格式见下方）
-4. 返回完成确认
+1. Write 写入 `{项目}/.di/blackboard/ux-research/01-personas.md`（§用户画像）
+2. Write 写入 `{项目}/.di/blackboard/ux-research/02-journey-maps.md`（§旅程图）
+3. Write 写入 `{项目}/.di/blackboard/ux-research/03-competitive-analysis.md`
+4. Write 写入 `{项目}/.di/blackboard/ux-research/04-usability-metrics.md`
+5. Write/更新子索引 `{项目}/.di/blackboard/ux-research/uxr-INDEX.md`（标注 gen 状态）
+（确保 INDEX 文件第一行含 🚨 导航指令，最后一行含 🚨 文件底提醒）
+6. 逐子文件 Read 验证内容正确
+7. 发送 TASK_COMPLETE 事件到 inbox.md（格式见下方）
+8. 返回完成确认
 
 **inbox.md 事件格式**：
 ```
@@ -254,8 +259,11 @@ model: sonnet
 - **发送者**: design-interrogator-researcher
 - **目标**: coordinator
 - **内容**: [一句话描述产出]
-- **影响模块**: blackboard/ux-research.md
-- **关键章节**: §竞品分析 + §用户画像（验证时优先读取）
+- **影响文件夹**: blackboard/ux-research/
+- **受影响子文件**: 01-personas.md, 02-journey-maps.md, 03-competitive-analysis.md, 04-usability-metrics.md
+- **子索引**: ux-research/uxr-INDEX.md（已更新）
+- **gen**: gen-{N}
+- **关键章节**: 01-personas.md §用户画像, 02-journey-maps.md §旅程图
 - **行号证据**: 每个发现标注信息来源
 ```
 
@@ -274,7 +282,7 @@ subagent_type: "design-interrogator-researcher"
 description: "[任务描述]"
 prompt: |
   **📂 路径**:
-  - 黑板: {项目}/.di/blackboard/ux-research.md
+  - 黑板: {项目}/.di/blackboard/ux-research/uxr-INDEX.md
   - 消息: {项目}/.di/blackboard/inbox.md
 
   **🎯 任务**: [具体任务描述]
@@ -292,7 +300,7 @@ prompt: |
 2. **确认品味向量**：理解协调器注入的研究视角
 3. **执行核心研究**：Phase 1 独立研究（画像→旅程→竞品→KPI）
 4. **执行富化层**（如上游存在）：Phase 2 读取上游 → 交叉印证 → 追加章节
-5. **Write 产出**：将完整研究报告写入 blackboard/ux-research.md
+5. **Write 产出**：将完整研究报告按子文件写入 blackboard/ux-research/，更新 uxr-INDEX.md
 6. **Read 验证**：确认文件存在且内容正确
 7. **发送事件**：发送 TASK_COMPLETE 事件到 inbox.md
 
@@ -310,7 +318,9 @@ prompt: |
 **模式**：黑板型 | Track B Phase 3b（UX轨道起点）
 
 ### 黑板读写
-- **可写模块**：`{项目}/.di/blackboard/ux-research.md`
+- **可写文件夹**：`{项目}/.di/blackboard/ux-research/`
+  - 子文件：`01-personas.md`, `02-journey-maps.md`, `03-competitive-analysis.md`, `04-usability-metrics.md`
+  - 子索引：`uxr-INDEX.md`
 - **全局可读**：可读取 context-map.md 了解上下文
 - **禁止写入**：任何其他黑板模块
 
@@ -321,7 +331,7 @@ prompt: |
 | strategist | Phase 10 读取 | 编译 UX_SPEC.md |
 
 ### 上游富化（如存在）
-- **读取路径**：`output/{project}-analysis/02-UX工程分析.md`
+- **读取路径**：上游 DM 产出 `output/{project}-analysis/02-ux-engineering/ux-INDEX.md` → 按需读子文件（如存在） → 根据 INDEX 定位子文件 → 必须 Read 子文件（不可仅读 INDEX 摘要）
 - **读取时机**：Phase 1 核心研究完成后，Phase 2 交叉印证前
 - **使用方式**：作为代码证据富化层，不替代自身研究
 
@@ -332,7 +342,10 @@ prompt: |
 - **发送者**: design-interrogator-researcher
 - **目标**: coordinator
 - **内容**: [一句话描述产出]
-- **影响模块**: blackboard/ux-research.md
-- **关键章节**: §竞品分析 + §用户画像（验证时优先读取）
+- **影响文件夹**: blackboard/ux-research/
+- **受影响子文件**: 01-personas.md, 02-journey-maps.md, 03-competitive-analysis.md, 04-usability-metrics.md
+- **子索引**: ux-research/uxr-INDEX.md（已更新）
+- **gen**: gen-{N}
+- **关键章节**: 01-personas.md §用户画像, 02-journey-maps.md §旅程图
 - **行号证据**: 每个发现标注信息来源
 ```

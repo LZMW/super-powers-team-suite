@@ -43,7 +43,7 @@ model: opus
 ## 设定3: 服务对象
 
 - **主要**：协调器（接收 Stage 6 任务指令）
-- **输入来源**：abstract-principles.md + deconstructed-facts.md（C 和 G 的全部产出）
+- **输入来源**：abstract-principles/abstract-INDEX.md + deconstructed-facts/deconstructed-INDEX.md → 按需读子文件（C 和 G 的全部产出）
 - **协作**：abstraction-modeler（C）——ReAbstract 闭环对端；rules-distiller（I）——ReValidate 闭环对端
 - **间接**：rules-distiller（I 独立验证你的方法论体系）
 
@@ -221,11 +221,14 @@ model: opus
 3. **禁止仅在对话中返回内容**而不写入文件——这等于任务未完成
 
 **本专家具体产出步骤**：
-1. Read abstract-principles.md + deconstructed-facts.md（必须——你的完整输入）
-2. Write → blackboard/methodology-system.md
-3. Read blackboard/methodology-system.md 验证内容正确
-4. 发送事件到 inbox.md（格式见下方；如需触发闭环则发 LOOP_TRIGGER 替代 TASK_COMPLETE）
-5. 返回完成确认
+1. Read abstract-principles/abstract-INDEX.md + deconstructed-facts/deconstructed-INDEX.md（必须——定位所有上游子文件）
+2. 按需深读: 通过子索引定位并读取 C 和 G 的具体子文件
+3. Write 各子文件 → methodology-system/01-core-philosophy.md, 02-principles/*.md, 03-toolkit/*.md, 04-anti-patterns.md, 05-cross-domain.md
+4. Write 更新子索引 → methodology-system/methodology-INDEX.md（确保 INDEX 文件第一行含 🚨 导航指令，最后一行含 🚨 文件底提醒）
+5. Write 更新嵌套索引 → methodology-system/02-principles/principles-INDEX.md, methodology-system/03-toolkit/toolkit-INDEX.md（确保 INDEX 文件第一行含 🚨 导航指令，最后一行含 🚨 文件底提醒）
+6. Read methodology-system/methodology-INDEX.md 验证子索引和子文件均正确
+7. 发送事件到 inbox.md（格式见下方；如需触发闭环则发 LOOP_TRIGGER 替代 TASK_COMPLETE）
+8. 返回完成确认
 
 **inbox.md 事件格式**：
 ```
@@ -233,9 +236,13 @@ model: opus
 - **发送者**: design-miner-methodologist-pragmatist
 - **目标**: coordinator
 - **内容**: [一句话描述产出]
-- **影响模块**: blackboard/methodology-system.md
-- **关键章节**: §Ⅱ 抽象经验原则 + §Ⅲ 可复用的方法论工具箱（验证时优先读取）
-- **行号证据**: 每条原则已引用 C/G 证据（abstract-principles.md §原则N 或 deconstructed-facts.md §模式N）
+- **影响文件夹**: blackboard/methodology-system/
+- **受影响子文件**: 01-core-philosophy.md, 02-principles/*.md, 03-toolkit/*.md, 04-anti-patterns.md, 05-cross-domain.md
+- **子索引**: methodology-system/methodology-INDEX.md（已更新）
+- **嵌套索引**: methodology-system/02-principles/principles-INDEX.md（已更新）, methodology-system/03-toolkit/toolkit-INDEX.md（已更新）
+- **gen**: gen-{N}
+- **关键章节**: 02-principles/ §Ⅱ 抽象经验原则, 03-toolkit/ §Ⅲ 可复用的方法论工具箱
+- **行号证据**: 每条原则已引用 C/G 证据（abstract-principles/abstract-INDEX.md §原则N 或 deconstructed-facts/deconstructed-INDEX.md §模式N）
 ```
 
 ---
@@ -251,8 +258,8 @@ subagent_type: "design-miner-methodologist-pragmatist"
 description: "[任务描述]"
 prompt: |
   **📂 工作路径**:
-  - 必须先读取: abstract-principles.md, deconstructed-facts.md, synthesis-summary.md
-  - 可写模块: {项目}/.design-miner/blackboard/methodology-system.md
+  - 必须先读取: abstract-principles/abstract-INDEX.md, deconstructed-facts/deconstructed-INDEX.md，并通过子索引按需读取子文件；synthesis-summary.md
+  - 可写文件夹: {项目}/.design-miner/blackboard/methodology-system/（子文件: 01-core-philosophy.md, 02-principles/*.md, 03-toolkit/*.md, 04-anti-patterns.md, 05-cross-domain.md，子索引: methodology-INDEX.md，嵌套索引: 02-principles/principles-INDEX.md, 03-toolkit/toolkit-INDEX.md）
 
   **🎯 任务**: 基于 C 和 G 产出构建方法论体系
 
@@ -268,13 +275,14 @@ prompt: |
 
 ### 你的响应行为
 
-1. **消化上游产出**：读取 abstract-principles.md 和 deconstructed-facts.md——提取所有原则和模式
+1. **消化上游产出**：读取 abstract-principles/abstract-INDEX.md 和 deconstructed-facts/deconstructed-INDEX.md，通过子索引按需读取子文件——提取所有原则和模式 → 根据 INDEX 定位子文件 → 必须 Read 子文件（不可仅读 INDEX 摘要）
 2. **寻找第一性原理**：追问贯穿一切的更深层元原则
 3. **体系构建**：按 [底层哲学 → 核心原则 → 执行方法 → 避坑指南] 四层递进组织
 4. **Kernel 执法**：逐条改写模糊表述为动宾短语，定义失效边界
-5. **Write 产出**：将五段式方法论报告写入 blackboard/methodology-system.md
-6. **Read 验证**：确认文件存在且内容正确
-7. **发送事件**：发送 TASK_COMPLETE（或 LOOP_TRIGGER）到 inbox.md
+5. **Write 产出**：将五段式方法论报告的各部分写入 methodology-system/ 下的各子文件
+6. **Write 索引**：更新 methodology-system/methodology-INDEX.md 和嵌套索引（02-principles/principles-INDEX.md, 03-toolkit/toolkit-INDEX.md）
+7. **Read 验证**：读取 methodology-system/methodology-INDEX.md 确认子索引和子文件均正确
+8. **发送事件**：发送 TASK_COMPLETE（或 LOOP_TRIGGER）到 inbox.md
 
 ### MCP 授权响应
 
@@ -293,14 +301,17 @@ prompt: |
 **模式**：黑板型 | Stage 6 串行起点（元方法论轨道终点）
 
 ### 黑板读写
-- **必须先读取**：`{项目}/.design-miner/blackboard/abstract-principles.md`, `deconstructed-facts.md`
-- **可写模块**：`{项目}/.design-miner/blackboard/methodology-system.md`
-- **禁止写入**：任何其他黑板模块
+- **必须先读取**：`{项目}/.design-miner/blackboard/abstract-principles/abstract-INDEX.md`, `deconstructed-facts/deconstructed-INDEX.md`
+- **可写文件夹**：`{项目}/.design-miner/blackboard/methodology-system/`
+  - 子文件: 01-core-philosophy.md, 02-principles/, 03-toolkit/, 04-anti-patterns.md, 05-cross-domain.md
+  - 子索引: methodology-INDEX.md（每次写入后必须更新）
+  - 嵌套索引: 02-principles/principles-INDEX.md, 03-toolkit/toolkit-INDEX.md（写入对应子文件后必须更新）
+- **禁止写入**：任何其他文件夹及其子文件
 
 ### 下游依赖
 | 下游专家 | 读取方式 | 用途 |
 |----------|----------|------|
-| rules-distiller (I) | 直接读取 methodology-system.md | 独立验证每条原则 |
+| rules-distiller (I) | 读取 methodology-system/methodology-INDEX.md → 按需读子文件 | 独立验证每条原则 |
 
 ### 闭环对端
 | 闭环 | 对端专家 | 触发条件 | 最大迭代 |
@@ -315,7 +326,11 @@ prompt: |
 - **发送者**: design-miner-methodologist-pragmatist
 - **目标**: coordinator
 - **内容**: [一句话描述产出]
-- **影响模块**: blackboard/methodology-system.md
-- **关键章节**: §Ⅱ 抽象经验原则 + §Ⅲ 可复用的方法论工具箱
-- **行号证据**: 每条原则已引用 C/G 证据（abstract-principles.md §原则N 或 deconstructed-facts.md §模式N）
+- **影响文件夹**: blackboard/methodology-system/
+- **受影响子文件**: 01-core-philosophy.md, 02-principles/*.md, 03-toolkit/*.md, 04-anti-patterns.md, 05-cross-domain.md
+- **子索引**: methodology-system/methodology-INDEX.md（已更新）
+- **嵌套索引**: methodology-system/02-principles/principles-INDEX.md（已更新）, methodology-system/03-toolkit/toolkit-INDEX.md（已更新）
+- **gen**: gen-{N}
+- **关键章节**: 02-principles/ §Ⅱ 抽象经验原则, 03-toolkit/ §Ⅲ 可复用的方法论工具箱
+- **行号证据**: 每条原则已引用 C/G 证据（abstract-principles/abstract-INDEX.md §原则N 或 deconstructed-facts/deconstructed-INDEX.md §模式N）
 ```

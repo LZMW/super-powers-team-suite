@@ -167,7 +167,7 @@ model: sonnet
 
 **Phase 1 — 核心拷问准备（始终执行）**：
 
-1. Read `.di/blackboard/architecture-analysis.md`——analyst 的架构分析
+1. Read `.di/blackboard/architecture-analysis/arch-INDEX.md`——analyst 的架构分析，按需读子文件 → 根据 INDEX 定位子文件 → 必须 Read 子文件（不可仅读 INDEX 摘要）
 2. Read `synthesis-summary.md`（如存在）
 3. 检查品味向量
 4. 凭借自身架构知识宣布拷问范围 → 构建决策树 → 提出**第一个**问题
@@ -461,7 +461,7 @@ model: sonnet
 > ⚠️ **最高优先级**：任务完成的唯一标准是**文件已写入磁盘**！
 
 **强制要求**：
-1. **必须使用 Write 工具**将决策树写入 `{项目}/.di/blackboard/interrogation-tree.md`
+1. **必须使用 Write 工具**将决策树写入 `{项目}/.di/blackboard/interrogation-tree/`（子文件 + interr-INDEX.md）
 2. **写入后必须使用 Read 工具**验证文件确实存在且内容正确
 3. **禁止仅在对话中返回内容**而不写入文件——这等于任务未完成
 
@@ -471,10 +471,16 @@ model: sonnet
 ```
 
 **本专家具体产出步骤**：
-1. 所有分支解决后 Write 写入 blackboard/interrogation-tree.md
-2. Read interrogation-tree.md 验证内容正确
-3. 发送 TASK_COMPLETE 事件到 inbox.md（格式见下方）
-4. 返回完成确认
+1. 所有分支解决后 Write 写入 `{项目}/.di/blackboard/interrogation-tree/01-root-philosophy.md`（§核心哲学）
+2. Write 写入 `{项目}/.di/blackboard/interrogation-tree/02-branches/` 子文件（§决策分支树）
+3. Write/更新 `{项目}/.di/blackboard/interrogation-tree/02-branches/branches-INDEX.md`
+（确保 INDEX 文件第一行含 🚨 导航指令，最后一行含 🚨 文件底提醒）
+4. Write 写入 `{项目}/.di/blackboard/interrogation-tree/03-unresolved-questions.md`
+5. Write/更新子索引 `{项目}/.di/blackboard/interrogation-tree/interr-INDEX.md`（标注 gen 状态）
+（确保 INDEX 文件第一行含 🚨 导航指令，最后一行含 🚨 文件底提醒）
+6. 逐子文件 Read 验证内容正确
+7. 发送 TASK_COMPLETE 事件到 inbox.md（格式见下方）
+8. 返回完成确认
 
 **inbox.md 事件格式**：
 ```
@@ -482,8 +488,11 @@ model: sonnet
 - **发送者**: design-interrogator-interrogator
 - **目标**: coordinator
 - **内容**: [一句话描述产出]
-- **影响模块**: blackboard/interrogation-tree.md
-- **关键章节**: §决策树 + §未解决分支（验证时优先读取）
+- **影响文件夹**: blackboard/interrogation-tree/
+- **受影响子文件**: 01-root-philosophy.md, 02-branches/*, 03-unresolved-questions.md
+- **子索引**: interrogation-tree/interr-INDEX.md（已更新）
+- **gen**: gen-{N}
+- **关键章节**: 02-branches/ §决策分支树, 01-root-philosophy.md §核心哲学
 - **行号证据**: 每个问题附带代码上下文引用
 ```
 
@@ -500,8 +509,8 @@ subagent_type: "design-interrogator-interrogator"
 description: "启动架构设计拷问"
 prompt: |
   **📂 路径**:
-  - 黑板: {项目}/.di/blackboard/interrogation-tree.md
-  - 前序: {项目}/.di/blackboard/architecture-analysis.md
+  - 黑板: {项目}/.di/blackboard/interrogation-tree/interr-INDEX.md
+  - 前序: {项目}/.di/blackboard/architecture-analysis/arch-INDEX.md
   - synthesis: {项目}/.di/synthesis-summary.md
   - 消息: {项目}/.di/blackboard/inbox.md
 
@@ -548,8 +557,11 @@ prompt: |
 **模式**：黑板型 | Track A Phase 5a（交互式多轮）
 
 ### 黑板读写
-- **可写模块**：`{项目}/.di/blackboard/interrogation-tree.md`
-- **必须读取**：`{项目}/.di/blackboard/architecture-analysis.md`（analyst 产出）
+- **可写文件夹**：`{项目}/.di/blackboard/interrogation-tree/`
+  - 子文件：`01-root-philosophy.md`, `02-branches/`（含 `branches-INDEX.md`）, `03-unresolved-questions.md`
+  - 子索引：`interr-INDEX.md`
+  - 嵌套索引：`02-branches/branches-INDEX.md`
+- **必须读取**：`{项目}/.di/blackboard/architecture-analysis/arch-INDEX.md`（analyst 产出，按需读子文件） → 根据 INDEX 定位子文件 → 必须 Read 子文件（不可仅读 INDEX 摘要）
 - **建议读取**：`{项目}/.di/synthesis-summary.md`（Pre-Synthesis 简报）
 
 ### 上游富化（如存在）
@@ -569,7 +581,10 @@ prompt: |
 - **发送者**: design-interrogator-interrogator
 - **目标**: coordinator
 - **内容**: [一句话描述产出]
-- **影响模块**: blackboard/interrogation-tree.md
-- **关键章节**: §决策树 + §未解决分支（验证时优先读取）
+- **影响文件夹**: blackboard/interrogation-tree/
+- **受影响子文件**: 01-root-philosophy.md, 02-branches/*, 03-unresolved-questions.md
+- **子索引**: interrogation-tree/interr-INDEX.md（已更新）
+- **gen**: gen-{N}
+- **关键章节**: 02-branches/ §决策分支树, 01-root-philosophy.md §核心哲学
 - **行号证据**: 每个问题附带代码上下文引用
 ```

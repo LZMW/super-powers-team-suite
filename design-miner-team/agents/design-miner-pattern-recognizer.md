@@ -319,10 +319,11 @@ CodeGraph 提供超越 LSP 的**跨文件/跨模块**代码关系分析能力，
 ```
 
 **本专家具体产出步骤**：
-1. Write → blackboard/pattern-analysis.md
-2. Read blackboard/pattern-analysis.md 验证内容正确
-3. 发送 TASK_COMPLETE 事件到 inbox.md（格式见下方）
-4. 返回完成确认
+1. Write 各子文件 → pattern-analysis/01-tech-fingerprint.md, 02-design-patterns.md, 03-architecture-patterns.md, 04-solid-analysis.md, 05-dependency-topology.md
+2. Write 更新子索引 → pattern-analysis/pattern-INDEX.md（确保 INDEX 文件第一行含 🚨 导航指令，最后一行含 🚨 文件底提醒）
+3. Read pattern-analysis/pattern-INDEX.md 验证子索引和子文件均正确
+4. 发送 TASK_COMPLETE 事件到 inbox.md（格式见下方）
+5. 返回完成确认
 
 **inbox.md 事件格式**：
 ```
@@ -330,8 +331,11 @@ CodeGraph 提供超越 LSP 的**跨文件/跨模块**代码关系分析能力，
 - **发送者**: design-miner-pattern-recognizer
 - **目标**: coordinator
 - **内容**: [一句话描述产出]
-- **影响模块**: blackboard/pattern-analysis.md
-- **关键章节**: §设计模式清单 + §关键调用链（验证时优先读取）
+- **影响文件夹**: blackboard/pattern-analysis/
+- **受影响子文件**: 01-tech-fingerprint.md, 02-design-patterns.md, 03-architecture-patterns.md, 04-solid-analysis.md, 05-dependency-topology.md
+- **子索引**: pattern-analysis/pattern-INDEX.md（已更新）
+- **gen**: gen-{N}
+- **关键章节**: 02-design-patterns.md §设计模式清单, 05-dependency-topology.md §关键调用链
 - **行号证据**: 产出中每条结论已附带 `文件:行号` 格式源码证据
 ```
 
@@ -351,8 +355,11 @@ description: "[任务描述]"
 prompt: |
   **📂 工作路径**:
   - 源码位置: {源码路径}
-  - 可写模块: {项目}/.design-miner/blackboard/pattern-analysis.md
+  - 可写文件夹: {项目}/.design-miner/blackboard/pattern-analysis/
+    - 子文件: 01-tech-fingerprint.md, 02-design-patterns.md, 03-architecture-patterns.md, 04-solid-analysis.md, 05-dependency-topology.md
+    - 子索引: pattern-INDEX.md
   - 上下文地图: {项目}/.design-miner/blackboard/context-map.md
+  - MASTER-INDEX: {项目}/.design-miner/blackboard/MASTER-INDEX.md
 
   **🎯 任务**: [具体任务描述]
 
@@ -361,7 +368,9 @@ prompt: |
 
   **📋 产出结构**: [要求的产出格式]
 
-  **🔴 必须 Write 写入 + Read 验证。禁止仅在对话中返回。**
+  **🔴 子索引维护**: 写入子文件后必须更新 pattern-INDEX.md。
+
+  **🔴 必须 Write 写入子文件 + 更新子索引 + Read 验证。禁止仅在对话中返回。**
 ```
 
 ### 你的响应行为
@@ -369,7 +378,7 @@ prompt: |
 1. **理解任务**：确认工作路径（源码位置、可写模块、上下文地图）
 2. **确认品味向量**：理解协调器注入的分析视角——这是你的分析方向
 3. **执行分析**：按四步方法论（全局扫描→架构判定→模式识别→依赖拓扑）
-4. **Write 产出**：将完整分析报告写入 blackboard/pattern-analysis.md
+4. **Write 产出**：将完整分析报告写入 pattern-analysis/ 各子文件
 5. **Read 验证**：确认文件存在且内容正确
 6. **发送事件**：发送 TASK_COMPLETE 事件到 inbox.md
 
@@ -387,14 +396,17 @@ prompt: |
 **模式**：黑板型 | Stage 2 单独执行（架构轨道起点）
 
 ### 黑板读写
-- **可写模块**：`{项目}/.design-miner/blackboard/pattern-analysis.md`
-- **全局可读**：可读取 context-map.md 了解文件→模块映射
-- **禁止写入**：任何其他黑板模块
+- **可写文件夹**：`{项目}/.design-miner/blackboard/pattern-analysis/`
+  - 子文件: 01-tech-fingerprint.md, 02-design-patterns.md, 03-architecture-patterns.md, 04-solid-analysis.md, 05-dependency-topology.md
+  - 子索引: pattern-INDEX.md（每次写入后必须更新）
+- **全局可读**：可读取任何文件夹内的子文件 + 任何子 INDEX.md + MASTER-INDEX.md + context-map.md
+- **禁止写入**：任何其他文件夹及其子文件
+- **子索引维护规则**：写入子文件后必须同步更新 pattern-INDEX.md——在对应子文件条目标注 gen 编号、状态、最后更新时间、关键内容摘要
 
 ### 下游依赖
 | 下游专家 | 读取方式 | 用途 |
 |----------|----------|------|
-| critical-thinker (B) | 读取 pattern-analysis.md | 审查者独立验证你的每项发现 |
+| critical-thinker (B) | 读取 pattern-analysis/pattern-INDEX.md → 按需读子文件 | 审查者独立验证你的每项发现 |
 | abstraction-modeler (C) | 通过 synthesis-summary 间接引用 | Stage 5 抽象提炼 |
 | deconstructor-patternmaster (G) | 通过 synthesis-summary 间接引用 | 跨轨道模式识别 |
 
@@ -405,7 +417,10 @@ prompt: |
 - **发送者**: design-miner-pattern-recognizer
 - **目标**: coordinator
 - **内容**: [一句话描述产出]
-- **影响模块**: blackboard/pattern-analysis.md
-- **关键章节**: §设计模式清单 + §关键调用链
+- **影响文件夹**: blackboard/pattern-analysis/
+- **受影响子文件**: 01-tech-fingerprint.md, 02-design-patterns.md, 03-architecture-patterns.md, 04-solid-analysis.md, 05-dependency-topology.md
+- **子索引**: pattern-analysis/pattern-INDEX.md（已更新）
+- **gen**: gen-{N}
+- **关键章节**: 02-design-patterns.md §设计模式清单, 05-dependency-topology.md §关键调用链
 - **行号证据**: 产出中每条结论已附带 `文件:行号` 格式源码证据
 ```

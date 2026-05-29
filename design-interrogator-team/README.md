@@ -1,6 +1,6 @@
-# Design Interrogator (设计审问官) 团队 v3.2
+# Design Interrogator (设计审问官) 团队 v4.0
 
-> **一句话**：双轨道黑板型 + 品味注入 + Pre-Synthesis + 设计挖掘上游集成，覆盖架构设计审问和 UX/UI 全流程，统一交付 dev-genius。
+> **一句话**：双轨道黑板型 + 品味注入 + Pre-Synthesis + 设计挖掘上游集成 + 跨 gen 冲突审查，覆盖架构设计审问和 UX/UI 全流程，统一交付 dev-genius。
 
 ## v3.0 核心创新（design-miner 三迭代 + uxui-studio 合并）
 
@@ -50,9 +50,11 @@ Phase 5a: interrogator (架构拷问)  Phase 5b: ixd (交互设计)
     ↓                              ↓
     └──────── Phase 9: strategist (策略裁决) ─────┘
                     ↓
-               Phase 10: strategist (文档编译)
+               Phase 10a: strategist (文档编译)
                     ↓
-               Phase 11: 产出验证 + 回退检测
+               Phase 10b 🔴: conflict-reviewer (跨 gen 冲突审查)
+                    ↓
+               Phase 11: 产出验证 + 冲突裁决 + 回退检测
                     ↓
                Phase 12: 综合报告 + 设计偏好捕获
                     ↓
@@ -69,7 +71,8 @@ Phase 5a: interrogator (架构拷问)  Phase 5b: ixd (交互设计)
 | 4 | ixd | UX | 交互设计师 | Phase 5b | Sonnet |
 | 5 | critic | UX | 设计审问官 | Phase 6b+8b (交互式) | Sonnet |
 | 6 | ui | UX | UI设计师 | Phase 7b | Sonnet |
-| 7 | strategist | 收敛 | UX策略师+文档编译 | Phase 9+10 | Sonnet |
+| 7 | strategist | 收敛 | UX策略师+文档编译 | Phase 9+10a | Sonnet |
+| 8 | conflict-reviewer | 收敛 | 冲突审查专家 | Phase 10b | Opus |
 
 ## 黑板结构
 
@@ -132,8 +135,17 @@ Phase 5a: interrogator (架构拷问)  Phase 5b: ixd (交互设计)
 
 ## 更新日志
 
+### v4.0 (2026-05-29)
+- 🔴 **文件夹组模式**：黑板 8 单文件 → 8 文件夹组 + MASTER-INDEX + GENESIS 正式启用
+- 🔴 **产出文件夹组**：phases/07_documentation/ 7 单文件 → 7 文件夹组 + 增量累积 + 00-CONFLICT_LOG
+- 🆕 **冲突审查专家 K (conflict-reviewer)**：Phase 10b 跨 gen 决策一致性审查，三层标记（文件头红幅+文件名前缀+CONFLICT_LOG）
+- 🆕 **Phase 10 拆分**：10a (strategist 编译) → 10b (K 冲突审查) → 11 (验证+裁决) → 12 (报告)
+- 🔧 **Phase 0 上游适配**：DM v6.1 文件夹组路径更新
+- 🔧 **gen/GENESIS 机制**：正式启用，按 run 递增，子 INDEX 追踪 gen 状态
+- 📝 **8 位专家全部就位**：7 原专家 + K (conflict-reviewer)
+
 ### v3.2 (2026-05-26)
-- 🔴 **编号统一**：Step/Phase 双前缀 + .5 小数 → 统一 **Phase 0-12**。Phase 是三团队唯一前缀（DM=Stage，DV=Gate），避免 AI 幻觉
+- 🔴 **编号统一**：Step/Phase 双前缀 + .5 小数 → 统一 **Phase 0-12**。Phase 是三团队唯一前缀（DM=Stage，DG=Gate），避免 AI 幻觉
 - 🔴 **专家 Phase 重编号**：+3 偏移（Phase 1a→3a, 2a→5a, 6→9, 7→10 等），Phase 0-2 预留给协调器准备活动
 - 🆕 **上游声明强化**：上游 DM 引用同步到 Stage 体系，添加三团队工作流链推荐
 

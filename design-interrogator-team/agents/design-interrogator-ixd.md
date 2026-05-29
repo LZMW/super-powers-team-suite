@@ -76,7 +76,7 @@ model: sonnet
 
 #### Phase 1：核心设计（始终执行，方法论完整）
 
-**Step 1**：Read `blackboard/ux-research.md`——用户画像、旅程图、痛点。
+**Step 1**：Read `blackboard/ux-research/uxr-INDEX.md`——用户画像、旅程图、痛点，按需读子文件。
 
 **Step 2**：基于用户洞察 + 交互设计方法论进行独立设计。
 
@@ -270,10 +270,15 @@ model: sonnet
 ```
 
 **本专家具体产出步骤**：
-1. Write 写入 `{项目}/.di/blackboard/interaction-design.md`
-2. Read interaction-design.md 验证内容正确
-3. 发送 TASK_COMPLETE 事件到 inbox.md（格式见下方）
-4. 返回完成确认
+1. Write 写入 `{项目}/.di/blackboard/interaction-design/01-info-architecture.md`（§信息架构）
+2. Write 写入 `{项目}/.di/blackboard/interaction-design/02-user-flows.md`（§用户流程）
+3. Write 写入 `{项目}/.di/blackboard/interaction-design/03-wireframes.md`
+4. Write 写入 `{项目}/.di/blackboard/interaction-design/04-interaction-patterns.md`
+5. Write/更新子索引 `{项目}/.di/blackboard/interaction-design/ixd-INDEX.md`（标注 gen 状态）
+（确保 INDEX 文件第一行含 🚨 导航指令，最后一行含 🚨 文件底提醒）
+6. 逐子文件 Read 验证内容正确
+7. 发送 TASK_COMPLETE 事件到 inbox.md（格式见下方）
+8. 返回完成确认
 
 **inbox.md 事件格式**：
 ```
@@ -281,8 +286,11 @@ model: sonnet
 - **发送者**: design-interrogator-ixd
 - **目标**: coordinator
 - **内容**: [一句话描述产出]
-- **影响模块**: blackboard/interaction-design.md
-- **关键章节**: §信息架构 + §用户流程（验证时优先读取）
+- **影响文件夹**: blackboard/interaction-design/
+- **受影响子文件**: 01-info-architecture.md, 02-user-flows.md, 03-wireframes.md, 04-interaction-patterns.md
+- **子索引**: interaction-design/ixd-INDEX.md（已更新）
+- **gen**: gen-{N}
+- **关键章节**: 01-info-architecture.md §信息架构, 02-user-flows.md §用户流程
 - **行号证据**: 每个交互模式标注代码依据
 ```
 
@@ -299,8 +307,8 @@ subagent_type: "design-interrogator-ixd"
 description: "[任务描述]"
 prompt: |
   **📂 路径**:
-  - 黑板: {项目}/.di/blackboard/interaction-design.md
-  - 前序: {项目}/.di/blackboard/ux-research.md（请先Read）
+  - 黑板: {项目}/.di/blackboard/interaction-design/ixd-INDEX.md
+  - 前序: {项目}/.di/blackboard/ux-research/uxr-INDEX.md（请先Read）
   - synthesis: {项目}/.di/synthesis-summary.md（如存在）
   - 消息: {项目}/.di/blackboard/inbox.md
 
@@ -319,7 +327,7 @@ prompt: |
 2. **Read 前序**：读取 ux-research.md 中的用户洞察
 3. **执行核心设计**：Phase 1 独立设计（IA→流程→线框图→交互行为→五态）
 4. **执行富化层**（如上游存在）：Phase 2 读取上游 → 借鉴/规避分析
-5. **Write 产出**：将完整设计方案写入 blackboard/interaction-design.md
+5. **Write 产出**：将完整设计方案按子文件写入 blackboard/interaction-design/，更新 ixd-INDEX.md
 6. **Read 验证**：确认文件存在且内容正确
 7. **发送事件**：发送 TASK_COMPLETE 事件到 inbox.md
 
@@ -337,8 +345,10 @@ prompt: |
 **模式**：黑板型 | Track B Phase 5b
 
 ### 黑板读写
-- **可写模块**：`{项目}/.di/blackboard/interaction-design.md`
-- **必须读取**：`{项目}/.di/blackboard/ux-research.md`（researcher 产出）
+- **可写文件夹**：`{项目}/.di/blackboard/interaction-design/`
+  - 子文件：`01-info-architecture.md`, `02-user-flows.md`, `03-wireframes.md`, `04-interaction-patterns.md`
+  - 子索引：`ixd-INDEX.md`
+- **必须读取**：`{项目}/.di/blackboard/ux-research/uxr-INDEX.md`（researcher 产出，按需读子文件） → 根据 INDEX 定位子文件 → 必须 Read 子文件（不可仅读 INDEX 摘要）
 - **建议读取**：`{项目}/.di/synthesis-summary.md`（Pre-Synthesis 简报）
 
 ### 上游富化（如存在）
@@ -360,7 +370,10 @@ prompt: |
 - **发送者**: design-interrogator-ixd
 - **目标**: coordinator
 - **内容**: [一句话描述产出]
-- **影响模块**: blackboard/interaction-design.md
-- **关键章节**: §信息架构 + §用户流程（验证时优先读取）
+- **影响文件夹**: blackboard/interaction-design/
+- **受影响子文件**: 01-info-architecture.md, 02-user-flows.md, 03-wireframes.md, 04-interaction-patterns.md
+- **子索引**: interaction-design/ixd-INDEX.md（已更新）
+- **gen**: gen-{N}
+- **关键章节**: 01-info-architecture.md §信息架构, 02-user-flows.md §用户流程
 - **行号证据**: 每个交互模式标注代码依据
 ```
