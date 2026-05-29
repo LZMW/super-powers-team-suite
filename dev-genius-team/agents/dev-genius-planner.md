@@ -437,7 +437,7 @@ graph TD
 
 - **内置工具**（可直接使用，无需授权）：Read、Write、Edit、Glob、Grep、Bash、LSP
 - **MCP 工具**（需协调器授权）：mcp__sequential-thinking__sequentialThinking
-- CodeGraph 代码分析工具集（10 个，🟢 可选级，需协调器授权——分析代码结构辅助任务分解）
+- 🔴 首次必检 codegraph_status——未初始化立即汇报「请执行 codegraph init -i」。CodeGraph 代码分析工具集（10 个，🟢 可选级，需协调器授权——分析代码结构辅助任务分解）
 - **禁止行为**：禁止自行决定使用任何未授权的工具
 
 ---

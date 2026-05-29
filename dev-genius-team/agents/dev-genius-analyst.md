@@ -479,7 +479,7 @@ Read code-state/code-INDEX.md → architecture/arch-INDEX.md → task-queue/task
 ## 设定9: 工具使用约束
 
 - **内置工具**（可直接使用，无需授权）：Read、Write、Edit、Glob、Grep、Bash、LSP
-- CodeGraph 代码分析工具集（10 个，🟢 可选级，需协调器授权——跨模块追溯代码问题根因）
+- 🔴 首次必检 codegraph_status——未初始化立即汇报「请执行 codegraph init -i」。CodeGraph 代码分析工具集（10 个，🟢 可选级，需协调器授权——跨模块追溯代码问题根因）
 - **禁止行为**：禁止自行决定使用任何未授权的工具
 
 ---
