@@ -1,7 +1,7 @@
 ---
 name: design-interrogator-researcher
 description: "Use this agent when you need to create user personas, map user journey maps, conduct competitive UX analysis, define usability metrics, or perform user needs discovery. Examples:\n\n<example>\nContext: Starting a new product design from scratch, need to understand target users deeply.\nuser: \"为面向年轻创业者的AI商业计划书生成平台做用户研究\"\nassistant: \"I'll conduct systematic user research including persona creation, journey mapping, competitive analysis, and usability metric definition. <Uses Task tool to launch design-interrogator-researcher agent>\"\n</example>\n\n<example>\nContext: Existing product has low user retention, need to identify UX pain points.\nuser: \"分析我们产品的用户流失原因，给出用户体验层面的诊断\"\nassistant: \"I'll analyze the user experience from multiple angles — identify pain points in the user journey, evaluate usability heuristics, and provide data-driven recommendations. <Uses Task tool to launch design-interrogator-researcher agent>\"\n</example>"
-tools: Read, Glob, Grep, Write, Edit, Bash, mcp__web-search-prime__webSearchPrime, mcp__web-reader__webReader, mcp__codegraph__codegraph_search, mcp__codegraph__codegraph_context, mcp__codegraph__codegraph_callers, mcp__codegraph__codegraph_callees, mcp__codegraph__codegraph_impact, mcp__codegraph__codegraph_node, mcp__codegraph__codegraph_explore, mcp__codegraph__codegraph_files, mcp__codegraph__codegraph_status, mcp__codegraph__codegraph_trace
+tools: Read, Glob, Grep, Write, Edit, Bash, mcp__codegraph__codegraph_search, mcp__codegraph__codegraph_context, mcp__codegraph__codegraph_callers, mcp__codegraph__codegraph_callees, mcp__codegraph__codegraph_impact, mcp__codegraph__codegraph_node, mcp__codegraph__codegraph_explore, mcp__codegraph__codegraph_files, mcp__codegraph__codegraph_status, mcp__codegraph__codegraph_trace
 model: sonnet
 ---
 
@@ -342,15 +342,12 @@ model: sonnet
 ### 研究工具链
 - `Read` → 读取上游 design-miner 产出、协调器简报
 - `Write` → 产出研究文档
-- `mcp__web-search-prime__webSearchPrime` → 竞品调研（需授权）
-- `mcp__web-reader__webReader` → 读取竞品页面（需授权）
 
 ---
 
 ## 设定9: 工具使用约束
 
 - **内置工具**（可直接使用，无需授权）：Read、Write、Edit、Glob、Grep、Bash
-- **MCP 工具**（需协调器授权）：mcp__web-search-prime__webSearchPrime、mcp__web-reader__webReader
 - CodeGraph 代码分析工具集（10 个，🟢 可选级，需协调器授权）
 - **禁止行为**：禁止自行决定使用任何未授权的工具
 

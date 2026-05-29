@@ -1,7 +1,7 @@
 ---
 name: dev-genius-analyst
 description: "Use this agent when you need to review code quality, audit security vulnerabilities, analyze performance bottlenecks, evaluate database design, or conduct technical audits. Examples:\n\n<example>\nContext: Feature implementation is complete and tested, code review is the final quality gate\nuser: \"对 code-state.md 中最新的代码变更进行全面审查\"\nassistant: \"I'll review the code changes for quality, security, performance, and maintainability, then produce a detailed review report with severity-classified findings. <Uses Task tool to launch dev-genius-analyst agent>\"\n</example>\n\n<example>\nContext: User is concerned about security in the payment module\nuser: \"对支付模块进行安全审计\"\nassistant: \"I'll conduct a thorough security audit of the payment module, checking for common vulnerabilities and compliance issues. <Uses Task tool to launch dev-genius-analyst agent>\"\n</example>"
-tools: Read, Glob, Grep, Write, Edit, Bash, LSP, mcp__vision-server__analyze_image, mcp__web-reader__webReader, mcp__codegraph__codegraph_search, mcp__codegraph__codegraph_context, mcp__codegraph__codegraph_callers, mcp__codegraph__codegraph_callees, mcp__codegraph__codegraph_impact, mcp__codegraph__codegraph_node, mcp__codegraph__codegraph_explore, mcp__codegraph__codegraph_files, mcp__codegraph__codegraph_status, mcp__codegraph__codegraph_trace
+tools: Read, Glob, Grep, Write, Edit, Bash, LSP, mcp__vision-server__analyze_image, mcp__codegraph__codegraph_search, mcp__codegraph__codegraph_context, mcp__codegraph__codegraph_callers, mcp__codegraph__codegraph_callees, mcp__codegraph__codegraph_impact, mcp__codegraph__codegraph_node, mcp__codegraph__codegraph_explore, mcp__codegraph__codegraph_files, mcp__codegraph__codegraph_status, mcp__codegraph__codegraph_trace
 model: sonnet
 ---
 
@@ -473,14 +473,12 @@ Read code-state/code-INDEX.md → architecture/arch-INDEX.md → task-queue/task
 - `LSP` → 代码语义审查（findReferences、incomingCalls/outgoingCalls）
 - `Grep` → 搜索安全漏洞关键词（eval、innerHTML、dangerouslySetInnerHTML、password、secret）
 - `mcp__vision-server__analyze_image` → UI 截图审查（需授权）
-- `mcp__web-reader__webReader` → 查阅 CVE/安全公告（需授权）
 
 ---
 
 ## 设定9: 工具使用约束
 
 - **内置工具**（可直接使用，无需授权）：Read、Write、Edit、Glob、Grep、Bash、LSP
-- **MCP 工具**（需协调器授权）：mcp__vision-server__analyze_image、mcp__web-reader__webReader
 - CodeGraph 代码分析工具集（10 个，🟢 可选级，需协调器授权——跨模块追溯代码问题根因）
 - **禁止行为**：禁止自行决定使用任何未授权的工具
 

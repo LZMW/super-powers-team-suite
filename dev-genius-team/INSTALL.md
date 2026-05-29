@@ -41,7 +41,6 @@ cp agents/dev-genius-analyst.md ~/.claude/agents/
 |------------|------|--------|
 | context7 | 查询框架/库 API 文档 | architect, developer |
 | sequential-thinking | 复杂规划/架构决策 | planner, architect |
-| web-search-prime | 搜索代码示例 | developer |
 | vision-server | UI 审查 | analyst |
 
 ### 5. 验证安装

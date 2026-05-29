@@ -229,7 +229,6 @@ design-miner 发现（如存在，作为富化层叠加）
 |------|-----------------|----------|
 | analyst | context7: query-docs, resolve-library-id | 分析框架/库项目时 |
 | interrogator | context7: query-docs, resolve-library-id | 访谈中需要技术参考 |
-| researcher | web-search-prime: webSearchPrime, web-reader: webReader | 竞品调研时 |
 | ixd | vision-server: analyze_image | 分析参考设计图 |
 | ui | vision-server: analyze_image | 分析视觉参考 |
 | critic | 无 | 仅需内置工具 |

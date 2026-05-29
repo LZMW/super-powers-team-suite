@@ -136,39 +136,7 @@ claude mcp add sequential-thinking -- npx -y @modelcontextprotocol/server-sequen
 
 ### 可选安装（🟢 锦上添花）
 
-#### 4. Web Search Prime — 联网搜索
-
-智谱 AI 提供的联网搜索 MCP 服务（HTTP 方式，非 npm 包）。
-
-```bash
-claude mcp add -s user -t http web-search-prime \
-  https://open.bigmodel.cn/api/mcp/web_search_prime/mcp/ \
-  --header "Authorization: Bearer 你的智谱API密钥"
-```
-
-> 平台：[open.bigmodel.cn](https://open.bigmodel.cn) · 需注册智谱 AI 获取 API Key
-
-工具：`webSearchPrime`
-
-适用团队：DI（researcher——竞品调研）
-
-#### 5. Web Reader — 网页内容抓取
-
-将任何网页转为干净的 Markdown 供 LLM 阅读，支持多引擎+批量抓取。
-
-```bash
-npm install -g mcp-web-reader
-claude mcp add web-reader -- mcp-web-reader
-```
-
-> 仓库：[github.com/Gracker/mcp-web-reader](https://github.com/Gracker/mcp-web-reader) · npm: [`mcp-web-reader`](https://www.npmjs.com/package/mcp-web-reader)
-> 轻量替代：[github.com/agenticbuildingblocks/markfetch](https://github.com/agenticbuildingblocks/markfetch) — 零配置，无需 API Key
-
-工具：`webReader`, `fetch_url`, `fetch_multiple_urls`
-
-适用团队：DI（researcher——竞品页面分析）
-
-#### 6. Vision Server — 图像分析
+#### 4. Vision Server — 图像分析
 
 分析截图、设计稿、图表，支持 OCR 文字提取和多模型。
 
@@ -229,8 +197,6 @@ cp agents/*.md ~/.claude/agents/
       "mcp__context7__resolve-library-id",
       "mcp__context7__query-docs",
       "mcp__sequential-thinking__sequentialThinking",
-      "mcp__web-search-prime__webSearchPrime",
-      "mcp__web-reader__webReader",
       "mcp__vision-server__analyze_image",
       "mcp__vision-server__chat_vision",
       "mcp__vision-server__get_status"

@@ -50,8 +50,6 @@ cp agents/design-interrogator-strategist.md ~/.claude/agents/
 | MCP Server | 用途 | 使用者 |
 |------------|------|--------|
 | context7 | 查询框架/库文档 | analyst, interrogator |
-| web-search-prime | 竞品调研 | researcher |
-| web-reader | 读取行业报告 | researcher |
 | vision-server | 分析参考设计图 | ixd, ui |
 
 ### 5. 验证安装
