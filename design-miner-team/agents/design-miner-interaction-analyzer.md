@@ -310,6 +310,8 @@ CodeGraph 提供超越 LSP 的**跨文件/跨模块**代码关系分析能力，
 | `codegraph_explore` | 探索符号关系 | 发现隐藏的状态机转换路径 |
 
 **使用原则**：优先使用 LSP——CodeGraph 仅在 LSP 无法覆盖的跨文件/跨模块场景中使用。
+- **按需使用**：仅在需要追踪跨文件交互链路时用 `codegraph_trace`（如 onClick → loading → success/error 完整链路跨多个文件/模块时）
+- **首次使用前**：用 `codegraph_status` 确认索引就绪（file watcher 自动增量同步）
 
 ---
 

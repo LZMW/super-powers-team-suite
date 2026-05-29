@@ -318,6 +318,8 @@ CodeGraph 提供超越 LSP 的**跨文件/跨模块**代码关系分析能力，
 - 优先使用 LSP（即时响应）：documentSymbol、goToDefinition、incomingCalls、outgoingCalls
 - LSP 局限时用 CodeGraph：需要跨文件追踪、需要独立验证 A 的证据链
 - CodeGraph 为可选级工具——任务核心依赖是 LSP + Grep + Glob
+- **独立验证技巧**：用 `codegraph_callers` + `codegraph_trace` 独立验证 A 的调用链证据——不直接信任 A 的 LSP 结果。CodeGraph 的跨文件全索引能力可发现 LSP 单文件视图遗漏的间接调用关系
+- **首次使用前**：用 `codegraph_status` 确认索引就绪（file watcher 自动增量同步，无需手动重建）
 
 ---
 

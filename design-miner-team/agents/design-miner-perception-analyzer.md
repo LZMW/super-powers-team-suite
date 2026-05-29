@@ -305,6 +305,8 @@ model: sonnet
 | `codegraph_impact` | 分析修改影响范围 | 评估某状态变更的感知影响范围 |
 
 **使用原则**：优先使用 LSP——CodeGraph 仅在 LSP 无法覆盖的跨文件/跨模块场景中使用。
+- **按需使用**：仅在需要追踪跨文件信息架构依赖时用 `codegraph_trace`（如组件嵌套依赖链、条件渲染控制流跨多个文件时）
+- **首次使用前**：用 `codegraph_status` 确认索引就绪（file watcher 自动增量同步）
 
 ---
 
