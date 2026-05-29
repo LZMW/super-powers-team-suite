@@ -590,10 +590,17 @@ description: "Architecture gate for task N"
 prompt: |
   **📂 路径**:
   - 黑板: {项目}/.dev-genius/blackboard/
-  - 可读: task-queue/, .di/phases/07_documentation/（如有）
+  - 可读: task-queue/, .di/phases/07_documentation/（如有）, codebase-state/codebase-INDEX.md
   - 可写: architecture/
 
-  **🎯 任务**: 对当前任务执行架构门控——
+  **📋 开发前源码状态（由 F 在 Gate 0 产出，🔴 必须先读）**:
+  - Read codebase-state/codebase-INDEX.md → 按需读子文件：
+    - 02-module-map.md（项目当前模块结构——哪些模块存在、依赖方向如何）
+    - 03-existing-patterns.md（已有设计模式和架构风格——不要引入冲突的新模式）
+    - 04-di-gap-analysis.md（DI 规格 vs 现状差异——DI 要求了什么、当前代码差什么）
+  - 基于以上信息判断架构响应级别：DI 规格要求的内容大部分已存在 → 架构签批；需要新增模块或修改现有模块 → 影响评估/完整架构
+
+  **🎯 任务**: 基于 F 的源码状态 + DI 规格，对当前任务执行架构门控——
 
   **🔴 响应级别**: [完整架构 / 影响评估 / 架构签批]（由协调器根据任务类型指定）
 

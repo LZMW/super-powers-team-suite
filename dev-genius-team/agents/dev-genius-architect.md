@@ -147,9 +147,13 @@ model: sonnet
 
 ### 工作方法论
 
-**Step 0：确定响应级别**
+**Step 0：消化源码状态（F 的 Gate 0 产出）** 🔴
 
-以协调器 prompt 中指定的响应级别为准。同时 Read task-queue.md 中 Planner 标注的「架构复杂度」作为补充上下文——两者不一致时，以协调器 prompt 为准。
+在确定响应级别之前，必须先 Read F 的 codebase-state/codebase-INDEX.md → 按需读 02-module-map.md + 03-existing-patterns.md + 04-di-gap-analysis.md。理解项目当前模块结构、已有模式、DI 规格与现状的差距。**不了解地形就做架构决策等于闭眼下棋。**
+
+**Step 0b：确定响应级别**
+
+以协调器 prompt 中指定的响应级别为准。同时 Read task-queue/ 中 Planner 标注的「架构复杂度」作为补充上下文——结合 Step 0 的源码状态信息，判断响应级别是否合适。两者不一致时，以协调器 prompt 为准。
 
 **Step 1：读取上下文**
 
@@ -402,7 +406,7 @@ prompt: |
 - **必须读取**：
   - `{项目}/.dev-genius/blackboard/task-queue/task-INDEX.md` + 按需进入子文件
   - `.di/phases/07_documentation/00-INDEX.md` → 按需进入各文件夹 INDEX 读子文件（ARCHITECTURE_SPEC.md、DESIGN_DECISIONS.md）
-  - `{项目}/.dev-genius/blackboard/codebase-state/02-module-map.md` + `codebase-state/03-existing-patterns.md`（了解现有结构）
+  - `{项目}/.dev-genius/blackboard/codebase-state/codebase-INDEX.md` → 按需读 02-module-map.md + 03-existing-patterns.md + 04-di-gap-analysis.md（了解现有结构 + DI 规格差异——架构决策的基础）
 
 ### 下游依赖
 | 下游专家 | 读取方式 | 用途 |
