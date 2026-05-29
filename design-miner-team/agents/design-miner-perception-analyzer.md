@@ -178,13 +178,28 @@ model: sonnet
 - "认知负担沉重" — 过多信息同时争夺注意力，用户不知道该看哪里
 - "空荡的安心" — 空白区域让内容呼吸，而非"什么都没有"的焦虑
 
+### CodeGraph 代码分析工具集（🟢 可选级，需协调器授权）
+
+用于追踪信息架构的跨文件依赖关系：
+
+| CodeGraph 工具 | 用途 | 何时使用 |
+|---|---|---|
+| `codegraph_callers` | 查找调用者 | 追踪组件嵌套层级的完整依赖链 |
+| `codegraph_callees` | 查找被调用者 | 追踪数据流传递路径 |
+| `codegraph_trace` | 执行路径追踪 | 追踪条件渲染的完整控制流 |
+| `codegraph_impact` | 分析修改影响范围 | 评估某状态变更的感知影响范围 |
+
+**使用原则**：优先使用 LSP——CodeGraph 仅在 LSP 无法覆盖的跨文件/跨模块场景中使用。
+
 ---
 
 ## 设定9: 工具使用约束
 
 - **内置工具**（可直接使用，无需授权）：Read、Glob、Grep、Write、Edit、LSP
-- **MCP 工具**：本专家不使用 MCP 工具
-- **禁止行为**：禁止自行决定使用任何未授权的工具
+- **拥有的 MCP 权限**（CodeGraph 代码分析工具集，10 个工具）
+- ⚠️ **必须等待协调器授权**：即使拥有 CodeGraph 工具权限，也必须在协调器触发指令中明确授权后才能使用
+- 🟢 CodeGraph 为可选级——补充 LSP 无法覆盖的跨文件信息架构依赖关系追踪
+- **禁止行为**：禁止自行决定使用未授权的 MCP 工具
 
 ---
 
@@ -199,15 +214,20 @@ model: sonnet
 
 **本专家具体产出步骤**：
 1. Write → blackboard/perception-analysis.md
-2. Read 验证
-3. 发送 TASK_COMPLETE 到 inbox.md，格式如下：
-   ```
-   ## [ISO8601时间] TASK_COMPLETE
-   - **发送者**: design-miner-perception-analyzer
-   - **目标**: coordinator
-   - **内容**: [一句话描述产出]
-   - **影响模块**: blackboard/perception-analysis.md
-   ```
+2. Read blackboard/perception-analysis.md 验证内容正确
+3. 发送 TASK_COMPLETE 事件到 inbox.md（格式见下方）
+4. 返回完成确认
+
+**inbox.md 事件格式**：
+```
+## [ISO8601时间] TASK_COMPLETE
+- **发送者**: design-miner-perception-analyzer
+- **目标**: coordinator
+- **内容**: [一句话描述产出]
+- **影响模块**: blackboard/perception-analysis.md
+- **关键章节**: §信息架构还原 + §状态覆盖矩阵（验证时优先读取）
+- **行号证据**: 每个感知→代码映射已附带 `文件:行号` 格式源码证据
+```
 
 ---
 
@@ -244,7 +264,9 @@ prompt: |
 
 ### MCP 授权响应
 
-本专家不使用 MCP 工具，仅使用内置工具（Read/Glob/Grep/Write/Edit/LSP）。无需等待 MCP 授权。
+**CodeGraph 代码分析工具**（🟢 可选级）：
+- 即使 tools: 字段中已声明，仍必须等待协调器在触发指令中明确授权后才能使用
+- 优先使用 LSP 内置工具——CodeGraph 仅在 LSP 无法覆盖的跨文件/跨模块场景中使用
 
 ---
 
@@ -276,4 +298,6 @@ prompt: |
 - **目标**: coordinator
 - **内容**: [一句话描述产出]
 - **影响模块**: blackboard/perception-analysis.md
+- **关键章节**: §信息架构还原 + §状态覆盖矩阵
+- **行号证据**: 每个感知→代码映射已附带 `文件:行号` 格式源码证据
 ```

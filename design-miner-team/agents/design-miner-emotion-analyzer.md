@@ -183,13 +183,28 @@ model: sonnet
 | **确认门控** | "再想想"的安全感 | 二次确认弹窗、破坏性操作的额外验证 |
 | **友好文案** | "被理解" | Error message 的硬编码字符串——语调、人称、是否提供下一步行动 |
 
+### CodeGraph 代码分析工具集（🟢 可选级，需协调器授权）
+
+用于追踪错误处理链的完整路径：
+
+| CodeGraph 工具 | 用途 | 何时使用 |
+|---|---|---|
+| `codegraph_callers` | 查找调用者 | 追溯错误如何向上传播 |
+| `codegraph_callees` | 查找被调用者 | 追踪回退/降级策略的完整链路 |
+| `codegraph_trace` | 执行路径追踪 | 追踪从错误发生→捕获→恢复的完整路径 |
+| `codegraph_impact` | 分析修改影响范围 | 评估某容错逻辑变更的情感影响范围 |
+
+**使用原则**：优先使用 LSP——CodeGraph 仅在 LSP 无法覆盖的跨文件/跨模块场景中使用。
+
 ---
 
 ## 设定9: 工具使用约束
 
 - **内置工具**（可直接使用，无需授权）：Read、Glob、Grep、Write、Edit、LSP
-- **MCP 工具**：本专家不使用 MCP 工具
-- **禁止行为**：禁止自行决定使用任何未授权的工具
+- **拥有的 MCP 权限**（CodeGraph 代码分析工具集，10 个工具）
+- ⚠️ **必须等待协调器授权**：即使拥有 CodeGraph 工具权限，也必须在协调器触发指令中明确授权后才能使用
+- 🟢 CodeGraph 为可选级——补充 LSP 无法覆盖的跨文件错误处理链完整路径追踪
+- **禁止行为**：禁止自行决定使用未授权的 MCP 工具
 
 ---
 
@@ -204,15 +219,20 @@ model: sonnet
 
 **本专家具体产出步骤**：
 1. Write → blackboard/emotion-analysis.md
-2. Read 验证
-3. 发送 TASK_COMPLETE 到 inbox.md，格式如下：
-   ```
-   ## [ISO8601时间] TASK_COMPLETE
-   - **发送者**: design-miner-emotion-analyzer
-   - **目标**: coordinator
-   - **内容**: [一句话描述产出]
-   - **影响模块**: blackboard/emotion-analysis.md
-   ```
+2. Read blackboard/emotion-analysis.md 验证内容正确
+3. 发送 TASK_COMPLETE 事件到 inbox.md（格式见下方）
+4. 返回完成确认
+
+**inbox.md 事件格式**：
+```
+## [ISO8601时间] TASK_COMPLETE
+- **发送者**: design-miner-emotion-analyzer
+- **目标**: coordinator
+- **内容**: [一句话描述产出]
+- **影响模块**: blackboard/emotion-analysis.md
+- **关键章节**: §情感→代码映射 + §情感设计原则提炼（验证时优先读取）
+- **行号证据**: 每个情感标签已附带 `文件:行号` 格式源码证据
+```
 
 ---
 
@@ -249,7 +269,9 @@ prompt: |
 
 ### MCP 授权响应
 
-本专家不使用 MCP 工具，仅使用内置工具（Read/Glob/Grep/Write/Edit/LSP）。无需等待 MCP 授权。
+**CodeGraph 代码分析工具**（🟢 可选级）：
+- 即使 tools: 字段中已声明，仍必须等待协调器在触发指令中明确授权后才能使用
+- 优先使用 LSP 内置工具——CodeGraph 仅在 LSP 无法覆盖的跨文件/跨模块场景中使用
 
 ---
 
@@ -281,4 +303,6 @@ prompt: |
 - **目标**: coordinator
 - **内容**: [一句话描述产出]
 - **影响模块**: blackboard/emotion-analysis.md
+- **关键章节**: §情感→代码映射 + §情感设计原则提炼
+- **行号证据**: 每个情感标签已附带 `文件:行号` 格式源码证据
 ```

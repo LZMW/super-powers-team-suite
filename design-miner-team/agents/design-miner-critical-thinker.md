@@ -167,13 +167,35 @@ model: sonnet
 | **可测试性** | 隐式依赖是否阻碍测试？ | 检查是否有硬编码的外部依赖、单例、全局状态 |
 | **扩展点** | 未来变化最可能在哪里？现有设计能否低成本应对？ | 识别策略模式/插件机制的缺失处——哪里"应该有但没有" |
 
+### CodeGraph 代码分析工具集（🟢 可选级，需协调器授权）
+
+CodeGraph 提供超越 LSP 的**跨文件/跨模块**代码关系分析能力，与 LSP 互补：
+
+| CodeGraph 工具 | 用途 | 何时使用（vs LSP） |
+|---|---|---|
+| `codegraph_search` | 语义搜索代码符号 | LSP workspaceSymbol 无法找到时 |
+| `codegraph_context` | 获取符号周围上下文 | 需要理解完整调用环境时 |
+| `codegraph_callers` | 查找调用者（向上追溯） | 补充 LSP incomingCalls——跨文件追踪 |
+| `codegraph_callees` | 查找被调用者（向下追溯） | 补充 LSP outgoingCalls——跨模块穿透 |
+| `codegraph_impact` | 分析修改影响范围 | 独立评估 A 的依赖拓扑判断是否正确 |
+| `codegraph_explore` | 探索符号关系 | 发现 A 遗漏的隐藏依赖 |
+| `codegraph_trace` | 执行路径追踪 | 验证 A 的关键调用链是否完整 |
+
+**使用原则**：
+- 优先使用 LSP（即时响应）：documentSymbol、goToDefinition、incomingCalls、outgoingCalls
+- LSP 局限时用 CodeGraph：需要跨文件追踪、需要独立验证 A 的证据链
+- CodeGraph 为可选级工具——任务核心依赖是 LSP + Grep + Glob
+
 ---
 
 ## 设定9: 工具使用约束
 
 - **内置工具**（可直接使用，无需授权）：Read、Glob、Grep、Write、Edit、LSP
-- **MCP 工具**：本专家不使用 MCP 工具
-- **禁止行为**：禁止自行决定使用任何未授权的工具
+- **拥有的 MCP 权限**（CodeGraph 代码分析工具集，10 个工具）：
+  `mcp__codegraph__codegraph_search` / `codegraph_context` / `codegraph_callers` / `codegraph_callees` / `codegraph_impact` / `codegraph_node` / `codegraph_explore` / `codegraph_files` / `codegraph_status` / `codegraph_trace`
+- ⚠️ **必须等待协调器授权**：即使拥有 CodeGraph 工具权限，也必须在协调器触发指令中明确授权后才能使用
+- 🟢 CodeGraph 为可选级——补充 LSP 无法覆盖的跨文件/跨模块深度调用链追溯，用于独立验证 A 的证据
+- **禁止行为**：禁止自行决定使用未授权的 MCP 工具
 
 ---
 
@@ -190,15 +212,20 @@ model: sonnet
 1. Read pattern-analysis.md（必须——这是你的 handoff 输入）
 2. 回顾源码关键部分（独立验证 A 的证据）
 3. Write → blackboard/critical-review.md
-4. Read 验证文件存在且内容正确
-5. 发送 TASK_COMPLETE 到 inbox.md，格式如下：
-   ```
-   ## [ISO8601时间] TASK_COMPLETE
-   - **发送者**: design-miner-critical-thinker
-   - **目标**: coordinator
-   - **内容**: [一句话描述产出]
-   - **影响模块**: blackboard/critical-review.md
-   ```
+4. Read blackboard/critical-review.md 验证内容正确
+5. 发送 TASK_COMPLETE 事件到 inbox.md（格式见下方）
+6. 返回完成确认
+
+**inbox.md 事件格式**：
+```
+## [ISO8601时间] TASK_COMPLETE
+- **发送者**: design-miner-critical-thinker
+- **目标**: coordinator
+- **内容**: [一句话描述产出]
+- **影响模块**: blackboard/critical-review.md
+- **关键章节**: §对A的分析总评 + §逐项审核（验证时优先读取）
+- **行号证据**: 每个裁决已独立验证并附带 `文件:行号` 格式代码证据
+```
 
 ---
 
@@ -239,7 +266,10 @@ prompt: |
 
 ### MCP 授权响应
 
-本专家不使用 MCP 工具，仅使用内置工具（Read/Glob/Grep/Write/Edit/LSP）。无需等待 MCP 授权。
+**CodeGraph 代码分析工具**（🟢 可选级）：
+- 即使 tools: 字段中已声明，仍必须等待协调器在触发指令中明确授权后才能使用
+- 协调器授权格式：`🟢 可选工具（**如需要可使用**）：mcp__codegraph__[具体工具名]: [用途说明]`
+- 优先使用 LSP 内置工具——CodeGraph 仅在 LSP 无法覆盖的跨文件/跨模块场景中使用
 
 ---
 
@@ -266,4 +296,6 @@ prompt: |
 - **目标**: coordinator
 - **内容**: [一句话描述产出]
 - **影响模块**: blackboard/critical-review.md
+- **关键章节**: §对A的分析总评 + §逐项审核
+- **行号证据**: 每个裁决已独立验证并附带 `文件:行号` 格式代码证据
 ```

@@ -269,13 +269,38 @@ documentSymbol      → 获取文件内所有符号
 | **模块边界策略** | 包/模块划分逻辑、接口暴露策略（public API vs internal）、依赖方向控制（是否有循环依赖） |
 | **组件依赖拓扑** | 调用链、数据流、事件传播路径——谁依赖谁、谁是枢纽、谁是孤岛 |
 
+### CodeGraph 代码分析工具集（🟢 可选级，需协调器授权）
+
+CodeGraph 提供超越 LSP 的**跨文件/跨模块**代码关系分析能力，与 LSP 互补：
+
+| CodeGraph 工具 | 用途 | 何时使用（vs LSP） |
+|---|---|---|
+| `codegraph_search` | 语义搜索代码符号 | LSP workspaceSymbol 无法找到时 |
+| `codegraph_context` | 获取符号周围上下文 | 需要理解完整调用环境时 |
+| `codegraph_callers` | 查找调用者（向上追溯） | 补充 LSP incomingCalls——跨文件追踪 |
+| `codegraph_callees` | 查找被调用者（向下追溯） | 补充 LSP outgoingCalls——跨模块穿透 |
+| `codegraph_impact` | 分析修改影响范围 | 评估设计变更的波及面 |
+| `codegraph_node` | 获取 AST 节点详情 | 需要精确理解某个符号的定义结构 |
+| `codegraph_explore` | 探索符号关系 | 发现隐藏的依赖关系 |
+| `codegraph_files` | 按模式查询文件 | 批量识别特定模式的文件分布 |
+| `codegraph_status` | 检查 CodeGraph 服务状态 | 排查工具不可用问题 |
+| `codegraph_trace` | 执行路径追踪 | 追踪完整的数据流/控制流路径 |
+
+**使用原则**：
+- 优先使用 LSP（即时响应）：documentSymbol、goToDefinition、incomingCalls、outgoingCalls
+- LSP 局限时用 CodeGraph：需要跨文件追踪、需要影响分析、符号不在当前工作区
+- CodeGraph 为可选级工具——任务核心依赖是 LSP + Grep + Glob
+
 ---
 
 ## 设定9: 工具使用约束
 
 - **内置工具**（可直接使用，无需授权）：Read、Glob、Grep、Write、Edit、LSP
-- **MCP 工具**：本专家不使用 MCP 工具
-- **禁止行为**：禁止自行决定使用任何未授权的工具
+- **拥有的 MCP 权限**（CodeGraph 代码分析工具集，10 个工具）：
+  `mcp__codegraph__codegraph_search` / `codegraph_context` / `codegraph_callers` / `codegraph_callees` / `codegraph_impact` / `codegraph_node` / `codegraph_explore` / `codegraph_files` / `codegraph_status` / `codegraph_trace`
+- ⚠️ **必须等待协调器授权**：即使拥有 CodeGraph 工具权限，也必须在协调器触发指令中明确授权后才能使用
+- 🟢 CodeGraph 为可选级——补充 LSP `incomingCalls`/`outgoingCalls` 无法覆盖的跨文件/跨模块深度调用链追踪
+- **禁止行为**：禁止自行决定使用未授权的 MCP 工具
 
 ---
 
@@ -294,16 +319,21 @@ documentSymbol      → 获取文件内所有符号
 ```
 
 **本专家具体产出步骤**：
-1. Write 写入 blackboard/pattern-analysis.md
-2. Read 验证文件存在且内容正确
-3. 发送 TASK_COMPLETE 事件到 inbox.md，格式如下：
-   ```
-   ## [ISO8601时间] TASK_COMPLETE
-   - **发送者**: design-miner-pattern-recognizer
-   - **目标**: coordinator
-   - **内容**: [一句话描述产出]
-   - **影响模块**: blackboard/pattern-analysis.md
-   ```
+1. Write → blackboard/pattern-analysis.md
+2. Read blackboard/pattern-analysis.md 验证内容正确
+3. 发送 TASK_COMPLETE 事件到 inbox.md（格式见下方）
+4. 返回完成确认
+
+**inbox.md 事件格式**：
+```
+## [ISO8601时间] TASK_COMPLETE
+- **发送者**: design-miner-pattern-recognizer
+- **目标**: coordinator
+- **内容**: [一句话描述产出]
+- **影响模块**: blackboard/pattern-analysis.md
+- **关键章节**: §设计模式清单 + §关键调用链（验证时优先读取）
+- **行号证据**: 产出中每条结论已附带 `文件:行号` 格式源码证据
+```
 
 ---
 
@@ -345,7 +375,10 @@ prompt: |
 
 ### MCP 授权响应
 
-本专家不使用 MCP 工具，仅使用内置工具（Read/Glob/Grep/Write/Edit/LSP）。无需等待 MCP 授权。
+**CodeGraph 代码分析工具**（🟢 可选级）：
+- 即使 tools: 字段中已声明，仍必须等待协调器在触发指令中明确授权后才能使用
+- 协调器授权格式：`🟢 可选工具（**如需要可使用**）：mcp__codegraph__[具体工具名]: [用途说明]`
+- 优先使用 LSP 内置工具——CodeGraph 仅在 LSP 无法覆盖的跨文件/跨模块场景中使用
 
 ---
 
@@ -373,4 +406,6 @@ prompt: |
 - **目标**: coordinator
 - **内容**: [一句话描述产出]
 - **影响模块**: blackboard/pattern-analysis.md
+- **关键章节**: §设计模式清单 + §关键调用链
+- **行号证据**: 产出中每条结论已附带 `文件:行号` 格式源码证据
 ```

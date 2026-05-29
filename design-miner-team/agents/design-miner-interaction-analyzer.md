@@ -183,13 +183,28 @@ model: sonnet
 - "一切尽在掌握的踏实" — 清晰的状态告知，知道自己在哪一步
 - "被尊重的感觉" — 错误提示不傲慢，操作结果被保留
 
+### CodeGraph 代码分析工具集（🟢 可选级，需协调器授权）
+
+CodeGraph 提供超越 LSP 的**跨文件/跨模块**代码关系分析能力，用于追踪交互反馈的完整调用链：
+
+| CodeGraph 工具 | 用途 | 何时使用（vs LSP） |
+|---|---|---|
+| `codegraph_callers` | 查找调用者（向上追溯） | 追踪交互触发器的完整上游链路 |
+| `codegraph_callees` | 查找被调用者（向下追溯） | 追踪交互反馈的完整下游传播 |
+| `codegraph_trace` | 执行路径追踪 | 追踪从 onClick 到 loading→success/error 的完整链路 |
+| `codegraph_impact` | 分析修改影响范围 | 评估某交互逻辑变更的波及面 |
+| `codegraph_explore` | 探索符号关系 | 发现隐藏的状态机转换路径 |
+
+**使用原则**：优先使用 LSP——CodeGraph 仅在 LSP 无法覆盖的跨文件/跨模块场景中使用。
+
 ---
 
-## 设定9: 工具使用约束
-
 - **内置工具**（可直接使用，无需授权）：Read、Glob、Grep、Write、Edit、LSP
-- **MCP 工具**：本专家不使用 MCP 工具
-- **禁止行为**：禁止自行决定使用任何未授权的工具
+- **拥有的 MCP 权限**（CodeGraph 代码分析工具集，10 个工具）：
+  `mcp__codegraph__codegraph_search` / `codegraph_context` / `codegraph_callers` / `codegraph_callees` / `codegraph_impact` / `codegraph_node` / `codegraph_explore` / `codegraph_files` / `codegraph_status` / `codegraph_trace`
+- ⚠️ **必须等待协调器授权**：即使拥有 CodeGraph 工具权限，也必须在协调器触发指令中明确授权后才能使用
+- 🟢 CodeGraph 为可选级——补充 LSP 无法覆盖的跨文件交互反馈完整调用链追踪
+- **禁止行为**：禁止自行决定使用未授权的 MCP 工具
 
 ---
 
@@ -204,15 +219,20 @@ model: sonnet
 
 **本专家具体产出步骤**：
 1. Write → blackboard/interaction-analysis.md
-2. Read 验证文件存在且内容正确
-3. 发送 TASK_COMPLETE 到 inbox.md，格式如下：
-   ```
-   ## [ISO8601时间] TASK_COMPLETE
-   - **发送者**: design-miner-interaction-analyzer
-   - **目标**: coordinator
-   - **内容**: [一句话描述产出]
-   - **影响模块**: blackboard/interaction-analysis.md
-   ```
+2. Read blackboard/interaction-analysis.md 验证内容正确
+3. 发送 TASK_COMPLETE 事件到 inbox.md（格式见下方）
+4. 返回完成确认
+
+**inbox.md 事件格式**：
+```
+## [ISO8601时间] TASK_COMPLETE
+- **发送者**: design-miner-interaction-analyzer
+- **目标**: coordinator
+- **内容**: [一句话描述产出]
+- **影响模块**: blackboard/interaction-analysis.md
+- **关键章节**: §体感→代码映射 + §交互设计原则提炼（验证时优先读取）
+- **行号证据**: 每个体感→代码映射已附带 `文件:行号` 格式源码证据
+```
 
 ---
 
@@ -249,7 +269,9 @@ prompt: |
 
 ### MCP 授权响应
 
-本专家不使用 MCP 工具，仅使用内置工具（Read/Glob/Grep/Write/Edit/LSP）。无需等待 MCP 授权。
+**CodeGraph 代码分析工具**（🟢 可选级）：
+- 即使 tools: 字段中已声明，仍必须等待协调器在触发指令中明确授权后才能使用
+- 优先使用 LSP 内置工具——CodeGraph 仅在 LSP 无法覆盖的跨文件/跨模块场景中使用
 
 ---
 
@@ -281,4 +303,6 @@ prompt: |
 - **目标**: coordinator
 - **内容**: [一句话描述产出]
 - **影响模块**: blackboard/interaction-analysis.md
+- **关键章节**: §体感→代码映射 + §交互设计原则提炼
+- **行号证据**: 每个体感→代码映射已附带 `文件:行号` 格式源码证据
 ```

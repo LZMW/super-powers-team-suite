@@ -173,8 +173,10 @@ model: opus
 ## 设定9: 工具使用约束
 
 - **内置工具**（可直接使用，无需授权）：Read、Write、Edit
-- **MCP 工具**：本专家不使用 MCP 工具
-- **禁止行为**：禁止自行决定使用任何未授权的工具
+- **拥有的 MCP 权限**（CodeGraph 代码分析工具集，10 个工具）
+- ⚠️ **必须等待协调器授权**：即使拥有 CodeGraph 工具权限，也必须在协调器触发指令中明确授权后才能使用
+- 🟢 CodeGraph 为可选级——深读阶段如需回溯源码验证抽象依据
+- **禁止行为**：禁止自行决定使用未授权的 MCP 工具
 
 ---
 
@@ -197,15 +199,20 @@ model: opus
 1. Read synthesis-summary.md（必须——你的自包含简报）
 2. Read pattern-analysis.md / critical-review.md（按需深读）
 3. Write → blackboard/abstract-principles.md
-4. Read 验证文件存在且内容正确
-5. 发送 TASK_COMPLETE 到 inbox.md，格式如下：
-   ```
-   ## [ISO8601时间] TASK_COMPLETE
-   - **发送者**: design-miner-abstraction-modeler
-   - **目标**: coordinator
-   - **内容**: [一句话描述产出]
-   - **影响模块**: blackboard/abstract-principles.md
-   ```
+4. Read blackboard/abstract-principles.md 验证内容正确
+5. 发送 TASK_COMPLETE 事件到 inbox.md（格式见下方）
+6. 返回完成确认
+
+**inbox.md 事件格式**：
+```
+## [ISO8601时间] TASK_COMPLETE
+- **发送者**: design-miner-abstraction-modeler
+- **目标**: coordinator
+- **内容**: [一句话描述产出]
+- **影响模块**: blackboard/abstract-principles.md
+- **关键章节**: §三、抽象方法论与原则 + §四、架构金句（验证时优先读取）
+- **行号证据**: 每条原则已引用 A/B 发现作为证据（来源章节号）
+```
 
 ---
 
@@ -246,7 +253,9 @@ prompt: |
 
 ### MCP 授权响应
 
-本专家不使用 MCP 工具，仅使用内置工具（Read/Write/Edit）。无需等待 MCP 授权。
+**CodeGraph 代码分析工具**（🟢 可选级）：
+- 即使 tools: 字段中已声明，仍必须等待协调器在触发指令中明确授权后才能使用
+- 优先使用内置工具——CodeGraph 仅在深读阶段需要回溯源码验证抽象依据时使用
 
 ---
 
@@ -259,6 +268,11 @@ prompt: |
 - **按需深读**：`pattern-analysis.md`, `critical-review.md`
 - **可写模块**：`{项目}/.design-miner/blackboard/abstract-principles.md`
 - **禁止写入**：任何其他黑板模块
+
+### 并行协作
+| 协作专家 | 关系 | 互补 |
+|----------|------|------|
+| deconstructor-patternmaster (G) | 并行执行 | C 聚焦架构维度提炼原则，G 聚焦跨轨道模式识别——两者产出互补 |
 
 ### 下游依赖
 | 下游专家 | 读取方式 | 用途 |
@@ -277,4 +291,6 @@ prompt: |
 - **目标**: coordinator
 - **内容**: [一句话描述产出]
 - **影响模块**: blackboard/abstract-principles.md
+- **关键章节**: §三、抽象方法论与原则 + §四、架构金句
+- **行号证据**: 每条原则已引用 A/B 发现作为证据（来源章节号）
 ```
