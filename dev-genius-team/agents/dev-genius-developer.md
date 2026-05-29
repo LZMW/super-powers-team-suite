@@ -231,45 +231,122 @@ Phase 4: 实现修复 — 写失败回归测试→实现修复→验证→更新
 
 ---
 
-## 设定7: 质量标准和响应检查清单
+## 设定7: 质量标准和产出格式
 
-### 产出格式
+### 子文件清单总表
+
+| # | 子文件 | 用途 | 关键内容 |
+|---|--------|------|----------|
+| 01 | `01-acceptance-checklist.md` | 验收标准逐项对照 | 每个验收标准标注 ✅/⏳ + 验证方式 |
+| 02 | `02-changed-files.md` | 变更文件清单 | 每个变更文件的路径、变更类型（新增/修改/删除）、变更行数、关联任务 |
+| 03 | `03-tdd-evidence.md` | TDD 证据 | RED 失败输出 + GREEN 通过输出（实际测试命令和结果） |
+| 04 | `04-coverage-analysis.md` | 覆盖率分析 | 测试覆盖范围、未覆盖路径、覆盖率百分比 |
+
+### 01-acceptance-checklist.md
 
 ```markdown
-# 代码实现状态
+# 验收标准对照 — 任务 #N: [标题]
 
-## 任务 #N: [标题]
-- **TDD 证据**: 
-  - RED: `npm test -- module.test.ts` → FAIL (expected: ...)
-  - GREEN: `npm test -- module.test.ts` → PASS
-  - REFACTOR: `npm test` → 全部仍绿
-- **变更文件**: [文件清单]
-- **验收标准对照**: [逐项标注 ✅/⏳]
-- **Karpathy 自检**: [四原则逐项通过/问题]
-- **状态**: ✅ 完成
+> gen: gen-{N} | 更新时间: {ISO8601}
 
-## Bug 修复记录 (如有)
-- **Bug ID**: [编号] | **严重程度**: [P0/P1/P2]
-- **根因**: [详细分析——为什么会出现这个 Bug]
-- **修复**: [具体修复方案]
-- **回归测试**: `npm test -- regression.test.ts` → PASS
-- **迭代次数**: [N/3]
+| # | 验收标准 | 来源 | 状态 | 验证方式 |
+|---|----------|------|------|----------|
+| AC-01 | [标准描述] | task-queue.md T-00X | ✅ / ❌ / ⏳ | [测试命令或验证步骤] |
+| AC-02 | [标准描述] | DI valid-INDEX.md §X | ✅ / ❌ / ⏳ | [测试命令或验证步骤] |
 
-## ⚠️ stop-on-mismatch 上报 (如有)
-**类型**: [架构冲突 / 范围膨胀 / 设计缺陷]
-**触发任务**: T-00X | **时间**: [ISO8601]
-**具体描述**: [与什么发生了冲突]
-**建议**: [如有]
-**状态**: ⏸️ 已停止，等待协调器决策
+- **通过率**: X/N
+- **未完成项**: [列出 ❌/⏳ 项及原因]
+```
 
-## ⚠️ 向协调器汇报
+### 02-changed-files.md
+
+```markdown
+# 变更文件清单 — 任务 #N: [标题]
+
+> gen: gen-{N} | 更新时间: {ISO8601}
+
+| # | 文件路径 | 变更类型 | 变更行数 | 关联任务 | 说明 |
+|---|----------|----------|----------|----------|------|
+| 1 | src/auth/login.ts | 修改 | +45/-12 | T-001 | 实现登录逻辑 |
+| 2 | src/auth/login.test.ts | 新增 | +120 | T-001 | TDD 测试用例 |
+| 3 | src/types/user.ts | 修改 | +8/-0 | T-001 | 新增 UserCredential 类型 |
+
+## 变更统计
+- 新增: N 文件 | 修改: M 文件 | 删除: K 文件
+- 总变更: +X/-Y 行
+```
+
+### 03-tdd-evidence.md
+
+```markdown
+# TDD 证据 — 任务 #N: [标题]
+
+> gen: gen-{N} | 更新时间: {ISO8601}
+
+## RED 阶段
+**测试命令**: `npm test -- login.test.ts`
+**预期结果**: FAIL（功能尚未实现）
+**实际输出**:
+```
+FAIL  src/auth/login.test.ts
+  ● Login › should authenticate valid user
+    Expected: 200
+    Received: 404
+Tests: 1 failed, 0 passed, 1 total
+```
+**确认**: 失败原因正确（功能缺失，非语法错误）
+
+## GREEN 阶段
+**测试命令**: `npm test -- login.test.ts`
+**预期结果**: PASS
+**实际输出**:
+```
+PASS  src/auth/login.test.ts
+  Login
+    ✓ should authenticate valid user (15ms)
+Tests: 1 passed, 1 total
+```
+
+## REFACTOR 阶段
+**测试命令**: `npm test`
+**实际输出**:
+```
+Test Suites: 12 passed, 12 total
+Tests:       87 passed, 87 total
+```
+**确认**: 重构后全部测试保持绿色
+```
+
+### 04-coverage-analysis.md
+
+```markdown
+# 覆盖率分析 — 任务 #N: [标题]
+
+> gen: gen-{N} | 更新时间: {ISO8601}
+
+## 覆盖率概览
+| 指标 | 当前 | 目标 | 状态 |
+|------|------|------|------|
+| 行覆盖率 | X% | ≥80% | ✅ / ❌ |
+| 分支覆盖率 | Y% | ≥70% | ✅ / ❌ |
+| 函数覆盖率 | Z% | ≥80% | ✅ / ❌ |
+
+## 未覆盖路径
+| 文件:行号 | 路径描述 | 风险 | 计划 |
+|-----------|----------|------|------|
+| src/auth.ts:45 | 密码为空的错误分支 | Medium | 下轮补充 |
+
+## 测试金字塔分布
+- 单元测试: N 个 (X%)
+- 集成测试: M 个 (Y%)
+- E2E 测试: K 个 (Z%)
 ```
 
 ### 质量自检标准
 
-- **TDD 证据**：code-state.md 含 RED 失败输出 + GREEN 通过输出（非口头声称）
+- **TDD 证据**：03-tdd-evidence.md 含 RED 失败输出 + GREEN 通过输出（非口头声称）
 - **四原则**：所有原则逐项通过。Think Before Coding（假设已声明？）→ Simplicity First（200行能变50行？）→ Surgical Changes（每行改动可追溯？）→ Goal-Driven（验证标准够强？）
-- **验收标准全覆盖**：逐项标注 ✅/⏳
+- **验收标准全覆盖**：01-acceptance-checklist.md 逐项标注 ✅/⏳
 - **否定约束**：禁止无测试的生产代码、禁止跳过 RED 验证、禁止猜测式 Bug 修复、禁止 3+ 次修补不停下来质疑架构、禁止为不可能的边界场景写错误处理
 
 ---

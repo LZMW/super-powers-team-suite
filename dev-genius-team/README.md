@@ -1,6 +1,6 @@
-# Dev-Genius (开发天才) 团队 v3.0
+# Dev-Genius (开发天才) 团队 v3.1
 
-> **一句话**：黑板型 + 七道强制门控 + F 双阶段源码扫描 + Superpowers + OpenSpec 方法论注入，从设计规格到可交付软件的全自动开发流水线。Architect 和 QA Tester 是每任务必经门控。
+> **一句话**：黑板型 + 七道强制门控（含 Gate 2b 文档验证）+ F 双阶段源码扫描 + Superpowers + OpenSpec 方法论注入，从设计规格到可交付软件的全自动开发流水线。Architect 和 QA Tester 是每任务必经门控。
 
 ## v2.2 核心变化（Architect + QA Tester 强制门控）
 
@@ -33,7 +33,7 @@ design-miner-team (上游, 分析参考源码)
 design-interrogator-team (上游, Phase 0-12 统一设计审问)
     产出: .di/phases/07_documentation/ 七份规格文档
     ↓
-dev-genius-team v2.3 (本团队, 5人, 黑板型)
+dev-genius-team v3.1 (本团队, 7人, 黑板型)
     产出: 可交付软件产品
 ```
 
@@ -45,6 +45,9 @@ dev-genius-team v2.3 (本团队, 5人, 黑板型)
     ↓
 🚪 Gate 2: Architecture Gate
     Architect → architecture.md（三级响应：完整架构/影响评估/架构签批）
+    ↓
+🚪 Gate 2b: Doc-Validate Gate
+    Doc-Validator → 架构文档与 DI 规格一致性校验 + 接口契约验证 + ADR 追溯
     ↓
 🚪 Gate 3: TDD Gate (test-driven-development)
     Developer → RED→GREEN→REFACTOR（无失败测试先行=任务失败）
@@ -65,10 +68,11 @@ dev-genius-team v2.3 (本团队, 5人, 黑板型)
 |---|------|------|------|------|
 | 1 | planner | 任务规划师 | 🚪 Gate 1 | Sonnet |
 | 2 | architect | 架构实施师 | 🚪 Gate 2 必经 | Sonnet |
-| 3 | developer | 开发工程师 | 🚪 Gate 3 | Sonnet |
-| 4 | qa-tester | 测试工程师 | 🚪 Gate 4 必经 | Sonnet |
-| 5 | analyst | 代码审查师 | 🚪 Gate 5+6 | Sonnet |
-| 6 | codebase-analyst | 源码状态分析师 | 🚪 Gate 0+6（双阶段） | Sonnet |
+| 3 | doc-validator | 文档验证师 | 🚪 Gate 2b | Sonnet |
+| 4 | developer | 开发工程师 | 🚪 Gate 3 | Sonnet |
+| 5 | qa-tester | 测试工程师 | 🚪 Gate 4 必经 | Sonnet |
+| 6 | analyst | 代码审查师 | 🚪 Gate 5+6 | Sonnet |
+| 7 | codebase-analyst | 源码状态分析师 | 🚪 Gate 0+6（双阶段） | Sonnet |
 
 ## 黑板结构
 
@@ -89,6 +93,7 @@ dev-genius-team v2.3 (本团队, 5人, 黑板型)
 |-------|---------|---------|
 | **planner** | writing-plans | 禁止 TODO/TBD、任务原子/独立/可验证、自审检查清单、架构复杂度标注 |
 | **architect** | — | 三级响应（完整架构/影响评估/架构签批）、架构冲突回退 |
+| **doc-validator** | — | 架构文档与 DI 规格一致性校验、接口契约验证、ADR 可追溯性 |
 | **developer** | test-driven-development | RED-GREEN-REFACTOR 铁律、无失败测试=删除重来 |
 | **developer** | systematic-debugging | 四阶段调试、根因分析先于修复、3+ 失败质疑架构 |
 | **developer** | openspec change-implementation | stop-on-mismatch、no-silent-scope-expansion |
@@ -116,10 +121,18 @@ dev-genius-team v2.3 (本团队, 5人, 黑板型)
 
 ---
 
-**版本**: v2.3
-**更新日期**: 2026-05-26
+**版本**: v3.1
+**更新日期**: 2026-05-29
 
 ## 更新日志
+
+### v3.1 (2026-05-29)
+- 🆕 **Doc-Validator (L) 专家**：新增 Gate 2b 文档验证门控，Architect 产出后校验架构文档与 DI 规格一致性、接口契约完整性和 ADR 可追溯性
+- 🆕 **黑板文件夹扩展**：新增 doc-state/（Doc-Validator 专属），黑板从 7 文件夹扩展到 8 文件夹
+- 🆕 **architecture/ 领域分类**：architecture/ 按 style/modules/contracts/decisions/signoffs 领域分类
+- 🆕 **task-queue/ 类型分类**：task-queue/ 按 features/bugfixes/refactors/infrastructure/dependencies 类型分类
+- 🆕 **Agent 设定7 精修**：4 个 Agent（codebase-analyst/developer/qa-tester/analyst）设定7 升级为子文件清单总表 + 每子文件 mini-模板格式
+- 📝 **版本号**：v3.0 → v3.1
 
 ### v2.3 (2026-05-26)
 - 🔴 **编号体系统一**：消除 Step 前缀 + .5 小数，Gate 1-6 纯整数。Gate 是三团队唯一前缀（DM=Stage，DI=Phase）

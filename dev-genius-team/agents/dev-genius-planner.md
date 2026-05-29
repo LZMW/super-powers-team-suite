@@ -203,16 +203,67 @@ design-interrogator-team 是统一上游，产出目录 `.di/phases/07_documenta
 
 ## 设定7: 质量标准和响应检查清单
 
-### 任务队列模板
+### 子文件清单总表
+
+> task-queue/ 是**累积文件夹**——支持增量追加。每次 Gate 1 触发时追加新任务到对应分类子文件，新 gen 内容在前，旧 gen 标 STALE 在后。通过 task-INDEX.md 统一索引。
+
+```
+task-queue/
+├── task-INDEX.md                                    ← 子索引（含所有子文件入口总表）
+├── features/features-INDEX.md + T-NNN-xxx.md        ← 新功能任务
+├── bugfixes/bugfixes-INDEX.md + T-NNN-xxx.md        ← Bug 修复任务
+├── refactors/refactors-INDEX.md + T-NNN-xxx.md      ← 重构任务
+├── infrastructure/infra-INDEX.md + T-NNN-xxx.md     ← 基础设施任务
+└── dependencies/deps-INDEX.md + dep-graph.md        ← 依赖关系图
+```
+
+---
+
+### task-INDEX.md 格式模板
 
 ```markdown
-# 开发任务队列
+# 任务队列索引
 
-## 📊 总览
+## 总览
 - 总任务数: N | 预估总工时: X | 当前状态: 待执行
+- 新功能: N | Bug修复: N | 重构: N | 基础设施: N
 
-## 📋 任务清单
-### T-001: [任务标题]
+## 子文件夹入口
+| 文件夹 | INDEX | 说明 |
+|--------|-------|------|
+| features/ | features/features-INDEX.md | 新功能任务——T-NNN 格式 |
+| bugfixes/ | bugfixes/bugfixes-INDEX.md | Bug 修复任务——T-NNN 格式 |
+| refactors/ | refactors/refactors-INDEX.md | 重构任务——T-NNN 格式 |
+| infrastructure/ | infrastructure/infra-INDEX.md | 基础设施任务——T-NNN 格式 |
+| dependencies/ | dependencies/deps-INDEX.md | 依赖关系图 + 关键路径 |
+```
+
+---
+
+### features/ (新功能任务) mini-模板
+
+**features-INDEX.md**：
+```markdown
+# 新功能任务 — 索引
+
+## 子文件清单
+| 文件 | 任务标题 | 复杂度 | 架构复杂度 | 依赖 | 状态 |
+|------|----------|--------|------------|------|------|
+| T-001-xxx.md | [任务标题] | M | 影响评估 | 无 | ⏳ 待开始 |
+| T-002-xxx.md | [任务标题] | L | 完整架构 | T-001 | ⏳ 待开始 |
+```
+
+**T-NNN-xxx.md — 统一任务文件格式**（gen 增量追加结构——新 gen 在前，STALE 在后）：
+
+```markdown
+# T-00X: [任务标题]
+
+## Agent
+- **分类**: [新功能/Bug修复/重构/基础设施]
+- **规划者**: dev-genius-planner
+- **创建日期**: [ISO8601]
+
+## Task
 - **文件**:
   - Create: `exact/path/to/new-file.ts`
   - Modify: `exact/path/to/existing.ts:42-58`
@@ -223,25 +274,143 @@ design-interrogator-team 是统一上游，产出目录 `.di/phases/07_documenta
   - [ ] Step 3: [单一操作] → verify: `[检查命令 + 预期输出]`
   - [ ] Step 4: Commit
 - **依赖**: [前置任务 ID 或无]
-- **验收标准**: [引用 VALIDATION_PLAN.md，每项可执行验证]
 - **复杂度**: [S/M/L/XL]
-- **架构复杂度**: [完整架构/影响评估/架构签批] — 指导 Architect Gate 2 响应级别
+- **验收标准**: [引用 VALIDATION_PLAN.md，每项可执行验证——🛑 禁止任务无验收标准]
+  - ✅ 验收1: [具体检查命令 + 预期输出]
+  - ✅ 验收2: [具体检查命令 + 预期输出]
+
+## 架构复杂度
+- **级别**: [完整架构/影响评估/架构签批] — 指导 Architect Gate 2 响应级别
 - **来源**: [对应的上游规格文档章节]
+
+## Status
 - **状态**: ⏳ 待开始
+- **完成进度**: 0/4 steps
+
+## Gen 记录（增量追加——新 gen 在前，旧 gen 标 STALE 在后）
+
+### gen-2 — [日期]
+[当前任务内容——gen-2 是对 gen-1 的调整/细化/补充]
+
+> ⚠️ [STALE — gen-1] 以下为旧版内容，已被 gen-2 取代，仅保留供参考追溯。
+
+### gen-1 — [日期]
+[原始任务内容——已被 gen-2 取代]
+```
+
+> 🔴 **增量追加规则**：同一任务的多次规划（gen-1, gen-2...）写入**同一文件**，新 gen 追加在文件最前（顶部），旧 gen 标 STALE 沉底。🛑 禁止覆盖旧任务——旧 gen 内容必须保留供追溯。
+
+---
+
+### bugfixes/ (Bug 修复任务) mini-模板
+
+**bugfixes-INDEX.md**：
+```markdown
+# Bug 修复任务 — 索引
+
+## 子文件清单
+| 文件 | 任务标题 | 复杂度 | 架构复杂度 | Bug 来源 | 状态 |
+|------|----------|--------|------------|----------|------|
+| T-003-xxx.md | [任务标题] | S | 架构签批 | T-001 | ⏳ 待开始 |
+```
+
+**T-NNN-xxx.md**：使用与 features/ 相同的统一任务文件格式（见上方）。
+
+---
+
+### refactors/ (重构任务) mini-模板
+
+**refactors-INDEX.md**：
+```markdown
+# 重构任务 — 索引
+
+## 子文件清单
+| 文件 | 任务标题 | 复杂度 | 架构复杂度 | 重构原因 | 状态 |
+|------|----------|--------|------------|----------|------|
+| T-004-xxx.md | [任务标题] | L | 影响评估 | [原因] | ⏳ 待开始 |
+```
+
+**T-NNN-xxx.md**：使用与 features/ 相同的统一任务文件格式（见上方）。
+
+---
+
+### infrastructure/ (基础设施任务) mini-模板
+
+**infrastructure/infra-INDEX.md**：
+```markdown
+# 基础设施任务 — 索引
+
+## 子文件清单
+| 文件 | 任务标题 | 复杂度 | 架构复杂度 | 影响范围 | 状态 |
+|------|----------|--------|------------|----------|------|
+| T-005-xxx.md | [任务标题] | XL | 完整架构 | 全项目 | ⏳ 待开始 |
+```
+
+**T-NNN-xxx.md**：使用与 features/ 相同的统一任务文件格式（见上方）。
+
+---
+
+### dependencies/ (依赖关系图) mini-模板
+
+**dependencies/deps-INDEX.md**：
+```markdown
+# 依赖关系 — 索引
+
+## 子文件清单
+- dep-graph.md — 全局依赖关系图 + 关键路径
+```
+
+**dependencies/dep-graph.md**：
+```markdown
+# 依赖关系图
+
+## 全局依赖 DAG
+```mermaid
+graph TD
+  T-001[T-001: 模块A] --> T-002[T-002: 模块B]
+  T-001 --> T-003[T-003: 模块C]
+  T-002 --> T-004[T-004: 模块D]
+```
+
+## 依赖矩阵
+| 任务 | 依赖 | 被依赖 | 可并行 |
+|------|------|--------|--------|
+| T-001 | 无 | T-002, T-003 | — |
+| T-002 | T-001 | T-004 | T-003 |
+| T-003 | T-001 | 无 | T-002 |
 
 ## 📈 关键路径
-[关键路径上的任务序列——标注为什么是关键路径]
+- **路径**: T-001 → T-002 → T-004
+- **路径长度**: 3 任务
+- **瓶颈任务**: T-002 [原因说明]
+- **总预估工时**: X 小时
 
-## ⚠️ 向协调器汇报
+## 🔴 循环依赖检查
+- [ ] 无循环依赖——🛑 禁止循环依赖
 ```
+
+---
+
+### Guardrails 🔴
+
+| Guardrail | 说明 |
+|-----------|------|
+| **禁止覆盖旧任务** | 同一任务的 gen-N 追加写入同一文件，旧 gen 标 STALE 保留——不得覆盖或删除旧内容 |
+| **禁止任务无验收标准** | 每个任务的「验收标准」字段必须包含至少 1 条可执行验证命令 + 预期输出 |
+| **禁止循环依赖** | dep-graph.md 必须执行循环依赖检查，任何发现的循环必须标注并向协调器汇报 |
+| **禁止模糊描述** | 禁止 TODO、TBD、占位符、"适当处理"、"后续再定"等模糊描述（延续 writing-plans 铁律） |
+
+---
 
 ### 质量自检标准
 
-- **完整性**：规格文档的每个模块/接口有对应任务
+- **完整性**：规格文档的每个模块/接口有对应任务，各分类 INDEX 含完整子文件清单
+- **分类正确**：每个任务归入正确的分类文件夹（features/bugfixes/refactors/infrastructure）
 - **可执行性**：开发人员读完任务描述能直接开工，不需要回头查设计文档
-- **可验证性**：每个任务有具体的验收标准（非"功能正常"类笼统描述）
-- **依赖正确**：无循环依赖，依赖关系准确
-- **否定约束**：禁止模糊描述、禁止 TODO/TBD、禁止循环依赖、禁止缺少来源引用
+- **可验证性**：每个任务有具体的验收标准（非"功能正常"类笼统描述），每个步骤有 verify 检查点
+- **依赖正确**：无循环依赖，dep-graph.md 含依赖矩阵和关键路径
+- **增量安全**：新 gen 追加在前，旧 gen 标 STALE 在后，不覆盖不删除
+- **否定约束**：禁止模糊描述、禁止 TODO/TBD、禁止循环依赖、禁止缺少来源引用、禁止覆盖旧任务、禁止任务无验收标准
 
 ---
 
@@ -289,13 +458,17 @@ design-interrogator-team 是统一上游，产出目录 `.di/phases/07_documenta
 ```
 
 **本专家具体产出步骤**：
-1. Write → blackboard/task-queue/01-task-breakdown.md（§任务分解）
-2. Write → blackboard/task-queue/02-dependencies.md（§依赖关系）
-3. Write → blackboard/task-queue/03-milestones.md（§里程碑）
-4. Write → blackboard/task-queue/task-INDEX.md（子索引，含各子文件入口）
-5. Read 验证上述全部文件内容正确
-6. 发送 [EVENT] 到 inbox.md（格式见下方）
-7. 返回完成确认
+1. 按分类 Write → blackboard/task-queue/features/features-INDEX.md + T-NNN-xxx.md（§新功能任务——增量追加，新 gen 在前，旧 gen STALE 在后）
+2. 按分类 Write → blackboard/task-queue/bugfixes/bugfixes-INDEX.md + T-NNN-xxx.md（§Bug 修复任务——同上增量追加）
+3. 按分类 Write → blackboard/task-queue/refactors/refactors-INDEX.md + T-NNN-xxx.md（§重构任务——同上增量追加）
+4. 按分类 Write → blackboard/task-queue/infrastructure/infra-INDEX.md + T-NNN-xxx.md（§基础设施任务——同上增量追加）
+5. Write → blackboard/task-queue/dependencies/deps-INDEX.md + dep-graph.md（§依赖关系图 + 关键路径 + 循环依赖检查）
+6. Write → blackboard/task-queue/task-INDEX.md（子索引，含各子文件夹入口总表）
+7. Read 验证上述全部文件内容正确
+8. 发送 [EVENT] 到 inbox.md（格式见下方）
+9. 返回完成确认
+
+> 🔴 **增量追加说明**：同一分类下已存在的 T-NNN-xxx.md 文件不得覆盖。如需更新，新 gen 追加在文件顶部，旧 gen 标 `> ⚠️ [STALE — gen-N]` 沉底。新任务写新文件。
 
 **inbox.md 事件格式**：
 ```
@@ -304,10 +477,10 @@ design-interrogator-team 是统一上游，产出目录 `.di/phases/07_documenta
 - **目标**: coordinator
 - **内容**: [一句话描述产出]
 - **影响文件夹**: blackboard/task-queue/
-- **受影响子文件**: 01-task-breakdown.md, 02-dependencies.md, 03-milestones.md
+- **受影响子文件夹**: features/, bugfixes/, refactors/, infrastructure/, dependencies/（按实际产出列出）
 - **子索引**: task-queue/task-INDEX.md（已更新）
 - **gen**: gen-1
-- **关键章节**: 01-task-breakdown.md §任务分解 + 02-dependencies.md §依赖关系（验证时优先读取）
+- **关键章节**: features/ §新功能任务 + dependencies/ §依赖关系图（验证时优先读取）
 ```
 
 ---
@@ -358,10 +531,17 @@ prompt: |
 
 ### 黑板读写
 - **可写文件夹**：`{项目}/.dev-genius/blackboard/task-queue/`
-  - 子文件: 01-task-breakdown.md, 02-dependencies.md, 03-milestones.md
+  - 子文件夹: features/, bugfixes/, refactors/, infrastructure/, dependencies/
+  - 各子文件夹内含 INDEX.md + T-NNN-xxx.md / dep-graph.md 子文件（按任务类型分类）
   - 子索引: task-queue/task-INDEX.md
-  - 关键章节: 01-task-breakdown.md §任务分解, 02-dependencies.md §依赖关系
-  - gen: gen-1
+  - 关键章节: features/ §新功能任务 + dependencies/dep-graph.md §依赖关系图
+  - gen: gen-1（增量追加——新 gen 在前，旧 gen STALE 在后）
+- **Guardrails**：
+  | Guardrail | 说明 |
+  |-----------|------|
+  | 禁止覆盖旧任务 | 同一 T-NNN-xxx.md 更新时，新 gen 追加在前，旧 gen 标 STALE 在后 |
+  | 禁止任务无验收标准 | 每个任务必须含至少 1 条可执行验证命令 + 预期输出 |
+  | 禁止循环依赖 | dep-graph.md 必须执行循环依赖检查 |
 - **必须读取**：
   - `.di/phases/07_documentation/00-INDEX.md`（先读，确认交付范围）→ 按需进入各文件夹 INDEX 读子文件
   - 6 份标准文档全读 + 自定义文档按需
@@ -383,8 +563,8 @@ prompt: |
 - **目标**: coordinator
 - **内容**: 任务队列已完成，共 N 个任务
 - **影响文件夹**: blackboard/task-queue/
-- **受影响子文件**: 01-task-breakdown.md, 02-dependencies.md, 03-milestones.md
+- **受影响子文件夹**: features/, bugfixes/, refactors/, infrastructure/, dependencies/（按实际产出列出）
 - **子索引**: task-queue/task-INDEX.md（已更新）
 - **gen**: gen-1
-- **关键章节**: 01-task-breakdown.md §任务分解 + 02-dependencies.md §依赖关系（验证时优先读取）
+- **关键章节**: features/ §新功能任务 + dependencies/dep-graph.md §依赖关系图（验证时优先读取）
 ```

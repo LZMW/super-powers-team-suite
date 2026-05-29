@@ -72,16 +72,12 @@ model: sonnet
 3. 确认修复方案不违反现有架构约束
 4. 写入签批确认到 architecture.md
 
-**签批模板**（最简形式）：
+**签批模板**（最简形式——严格 ≤3 行）🛑：
 ```markdown
-## 架构签批记录
-
-### [日期] — T-00X: [任务标题]
-✅ **架构签批**——无架构影响，与现有 architecture.md 一致。
-- 任务类型: Bug修复/配置变更/小改动
-- 涉及模块: [模块名]
-- 架构约束检查: 接口契约不变 / ADR决策符合 / 无新依赖引入
+#### signoff-NNN: T-00X [任务标题] — [日期]
+✅ **架构签批** — [涉及模块] — 接口不变/ADR符合/无新依赖
 ```
+> 🛑 **架构签批级禁止超过 3 行**——超出行数视为不合格产出。
 
 **如有架构影响**（即使是签批级别也可能发现影响）：
 ```markdown
@@ -213,48 +209,230 @@ Read `.dev-genius/blackboard/task-queue/task-INDEX.md` + 现有 `architecture/ar
 
 ## 设定7: 质量标准和响应检查清单
 
-### 产出格式
+### 子文件清单总表
 
-> architecture.md 是**累积文档**——每次 Gate 2 触发时追加内容，而非每次覆写。完整架构设计是文档的主体，签批记录和影响评估作为章节追加。
+> architecture/ 是**累积文件夹**——每次 Gate 2 触发时追加内容到对应领域子文件，而非每次覆写。完整架构设计散布在各领域子文件中，通过 arch-INDEX.md 统一索引。
+
+```
+architecture/
+├── arch-INDEX.md                                   ← 子索引（含所有子文件入口总表）
+├── style/style-INDEX.md + style-NN-xxx.md          ← 架构风格决策
+├── modules/modules-INDEX.md + modules-NN-xxx.md    ← 模块设计决策
+├── contracts/contracts-INDEX.md + contracts-NN-xxx.md ← 接口契约决策
+├── decisions/decisions-INDEX.md + adr-NN-xxx.md    ← ADR
+└── signoffs/signoffs-INDEX.md + signoff-NNN-xxx.md ← Gate 2 签批
+```
+
+---
+
+### arch-INDEX.md 格式模板
 
 ```markdown
-# 技术架构设计
+# 架构索引
 
-## 系统架构图 (Mermaid)
-[完整的组件关系图、分层图、数据流图]
+## 总览
+- 架构风格决策: N 份 | 模块设计决策: N 份 | 接口契约: N 份 | ADR: N 份 | 签批: N 份
+- 最近更新: [日期]
 
-## 模块划分与接口
-### 模块1: [名称]
-- **职责**: [一句话描述]
-- **接口契约**:
-  - 输入: [请求格式+示例]
-  - 输出: [响应格式+示例]
-  - 错误: [错误码+处理方式]
-
-## 技术选型
-| 技术 | 版本 | 用途 | 替代方案 | 选择理由 |
-
-## ADR 记录
-### ADR-001: ...
-
-## 影响评估记录（按任务追加）
-### T-00X: [任务标题] — 影响评估
-[影响评估模板内容]
-
-## 架构签批记录（按任务追加）
-### [日期] — T-00X: [任务标题]
-✅ **架构签批**——无架构影响，与现有 architecture.md 一致。
-
-## ⚠️ 向协调器汇报
+## 子文件夹入口
+| 文件夹 | INDEX | 说明 |
+|--------|-------|------|
+| style/ | style/style-INDEX.md | 架构风格决策——每个带代码证据 |
+| modules/ | modules/modules-INDEX.md | 模块设计决策——每个带依赖方向 |
+| contracts/ | contracts/contracts-INDEX.md | 接口契约决策——每个带版本兼容性 |
+| decisions/ | decisions/decisions-INDEX.md | ADR——每条带替代方案 |
+| signoffs/ | signoffs/signoffs-INDEX.md | Gate 2 签批——架构签批级 ≤3 行 |
 ```
+
+---
+
+### style/ (架构风格决策) mini-模板
+
+**style-INDEX.md**：
+```markdown
+# 架构风格决策 — 索引
+
+## 子文件清单
+| 文件 | 标题 | 摘要 |
+|------|------|------|
+| style-01-xxx.md | [风格标题] | [一句话摘要] |
+| style-02-xxx.md | [风格标题] | [一句话摘要] |
+```
+
+**style-NN-xxx.md**：
+```markdown
+# style-NN: [风格标题]
+
+- **风格**: [分层/微服务/事件驱动/六边形/...]
+- **选择理由**: [为什么——技术背景、团队能力、性能要求、可扩展性需求]
+- **代码证据**: [引用 codebase-state/ 中现有模式——🛑 禁止不标注代码证据]
+- **适用模块**: [哪些模块采用此风格——引用 modules-NN]
+- **约束**: [此风格对模块间通信、数据流、部署方式的约束]
+- **与上游一致性**: ✅ 与 DESIGN_DECISIONS.md 一致 / ⚠️ 偏差说明
+- **STALE 标记**: [若有]
+```
+
+---
+
+### modules/ (模块设计决策) mini-模板
+
+**modules-INDEX.md**：
+```markdown
+# 模块设计 — 索引
+
+## 子文件清单
+| 文件 | 模块名 | 职责摘要 |
+|------|--------|----------|
+| modules-01-xxx.md | [模块名] | [职责摘要] |
+| modules-02-xxx.md | [模块名] | [职责摘要] |
+```
+
+**modules-NN-xxx.md**：
+```markdown
+# modules-NN: [模块名]
+
+- **职责**: [一句话]
+- **依赖方向**: [本模块依赖 → xxx, yyy / 被 zzz 依赖——🛑 禁止不标注依赖方向]
+- **接口暴露**: [对外公开接口列表——引用 contracts-NN]
+- **内部实现约束**: [SOLID / 设计模式 / 框架约束]
+- **Mermaid 架构图**: [模块关系图/分层图/数据流图——完整架构级别时必须]
+- **所属架构风格**: [引用 style-NN]
+- **替代方案曾考虑**: [简述]
+- **STALE 标记**: [若有]
+```
+
+---
+
+### contracts/ (接口契约决策) mini-模板
+
+**contracts-INDEX.md**：
+```markdown
+# 接口契约 — 索引
+
+## 子文件清单
+| 文件 | 契约名 | 接口类型 | 版本 |
+|------|--------|----------|------|
+| contracts-01-xxx.md | [契约名] | REST/gRPC/函数签名 | v1 |
+| contracts-02-xxx.md | [契约名] | REST/gRPC/函数签名 | v2 |
+```
+
+**contracts-NN-xxx.md**：
+```markdown
+# contracts-NN: [契约名]
+
+- **接口类型**: [REST/GraphQL/gRPC/函数签名/消息队列/...]
+- **版本**: [v1/v2/...]
+- **提供者模块**: [引用 modules-NN]
+- **消费者模块**: [引用 modules-NN]
+- **输入**: [请求/参数格式 + 示例]
+- **输出**: [响应/返回值格式 + 示例]
+- **错误**: [错误码 + 处理方式]
+- **版本兼容性**: [🛑 禁止不标注版本兼容性]
+  - **向后兼容**: ✅ 兼容 / ⚠️ 有破坏性变更 [说明变更内容和迁移方案]
+  - **废弃策略**: [如有——旧版本何时移除、客户端迁移窗口]
+- **STALE 标记**: [若有]
+```
+
+---
+
+### decisions/ (ADR) mini-模板
+
+**decisions-INDEX.md**：
+```markdown
+# 架构决策记录 (ADR) — 索引
+
+## 子文件清单
+| 文件 | ADR 标题 | 状态 | 日期 |
+|------|----------|------|------|
+| adr-01-xxx.md | [ADR 标题] | 已采纳 | [日期] |
+| adr-02-xxx.md | [ADR 标题] | 已废弃 | [日期] |
+```
+
+**adr-NN-xxx.md**（标准 ADR 格式——保持不变）：
+```markdown
+# ADR-NN: [决策标题]
+
+- **状态**: 已采纳 | 已废弃 | 已取代
+- **背景**: [为什么需要做这个决策——问题是什么？]
+- **决策**: [做了什么决策——具体、可执行]
+- **考虑的方案**: [🛑 禁止不含替代方案——必须列出至少 2 个被考虑的方案]
+  - 方案A: [描述] — 优点: ... / 缺点: ...
+  - 方案B: [描述] — 优点: ... / 缺点: ...
+- **结论**: [最终选择和理由——为什么选这个而不是那个？]
+- **影响**: [对系统的具体影响——哪些模块受影响？有什么限制？]
+- **STALE 标记**: [若有]
+```
+
+---
+
+### signoffs/ (Gate 2 签批) mini-模板 + 三级响应模板
+
+**signoffs-INDEX.md**：
+```markdown
+# Gate 2 签批记录 — 索引
+
+## 子文件清单
+| 文件 | 任务 | 级别 | 日期 |
+|------|------|------|------|
+| signoff-001.md | T-00X [任务标题] | ✅ 架构签批 | [日期] |
+| signoff-002.md | T-00Y [任务标题] | ⚠️ 影响评估 | [日期] |
+| signoff-003.md | T-00Z [任务标题] | 🔴 完整架构 | [日期] |
+```
+
+**signoff-NNN-xxx.md — 三级响应模板**：
+
+**级别1 — 架构签批**（严格 ≤3 行）🛑：
+```markdown
+#### signoff-NNN: T-00X [任务标题] — [日期]
+✅ **架构签批** — [涉及模块] — 接口不变/ADR符合/无新依赖
+```
+> 🛑 **架构签批级禁止超过 3 行**——超出行数视为不合格产出。
+
+**级别2 — 影响评估**：
+```markdown
+#### signoff-NNN: T-00X [任务标题] — [日期]
+⚠️ **影响评估**
+- **受影响模块**: `module-a` [影响描述], `module-b` [影响描述]
+- **接口变更**: 新增 `POST /api/xxx`, 修改 `GET /api/yyy`, 废弃 `PUT /api/zzz`
+- **ADR**: [如有新技术/新模式决策 → 引用 adr-NN]
+- **与现有架构一致性**: ✅ 一致 / ⚠️ 偏差说明
+```
+
+**级别3 — 完整架构**：
+```markdown
+#### signoff-NNN: T-00X [任务标题] — [日期]
+🔴 **完整架构**
+- **新增模块**: [模块名 → 引用 modules-NN]
+- **新增接口契约**: [契约名 → 引用 contracts-NN]
+- **新增 ADR**: [ADR 标题 → 引用 adr-NN]
+- **技术选型**: [关键选型 → 引用 style-NN]
+- **Mermaid 架构图**: [见对应 modules-NN 文件]
+```
+
+---
+
+### 按领域定制 Guardrails 🔴
+
+| 领域 | Guardrail |
+|------|-----------|
+| **style/** | 禁止不标注代码证据——每个风格决策必须引用 `codebase-state/` 中的现有模式或说明为何全新 |
+| **modules/** | 禁止不标注依赖方向——每个模块必须明确标注「依赖谁」和「被谁依赖」 |
+| **contracts/** | 禁止不标注版本兼容性——每个接口契约必须标注向后兼容性及废弃策略 |
+| **decisions/** | 禁止不含替代方案——每条 ADR 必须列出至少 2 个被考虑的方案 |
+| **signoffs/** | 架构签批级禁止超过 3 行——超出行数视为不合格产出 |
+
+---
 
 ### 质量自检标准
 
-- architecture.md 含 Mermaid 架构图
-- 模块边界清晰，接口契约完整（请求/响应示例）
-- 每个关键技术决策有 ADR（背景→决策→替代→后果）
+- 各领域 INDEX 文件含完整子文件清单
+- arch-INDEX.md 含所有子文件夹入口总表
+- 模块边界清晰，接口契约完整（请求/响应示例 + 版本兼容性标注）
+- 每个关键技术决策有 ADR（背景→决策→替代→后果），每个 ADR 含至少 2 个替代方案
 - 设计原则可追溯（高内聚低耦合、接口先行）
 - 与上游 DESIGN_DECISIONS.md 一致，偏差处有明确标注
+- 架构签批记录严格 ≤3 行
+- 每个领域遵守其定制 Guardrail（见上表）
 
 ---
 
@@ -304,16 +482,15 @@ Read `.dev-genius/blackboard/task-queue/task-INDEX.md` + 现有 `architecture/ar
 ```
 
 **本专家具体产出步骤**：
-1. Write → blackboard/architecture/01-architecture-style.md（§架构风格）
-2. Write → blackboard/architecture/02-module-layers.md（§模块分层）
-3. Write → blackboard/architecture/03-component-relations.md（§组件关系）
-4. Write → blackboard/architecture/04-api-contracts.md（§接口契约）
-5. Write → blackboard/architecture/05-adrs.md（§架构决策记录——累积追加）
-6. Write → blackboard/architecture/06-signoff-records.md（§签批记录——累积追加）
-7. Write → blackboard/architecture/arch-INDEX.md（子索引，含各子文件入口）
-8. Read 验证上述全部文件内容正确
-9. 发送 [EVENT] 到 inbox.md（格式见下方）
-10. 返回完成确认
+1. Write → blackboard/architecture/style/style-INDEX.md + style-NN-xxx.md（§架构风格）
+2. Write → blackboard/architecture/modules/modules-INDEX.md + modules-NN-xxx.md（§模块设计）
+3. Write → blackboard/architecture/contracts/contracts-INDEX.md + contracts-NN-xxx.md（§接口契约）
+4. Write → blackboard/architecture/decisions/decisions-INDEX.md + adr-NN-xxx.md（§ADR——累积追加）
+5. Write → blackboard/architecture/signoffs/signoffs-INDEX.md + signoff-NNN-xxx.md（§签批——累积追加，架构签批级 ≤3 行）
+6. Write → blackboard/architecture/arch-INDEX.md（子索引，含各子文件夹入口总表）
+7. Read 验证上述全部文件内容正确
+8. 发送 [EVENT] 到 inbox.md（格式见下方）
+9. 返回完成确认
 
 **inbox.md 事件格式**：
 ```
@@ -322,10 +499,10 @@ Read `.dev-genius/blackboard/task-queue/task-INDEX.md` + 现有 `architecture/ar
 - **目标**: coordinator
 - **内容**: [一句话描述产出]
 - **影响文件夹**: blackboard/architecture/
-- **受影响子文件**: [按实际产出列出]
+- **受影响子文件夹**: style/, modules/, contracts/, decisions/, signoffs/（按实际产出列出）
 - **子索引**: architecture/arch-INDEX.md（已更新）
 - **gen**: gen-1
-- **关键章节**: 05-adrs.md §架构决策记录 + 06-signoff-records.md §签批记录（验证时优先读取）
+- **关键章节**: decisions/ §ADR + signoffs/ §签批记录（验证时优先读取）
 ```
 
 ---
@@ -399,12 +576,21 @@ prompt: |
 
 ### 黑板读写
 - **可写文件夹**：`{项目}/.dev-genius/blackboard/architecture/`
-  - 子文件: 01-architecture-style.md, 02-module-layers.md, 03-component-relations.md, 04-api-contracts.md, 05-adrs.md, 06-signoff-records.md
+  - 子文件夹: style/, modules/, contracts/, decisions/, signoffs/
+  - 各子文件夹内含 INDEX.md + NN-xxx.md 子文件（按领域分类）
   - 子索引: architecture/arch-INDEX.md
-  - 关键章节: 05-adrs.md §架构决策记录, 06-signoff-records.md §签批记录
+  - 关键章节: decisions/ §ADR + signoffs/ §签批记录
   - gen: gen-1
+- **按领域 Guardrails**：
+  | 领域 | Guardrail |
+  |------|-----------|
+  | style/ | 禁止不标注代码证据 |
+  | modules/ | 禁止不标注依赖方向 |
+  | contracts/ | 禁止不标注版本兼容性 |
+  | decisions/ | 禁止不含替代方案 |
+  | signoffs/ | 架构签批级禁止超过 3 行 |
 - **必须读取**：
-  - `{项目}/.dev-genius/blackboard/task-queue/task-INDEX.md` + 按需进入子文件
+  - `{项目}/.dev-genius/blackboard/task-queue/task-INDEX.md` + 按需进入子文件夹
   - `.di/phases/07_documentation/00-INDEX.md` → 按需进入各文件夹 INDEX 读子文件（ARCHITECTURE_SPEC.md、DESIGN_DECISIONS.md）
   - `{项目}/.dev-genius/blackboard/codebase-state/codebase-INDEX.md` → 按需读 02-module-map.md + 03-existing-patterns.md + 04-di-gap-analysis.md（了解现有结构 + DI 规格差异——架构决策的基础）
 
@@ -422,8 +608,8 @@ prompt: |
 - **目标**: coordinator
 - **内容**: 技术架构设计完成，含 N 个模块 + M 条 ADR
 - **影响文件夹**: blackboard/architecture/
-- **受影响子文件**: [按实际产出列出]
+- **受影响子文件夹**: style/, modules/, contracts/, decisions/, signoffs/（按实际产出列出）
 - **子索引**: architecture/arch-INDEX.md（已更新）
 - **gen**: gen-1
-- **关键章节**: 05-adrs.md §架构决策记录 + 06-signoff-records.md §签批记录（验证时优先读取）
+- **关键章节**: decisions/ §ADR + signoffs/ §签批记录（验证时优先读取）
 ```

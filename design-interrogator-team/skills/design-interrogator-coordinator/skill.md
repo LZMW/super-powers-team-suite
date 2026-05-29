@@ -265,7 +265,9 @@ design-miner 发现（如存在，作为富化层叠加）
 │   │   ├── 01-root-philosophy.md
 │   │   ├── 02-branches/
 │   │   │   ├── branches-INDEX.md
-│   │   │   └── branch-01-xxx.md
+│   │   │   ├── architecture/arch-INDEX.md + arch-NN-xxx.md
+│   │   │   ├── functionality/func-INDEX.md + func-NN-xxx.md
+│   │   │   └── uiux/uiux-INDEX.md + uiux-NN-xxx.md
 │   │   └── 03-unresolved-questions.md
 │   │
 │   ├── ux-research/                 # 🟡 researcher (Phase 3b)
@@ -327,7 +329,7 @@ design-miner 发现（如存在，作为富化层叠加）
 | 专家 | 可写文件夹 | 子索引 | 必须读取 | 保留 |
 |------|-----------|--------|----------|------|
 | analyst | architecture-analysis/ | arch-INDEX.md | 上游 DM: output/{project}-analysis/01-architecture/architecture-INDEX.md（如存在） | 🟡 |
-| interrogator | interrogation-tree/ | interr-INDEX.md + branches-INDEX.md | architecture-analysis/arch-INDEX.md | 🟡 |
+| interrogator | interrogation-tree/ | interr-INDEX.md + branches-INDEX.md + arch-INDEX.md + func-INDEX.md + uiux-INDEX.md | architecture-analysis/arch-INDEX.md | 🟡 |
 | researcher | ux-research/ | uxr-INDEX.md | 上游 DM: output/{project}-analysis/02-ux-engineering/ux-INDEX.md（如存在） | 🟡 |
 | ixd | interaction-design/ | ixd-INDEX.md | ux-research/uxr-INDEX.md | 🟡 |
 | critic | critique-interaction/ + critique-visual/ | crit-ixd-INDEX.md + crit-ui-INDEX.md | interaction-design/ixd-INDEX.md / visual-design/ui-INDEX.md | 🟡 |
@@ -686,8 +688,8 @@ subagent_type: "design-interrogator-interrogator"
 description: "启动架构设计拷问"
 prompt: |
   **📂 路径**:
-  - 黑板: {项目}/.di/blackboard/interrogation-tree.md（Write输出到此）
-  - 前序: {项目}/.di/blackboard/architecture-analysis.md（analyst 产出）
+  - 黑板: {项目}/.di/blackboard/interrogation-tree/interr-INDEX.md（Write输出到此）
+  - 前序: {项目}/.di/blackboard/architecture-analysis/arch-INDEX.md（analyst 产出，请先Read并按需读子文件）
   - synthesis: {项目}/.di/synthesis-summary.md（如存在请先Read）
   - 消息: {项目}/.di/blackboard/inbox.md
 
@@ -731,8 +733,8 @@ prompt: |
   ...（包含所有历史轮次）
 
   **📂 路径**：
-  - 黑板: {项目}/.di/blackboard/interrogation-tree.md
-  - 前序: {项目}/.di/blackboard/architecture-analysis.md
+  - 黑板: {项目}/.di/blackboard/interrogation-tree/interr-INDEX.md
+  - 前序: {项目}/.di/blackboard/architecture-analysis/arch-INDEX.md
   - 消息: {项目}/.di/blackboard/inbox.md
   - 如有已写入的中间文件请先 Read 读取以恢复状态
 

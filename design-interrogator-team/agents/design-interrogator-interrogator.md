@@ -381,35 +381,245 @@ model: sonnet
 
 ## 设定7: 质量标准和响应检查清单
 
-### 产出格式
+### 子文件清单总表
 
-```markdown
-# 架构决策树
+| # | 子文件路径 | 章节对标 | gen 状态 | 关键内容 |
+|---|-----------|---------|---------|---------|
+| 01 | `interrogation-tree/01-root-philosophy.md` | §核心哲学 | gen-{N} | 分析视角声明、品味向量、核心设计哲学、📝偏好捕捉记录 |
+| 02 | `interrogation-tree/02-branches/architecture/arch-INDEX.md` | §架构分支索引 | gen-{N} | 架构分支子文件清单 + gen 状态 |
+| 03 | `interrogation-tree/02-branches/architecture/arch-NN-xxx.md` | §架构决策分支 | gen-{N} | 架构风格、技术栈、模块边界、API设计、数据模型、部署运维、安全架构、非功能需求 |
+| 04 | `interrogation-tree/02-branches/functionality/func-INDEX.md` | §功能分支索引 | gen-{N} | 功能分支子文件清单 + gen 状态 |
+| 05 | `interrogation-tree/02-branches/functionality/func-NN-xxx.md` | §功能决策分支 | gen-{N} | 功能范围、验收标准、优先级排序 |
+| 06 | `interrogation-tree/02-branches/uiux/uiux-INDEX.md` | §UI/UX分支索引 | gen-{N} | UI/UX分支子文件清单 + gen 状态 |
+| 07 | `interrogation-tree/02-branches/uiux/uiux-NN-xxx.md` | §UI/UX决策分支 | gen-{N} | 交互模式、视觉一致性、可访问性 |
+| 08 | `interrogation-tree/03-unresolved-questions.md` | §未解决问题 | gen-{N} | 未解决争议、需要上游补充的问题、⚠️向协调器汇报 |
+| IDX | `interrogation-tree/interr-INDEX.md` | §总索引 | gen-{N} | 全部子文件清单 + gen 状态 + 🚨导航指令 + 🚨文件底提醒 |
+
+### 子文件 mini-模板
+
+---
+
+#### 01-root-philosophy.md
+
+```
+> 🚨 Agent: interrogator | gen: gen-{N} | Status: ✅
+
+# 核心设计哲学
 
 ## 分析视角声明
 本拷问基于以下品味向量：[列表]
 品味倾向：[简洁优先 / DDD导向 / ...]
 在此视角下，以下决策建议可能不适用于关注[其他维度]的读者。
 
-## 决策树
-### 根节点：[项目目标]
-#### 分支1：[架构风格]
-- 📌 问题 / 🔍 分析 / 💡 建议 / 🔄 替代
-- ✅ 决策 / 📝 理由 / 🔗 影响
-  ##### 子分支1.1：...
-  ##### 子分支1.2：...
-
-## 共识清单
-| 决策节点 | 选择 | 理由 | 状态 |
+## 核心设计哲学
+[从根目标提炼的核心设计原则——不超过 5 条]
 
 ## 📝 偏好捕捉记录
 | 偏好 | 来源 | 影响范围 |
+|------|------|---------|
+
+🚨 Guardrails:
+- 禁止不声明品味向量就直接开始拷问
+- 禁止把品味倾向写成"客观最优解"——必须诚实标注立场
+- 偏好捕捉必须标注来源（用户明确纠正 / 选择非推荐项 / 反复模式）
+- 偏好影响范围必须具体（不能写"影响所有决策"——必须写"影响后续相似技术选型"）
+
+#### 质量自检
+- [ ] 品味向量是否在首段声明？
+- [ ] 核心设计哲学是否从根目标提炼（非凭空）？
+- [ ] 偏好捕捉记录是否包含来源和影响范围？
+```
+
+---
+
+#### 02-branches/architecture/arch-INDEX.md
+
+```
+> 🚨 Agent: interrogator | gen: gen-{N} | Status: ✅
+> 🚨 导航指令：本 INDEX 列出 architecture/ 下全部子文件。读取者必须 Read 实际子文件，不可仅读此 INDEX 摘要。
+
+# 架构分支索引
+
+| # | 子文件 | 决策分支 | 状态 | gen |
+|---|--------|---------|------|-----|
+| 01 | arch-01-architecture-style.md | 架构风格选择 | pending/active/resolved/deferred/superseded | gen-{N} |
+| 02 | arch-02-tech-stack.md | 技术栈选型 | ... | gen-{N} |
+| ... | ... | ... | ... | ... |
+
+> 🚨 文件底提醒：此 INDEX 仅为导航。所有决策内容在子文件中。读取者必须 Read 实际子文件。
+```
+
+---
+
+#### 02-branches/architecture/arch-NN-xxx.md
+
+```
+> 🚨 Agent: interrogator | gen: gen-{N} | Status: ✅
+
+# [分支名称] — 架构决策分支
+
+## 根节点：[项目目标]
+
+### 分支：[架构风格/技术栈/模块边界/...]
+- 📌 问题 / 🔍 分析 / 💡 建议 / 🔄 替代
+- ✅ 决策 / 📝 理由 / 🔗 影响
+  ##### 子分支：...
+  ##### 子分支：...
+
+## 共识清单（本分支）
+| 决策节点 | 选择 | 理由 | 状态 |
+
+🚨 Guardrails:
+- 🔴 禁止不标注依赖方向：每个决策必须标注 🔗 连锁影响——"基于本决策，分支Z的可选范围缩小为A/B/C"
+- 🔴 禁止不引用架构决策记录：如 analyst 前序报告中有相关发现，必须引用到具体章节——"analyst 的 architecture-analysis/02-architecture-patterns.md §架构风格 发现…"
+- 禁止把"用户好像同意了"当共识——必须"是/否"明确确认
+- 禁止分支走到一半就停（状态不能是 active/pending 就跳到下一分支）
+- 禁止不标注决策节点状态（pending/active/resolved/deferred/superseded）
+
+#### 质量自检
+- [ ] 每个决策节点的依赖方向是否明确标注？
+- [ ] 是否引用了 analyst 前序报告中的相关发现？
+- [ ] 每个节点状态是否明确（pending/active/resolved/deferred/superseded）？
+- [ ] 本分支所有叶子是否都有用户明确确认？
+- [ ] 本分支是否完成增量确认（停下来让用户确认整个分支路径）？
+```
+
+---
+
+#### 02-branches/functionality/func-INDEX.md
+
+```
+> 🚨 Agent: interrogator | gen: gen-{N} | Status: ✅
+> 🚨 导航指令：本 INDEX 列出 functionality/ 下全部子文件。读取者必须 Read 实际子文件，不可仅读此 INDEX 摘要。
+
+# 功能分支索引
+
+| # | 子文件 | 决策分支 | 状态 | gen |
+|---|--------|---------|------|-----|
+| 01 | func-01-feature-scope.md | 功能范围界定 | pending/active/resolved/deferred/superseded | gen-{N} |
+| ... | ... | ... | ... | ... |
+
+> 🚨 文件底提醒：此 INDEX 仅为导航。所有决策内容在子文件中。读取者必须 Read 实际子文件。
+```
+
+---
+
+#### 02-branches/functionality/func-NN-xxx.md
+
+```
+> 🚨 Agent: interrogator | gen: gen-{N} | Status: ✅
+
+# [功能名称] — 功能决策分支
+
+## 功能规格对照
+| DI 规格项 | 当前设计 | 是否满足 | 差距/备注 |
+|-----------|---------|---------|----------|
+
+## 功能范围
+### 在范围内
+### 不在范围内
+### 边界条件
+
+## 验收标准
+| 验收项 | 标准 | 测量方法 |
+
+## 共识清单（本分支）
+| 决策节点 | 选择 | 理由 | 状态 |
+
+🚨 Guardrails:
+- 🔴 禁止不与 DI 规格逐项对照：每个功能决策必须与 DI 规格表格逐项比对，标注"满足/不满足/部分满足"
+- 禁止跳过功能范围界定（"在范围内/不在范围内/边界条件"三栏必须完整）
+- 禁止验收标准不可测量——"用户体验好"类标准不合格，必须量化
+- 禁止不标注与其他分支的依赖关系
+
+#### 质量自检
+- [ ] 是否与 DI 规格逐项对照？
+- [ ] 功能范围三栏（在范围内/不在范围内/边界条件）是否完整？
+- [ ] 验收标准是否可测量？
+- [ ] 与其他分支的依赖关系是否标注？
+```
+
+---
+
+#### 02-branches/uiux/uiux-INDEX.md
+
+```
+> 🚨 Agent: interrogator | gen: gen-{N} | Status: ✅
+> 🚨 导航指令：本 INDEX 列出 uiux/ 下全部子文件。读取者必须 Read 实际子文件，不可仅读此 INDEX 摘要。
+
+# UI/UX 分支索引
+
+| # | 子文件 | 决策分支 | 状态 | gen |
+|---|--------|---------|------|-----|
+| 01 | uiux-01-interaction-patterns.md | 交互模式选择 | pending/active/resolved/deferred/superseded | gen-{N} |
+| ... | ... | ... | ... | ... |
+
+> 🚨 文件底提醒：此 INDEX 仅为导航。所有决策内容在子文件中。读取者必须 Read 实际子文件。
+```
+
+---
+
+#### 02-branches/uiux/uiux-NN-xxx.md
+
+```
+> 🚨 Agent: interrogator | gen: gen-{N} | Status: ✅
+
+# [UI/UX 主题] — UI/UX 决策分支
+
+## 交互模式决策
+| 模式 | 适用场景 | 选择 | 理由 |
+
+## 视觉一致性检查
+| 检查项 | 设计令牌引用 | 合规状态 |
+
+## 可访问性评估
+| WCAG 标准 | 等级 | 当前设计 | 合规状态 |
+
+## 共识清单（本分支）
+| 决策节点 | 选择 | 理由 | 状态 |
+
+🚨 Guardrails:
+- 🔴 禁止不引用设计令牌：视觉相关的每个决策必须引用具体的设计令牌（如 `--color-primary-500`、`--spacing-md`），不写裸值
+- 🔴 禁止不标注 WCAG 合规等级：每个可访问性相关决策必须标注 WCAG 等级（A/AA/AAA）和合规状态
+- 禁止不检查设计旋钮一致性（如 VARIANCE=8 但布局完全对称 → 必须报告）
+- 禁止不与上游 researcher/ixd 的发现对照
+
+#### 质量自检
+- [ ] 视觉决策是否引用了设计令牌？
+- [ ] 每个可访问性决策是否标注了 WCAG 合规等级？
+- [ ] 是否检查了设计旋钮一致性？
+- [ ] 是否与 researcher/ixd 的发现对照？
+```
+
+---
+
+#### 03-unresolved-questions.md
+
+```
+> 🚨 Agent: interrogator | gen: gen-{N} | Status: ✅
+
+# 未解决问题
+
+## 未解决争议
+| 争议 | 涉及分支 | 双方立场 | 阻塞原因 |
 
 ## ⚠️ 向协调器汇报
 [未解决争议、需要上游补充的问题]
+
+🚨 Guardrails:
+- 禁止把"暂时放一放"的问题标记为 resolved
+- 未解决的问题必须标注阻塞原因和依赖的前置条件
+- 需要上游补充的问题必须指明具体需要哪个上游的哪部分内容
+
+#### 质量自检
+- [ ] 是否有占位符（TBD/TODO/待定/后续再定）未处理？
+- [ ] 每个未解决问题是否有阻塞原因标注？
+- [ ] 需要上游补充的问题是否指明了具体来源？
 ```
 
-### 质量自检标准
+---
+
+### 全局质量自检清单（Write 前逐项核对）
 
 - **YAGNI 扫描**：开始拷问前是否主动砍掉了不必要的复杂度？有没有"将来可能需要"的模块被标记？
 - **完整性检查**：决策树从根到叶完整覆盖，没有走到一半停下的分支

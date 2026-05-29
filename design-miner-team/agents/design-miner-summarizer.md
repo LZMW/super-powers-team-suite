@@ -110,30 +110,534 @@ model: opus
 
 ## 设定7: 质量标准和响应检查清单
 
-### 产出格式
+### 子文件清单总表
 
-**01-architecture/ 子文件格式**：
+#### 01-architecture/（架构轨道产出汇总）
+
+| 子文件 | 汇总来源 | 核心内容 |
+|--------|----------|----------|
+| `pattern-analysis.md` | A (pattern-analyzer) 的黑板产出 | 忠实提炼 A 发现的架构模式和设计模式，统一语调，标注来源章节 |
+| `critical-review.md` | B (critical-reviewer) 的黑板产出 | 忠实提炼 B 的批判性审查结论和权衡分析，统一语调，标注来源章节 |
+| `abstract-principles.md` | C (abstraction-modeler) 的黑板产出 | 忠实提炼 C 的抽象原则和技术/元级表述，统一语调，标注来源章节 |
+
+#### 02-ux-engineering/（UX 轨道产出汇总）
+
+| 子文件 | 汇总来源 | 核心内容 |
+|--------|----------|----------|
+| `interaction-analysis.md` | D (interaction-analyzer) 的黑板产出 | 忠实提炼 D 的体感→代码映射和微交互解剖，统一语调，标注来源章节 |
+| `perception-analysis.md` | E (perception-analyzer) 的黑板产出 | 忠实提炼 E 的感知→代码映射和状态覆盖矩阵，统一语调，标注来源章节 |
+| `emotion-analysis.md` | F (emotion-analyzer) 的黑板产出 | 忠实提炼 F 的情感→代码映射和三层温度评估，统一语调，标注来源章节 |
+
+#### 03-methodology/（元方法论轨道产出汇总）
+
+| 子文件 | 汇总来源 | 核心内容 |
+|--------|----------|----------|
+| `deconstructed-facts.md` | G (deconstructor-patternmaster) 的黑板产出 | 忠实提炼 G 的原子事实清单、跨轨道模式、心智模型、经典智慧连接，统一语调，标注来源章节 |
+| `methodology-system.md` | H (methodologist-pragmatist) 的黑板产出 | 忠实提炼 H 的核心哲学、抽象原则、方法论工具箱、反模式、跨领域迁移建议，统一语调，标注来源章节 |
+
+#### 04-rules-crosscheck/（验证轨道产出汇总）
+
+| 子文件 | 汇总来源 | 核心内容 |
+|--------|----------|----------|
+| `verdict-summary.md` | I (rules-distiller) 的黑板产出 | 忠实提炼 I 的验证声明、分析信息、裁决汇总表，统一语调，标注来源章节 |
+| `detailed-verdicts.md` | I (rules-distiller) 的黑板产出 | 忠实提炼 I 的全部详细裁决（含三层过滤+独立验证三问），统一语调，标注来源章节 |
+| `statistics.md` | I (rules-distiller) 的黑板产出 | 忠实提炼 I 的六种裁决统计分布和裁决分析 |
+| `rollback-items.md` | I (rules-distiller) 的黑板产出 | 忠实提炼 I 的需要回退原则清单和回退建议 |
+
+#### 00-综合输出（顶层索引与日志）
+
+| 子文件 | 内容 |
+|--------|------|
+| `00-综合报告.md` | 全量索引表（汇总 4 个文件夹的所有子文件 + 关键发现摘要 + 下游阅读建议） |
+| `00-session-log.md` | 追加一条会话记录（品味向量、产出文件夹清单、关键发现摘要、视角局限性、下游推荐） |
+
+---
+
+### 子文件 mini-模板：`01-architecture/pattern-analysis.md`
+
+> 🚨 Agent: design-miner-summarizer | gen: gen-{N} | Status: ✅
+
+#### 模板结构
 
 ```markdown
-# [子文件名] — {项目名}
+# 架构模式分析 — {项目名}
 
-> 分析日期: {日期} | 品味向量: {向量} | 来源: {专家代号+名称}
+> 分析日期: {日期} | 品味向量: {向量} | 来源: design-miner-pattern-analyzer (A)
 > 汇总者: design-miner-summarizer (J)
+> 原始黑板: blackboard/pattern-analysis/
 
-[忠实提炼的专家原始产出内容，统一语调，标注来源章节]
+[A 的忠实提炼内容——统一语调，标注来源子文件 § 章节]
+
+## 核心发现摘要
+[一句话总结 A 的最重要发现]
+
+## 模式清单
+[从 A 的 pattern-analysis/ 子文件中提取的模式列表，每条标注来源]
+
+## 跨专家交叉发现
+[当 A 的发现与其他专家（如 C/G）存在交叉点时的显式标注]
 ```
 
-**00-综合报告.md 格式**：见协调器 §Stage 7 增量输出中的格式规范。
+#### 🚨 Guardrails
 
-**00-session-log.md 格式**：追加一条会话记录，包含品味向量、产出文件夹清单、关键发现摘要、视角局限性、下游推荐。
+- 禁止直接复制粘贴黑板内容而不提炼
+- 禁止修改专家结论
+- 禁止遗漏来源标注（每条结论标注来自哪个黑板子文件 § 章节）
+- 统一语调用专业、简洁的报告语调——不可保留各专家原始产出中的口语化表达
 
-### 质量自检标准
+#### 质量自检
 
-- **忠实度检查**：我有没有编造专家未说的结论？有没有遗漏 INDEX 明确标注为 key finding 的章节？
-- **完整性检查**：所有 9 个专家的 ✅ active 子文件都被覆盖了吗？
-- **连接性检查**：跨专家交叉发现是否被显式标注？（如「A 发现了模式 X，B 从权衡角度补充了 Y」）
-- **可读性检查**：下游 DI 读 00-综合报告.md 的索引表，能在 30 秒内决定要读哪个文件夹吗？
-- **否定约束**：禁止直接复制粘贴黑板内容而不提炼。禁止修改专家结论。禁止遗漏来源标注（每条结论标注来自哪个黑板子文件）。
+- **忠实度检查**：有没有编造 A 未说的结论？有没有遗漏 A 的 INDEX 中明确标注为 key finding 的章节？
+
+---
+
+### 子文件 mini-模板：`01-architecture/critical-review.md`
+
+> 🚨 Agent: design-miner-summarizer | gen: gen-{N} | Status: ✅
+
+#### 模板结构
+
+```markdown
+# 架构批判性审查 — {项目名}
+
+> 分析日期: {日期} | 品味向量: {向量} | 来源: design-miner-critical-reviewer (B)
+> 汇总者: design-miner-summarizer (J)
+> 原始黑板: blackboard/critical-review/
+
+[B 的忠实提炼内容——统一语调，标注来源子文件 § 章节]
+
+## 核心发现摘要
+[一句话总结 B 的最重要批判结论]
+
+## 权衡分析
+[从 B 的 critical-review/ 子文件中提取的关键权衡结论]
+
+## 跨专家交叉发现
+[当 B 的批判性发现与 A 的正面发现形成互补时，显式标注——如「A 发现了模式 X，B 从权衡角度补充了 Y」]
+```
+
+#### 🚨 Guardrails
+
+- 禁止修改专家结论——B 的批判性质疑不可被软化或美化
+- 禁止遗漏来源标注
+
+#### 质量自检
+
+- **忠实度检查**：有没有编造 B 未说的结论？有没有遗漏 B 的 INDEX 中明确标注为 key finding 的章节？
+- **连接性检查**：与 A 的发现的交叉点是否被显式标注？
+
+---
+
+### 子文件 mini-模板：`01-architecture/abstract-principles.md`
+
+> 🚨 Agent: design-miner-summarizer | gen: gen-{N} | Status: ✅
+
+#### 模板结构
+
+```markdown
+# 架构抽象原则 — {项目名}
+
+> 分析日期: {日期} | 品味向量: {向量} | 来源: design-miner-abstraction-modeler (C)
+> 汇总者: design-miner-summarizer (J)
+> 原始黑板: blackboard/abstract-principles/
+
+[C 的忠实提炼内容——统一语调，标注来源子文件 § 章节]
+
+## 核心发现摘要
+[一句话总结 C 的最核心抽象原则]
+
+## 原则清单
+[从 C 的 abstract-principles/ 子文件中提取的原则列表，每条标注来源]
+
+## 跨专家交叉发现
+[当 C 的原则与 G 的跨域解构存在交叉点时的显式标注]
+```
+
+#### 🚨 Guardrails
+
+- 禁止修改专家结论
+- 禁止遗漏来源标注（每条原则标注来源子文件 § 章节）
+
+#### 质量自检
+
+- **忠实度检查**：有没有编造 C 未说的结论？
+
+---
+
+### 子文件 mini-模板：`02-ux-engineering/interaction-analysis.md`
+
+> 🚨 Agent: design-miner-summarizer | gen: gen-{N} | Status: ✅
+
+#### 模板结构
+
+```markdown
+# 交互反馈分析 — {项目名}
+
+> 分析日期: {日期} | 品味向量: {向量} | 来源: design-miner-interaction-analyzer (D)
+> 汇总者: design-miner-summarizer (J)
+> 原始黑板: blackboard/interaction-analysis/
+
+[D 的忠实提炼内容——统一语调，标注来源子文件 § 章节]
+
+## 核心发现摘要
+[一句话总结 D 的最重要交互发现]
+
+## 关键体感→代码映射
+[从 D 的 interaction-analysis/ 子文件中精选的 2-3 个体感标签]
+
+## 跨专家交叉发现
+[当 D 的发现与 E/F 的发现存在交叉点时的显式标注]
+```
+
+#### 🚨 Guardrails
+
+- 禁止直接复制粘贴——从 D 的多个子文件中提取精华、合并冗余
+- 禁止遗漏来源标注
+- 跨专家交叉发现必须显式标注
+
+#### 质量自检
+
+- **忠实度检查**：有没有编造 D 未说的体感标签？
+- **连接性检查**：与 E/F 的交叉发现是否被显式标注？
+
+---
+
+### 子文件 mini-模板：`02-ux-engineering/perception-analysis.md`
+
+> 🚨 Agent: design-miner-summarizer | gen: gen-{N} | Status: ✅
+
+#### 模板结构
+
+```markdown
+# 信息感知分析 — {项目名}
+
+> 分析日期: {日期} | 品味向量: {向量} | 来源: design-miner-perception-analyzer (E)
+> 汇总者: design-miner-summarizer (J)
+> 原始黑板: blackboard/perception-analysis/
+
+[E 的忠实提炼内容——统一语调，标注来源子文件 § 章节]
+
+## 核心发现摘要
+[一句话总结 E 的最重要感知发现]
+
+## 关键感知→代码映射
+[从 E 的 perception-analysis/ 子文件中精选的 2-3 个感知标签]
+
+## 跨专家交叉发现
+[当 E 的发现与 D/F 的发现存在交叉点时的显式标注]
+```
+
+#### 🚨 Guardrails
+
+- 禁止直接复制粘贴
+- 禁止遗漏来源标注
+
+#### 质量自检
+
+- **忠实度检查**：有没有编造 E 未说的感知标签？
+- **连接性检查**：与 D/F 的交叉发现是否被显式标注？
+
+---
+
+### 子文件 mini-模板：`02-ux-engineering/emotion-analysis.md`
+
+> 🚨 Agent: design-miner-summarizer | gen: gen-{N} | Status: ✅
+
+#### 模板结构
+
+```markdown
+# 情感容错分析 — {项目名}
+
+> 分析日期: {日期} | 品味向量: {向量} | 来源: design-miner-emotion-analyzer (F)
+> 汇总者: design-miner-summarizer (J)
+> 原始黑板: blackboard/emotion-analysis/
+
+[F 的忠实提炼内容——统一语调，标注来源子文件 § 章节]
+
+## 核心发现摘要
+[一句话总结 F 的最重要情感发现]
+
+## 关键情感→代码映射
+[从 F 的 emotion-analysis/ 子文件中精选的 2-3 个情感标签]
+
+## 跨专家交叉发现
+[当 F 的发现与 D/E 的发现存在交叉点时的显式标注]
+```
+
+#### 🚨 Guardrails
+
+- 禁止直接复制粘贴
+- 禁止遗漏来源标注
+
+#### 质量自检
+
+- **忠实度检查**：有没有编造 F 未说的情感标签？
+- **连接性检查**：与 D/E 的交叉发现是否被显式标注？
+
+---
+
+### 子文件 mini-模板：`03-methodology/deconstructed-facts.md`
+
+> 🚨 Agent: design-miner-summarizer | gen: gen-{N} | Status: ✅
+
+#### 模板结构
+
+```markdown
+# 跨域解构与模式识别 — {项目名}
+
+> 分析日期: {日期} | 品味向量: {向量} | 来源: design-miner-deconstructor-patternmaster (G)
+> 汇总者: design-miner-summarizer (J)
+> 原始黑板: blackboard/deconstructed-facts/
+
+[G 的忠实提炼内容——统一语调，标注来源子文件 § 章节]
+
+## 核心发现摘要
+[一句话总结 G 的最重要跨域模式]
+
+## 关键原子事实 + 跨域类比
+[从 G 的 deconstructed-facts/ 子文件中精选的 3-5 个去领域化事实]
+```
+
+#### 🚨 Guardrails
+
+- 禁止直接复制粘贴
+- 禁止遗漏来源标注
+
+#### 质量自检
+
+- **忠实度检查**：有没有编造 G 未说的跨域类比？
+
+---
+
+### 子文件 mini-模板：`03-methodology/methodology-system.md`
+
+> 🚨 Agent: design-miner-summarizer | gen: gen-{N} | Status: ✅
+
+#### 模板结构
+
+```markdown
+# 方法论体系 — {项目名}
+
+> 分析日期: {日期} | 品味向量: {向量} | 来源: design-miner-methodologist-pragmatist (H)
+> 汇总者: design-miner-summarizer (J)
+> 原始黑板: blackboard/methodology-system/
+
+[H 的忠实提炼内容——统一语调，标注来源子文件 § 章节]
+
+## 核心发现摘要
+[一句话总结 H 的最核心方法论贡献]
+
+## 核心哲学 + 精选原则
+[从 H 的 methodology-system/ 子文件中精选的核心哲学和 3-5 条原则]
+```
+
+#### 🚨 Guardrails
+
+- 禁止直接复制粘贴
+- 禁止遗漏来源标注
+
+#### 质量自检
+
+- **忠实度检查**：有没有编造 H 未说的原则或反模式？
+
+---
+
+### 子文件 mini-模板：`04-rules-crosscheck/verdict-summary.md`
+
+> 🚨 Agent: design-miner-summarizer | gen: gen-{N} | Status: ✅
+
+#### 模板结构
+
+```markdown
+# 原则交叉印证 — 裁决汇总 — {项目名}
+
+> 分析日期: {日期} | 品味向量: {向量} | 来源: design-miner-rules-distiller (I)
+> 汇总者: design-miner-summarizer (J)
+> 原始黑板: blackboard/rules-crosscheck/
+
+[I 的裁决汇总表的忠实提炼——统一语调，标注来源子文件 § 章节]
+
+## 核心裁决摘要
+[一句话总结 I 的最重要裁决结论——本次分析对规则库的净贡献]
+```
+
+#### 🚨 Guardrails
+
+- 禁止修改 I 的裁决结论
+- 禁止遗漏来源标注
+
+#### 质量自检
+
+- **忠实度检查**：有没有编造 I 未给出的裁决？
+
+---
+
+### 子文件 mini-模板：`04-rules-crosscheck/detailed-verdicts.md`
+
+> 🚨 Agent: design-miner-summarizer | gen: gen-{N} | Status: ✅
+
+#### 模板结构
+
+```markdown
+# 原则交叉印证 — 详细裁决 — {项目名}
+
+> 分析日期: {日期} | 品味向量: {向量} | 来源: design-miner-rules-distiller (I)
+> 汇总者: design-miner-summarizer (J)
+> 原始黑板: blackboard/rules-crosscheck/02-detailed-verdicts/
+
+[I 的全部详细裁决的忠实提炼——按裁决类型分组（Append/Revise/New Section/New File/Already Covered/Too Specific），每条标注来源]
+```
+
+#### 🚨 Guardrails
+
+- 禁止遗漏任何裁决——I 给出的每一条详细裁决都必须在汇总中体现
+- 禁止修改裁决的置信度和草案文本
+
+#### 质量自检
+
+- **完整性检查**：是否覆盖了 I 的全部详细裁决？数量是否与统计一致？
+
+---
+
+### 子文件 mini-模板：`04-rules-crosscheck/statistics.md`
+
+> 🚨 Agent: design-miner-summarizer | gen: gen-{N} | Status: ✅
+
+#### 模板结构
+
+```markdown
+# 原则交叉印证 — 统计 — {项目名}
+
+> 分析日期: {日期} | 品味向量: {向量} | 来源: design-miner-rules-distiller (I)
+> 汇总者: design-miner-summarizer (J)
+> 原始黑板: blackboard/rules-crosscheck/03-statistics.md
+
+[I 的裁决统计的忠实提炼——六种裁决的数量分布和占比]
+```
+
+#### 🚨 Guardrails
+
+- 禁止修改统计数据
+- 统计数据必须与详细裁决数量一致
+
+#### 质量自检
+
+- **一致性检查**：统计数据是否与 `detailed-verdicts.md` 中的裁决数量一一对应？
+
+---
+
+### 子文件 mini-模板：`04-rules-crosscheck/rollback-items.md`
+
+> 🚨 Agent: design-miner-summarizer | gen: gen-{N} | Status: ✅
+
+#### 模板结构
+
+```markdown
+# 原则交叉印证 — 需要回退的原则 — {项目名}
+
+> 分析日期: {日期} | 品味向量: {向量} | 来源: design-miner-rules-distiller (I)
+> 原始黑板: blackboard/rules-crosscheck/04-rollback-items.md
+
+[I 的回退原则清单的忠实提炼——每条含回退目标、原因、缺失证据]
+```
+
+#### 🚨 Guardrails
+
+- 禁止遗漏任何回退项
+- 禁止修改回退建议的目标专家
+
+#### 质量自检
+
+- **完整性检查**：回退清单是否与 I 的原始产出完全一致？
+
+---
+
+### 子文件 mini-模板：`00-综合报告.md`
+
+> 🚨 Agent: design-miner-summarizer | gen: gen-{N} | Status: ✅
+
+#### 模板结构
+
+```markdown
+# {项目名} — 设计挖掘综合报告
+
+> 分析日期: {日期} | 品味向量: {向量}
+> 汇总者: design-miner-summarizer (J)
+> 上游专家: A-I（全部 9 位）
+
+## 索引表（全量子文件导航）
+
+| 文件夹 | 子文件 | 一句话内容 | 来源专家 |
+|--------|--------|-----------|----------|
+| 01-architecture/ | pattern-analysis.md | [一句话] | A |
+| 01-architecture/ | critical-review.md | [一句话] | B |
+| 01-architecture/ | abstract-principles.md | [一句话] | C |
+| 02-ux-engineering/ | interaction-analysis.md | [一句话] | D |
+| 02-ux-engineering/ | perception-analysis.md | [一句话] | E |
+| 02-ux-engineering/ | emotion-analysis.md | [一句话] | F |
+| 03-methodology/ | deconstructed-facts.md | [一句话] | G |
+| 03-methodology/ | methodology-system.md | [一句话] | H |
+| 04-rules-crosscheck/ | verdict-summary.md | [一句话] | I |
+| 04-rules-crosscheck/ | detailed-verdicts.md | [一句话] | I |
+| 04-rules-crosscheck/ | statistics.md | [一句话] | I |
+| 04-rules-crosscheck/ | rollback-items.md | [一句话] | I |
+
+## 关键发现摘要
+[跨所有 9 位专家的 3-5 个最关键发现，按重要度排序]
+
+## 下游阅读建议
+- **DI 团队建议阅读顺序**：[根据 project-type 推荐的阅读路径]
+- **如有时间只读 1 份**：[推荐的最核心文档]
+- **视角局限性提醒**：[本次分析的已知盲区]
+```
+
+#### 🚨 Guardrails
+
+- 禁止在索引表中遗漏任何子文件
+- 禁止在关键发现摘要中引入专家未说的结论
+- 下游阅读建议必须具体——不可写"建议全部阅读"
+
+#### 质量自检
+
+- **可读性检查**：下游 DI 读索引表，能否在 30 秒内决定要读哪个文件夹？
+- **完整性检查**：所有 4 个文件夹 + 全部子文件是否都在索引表中？
+
+---
+
+### 子文件 mini-模板：`00-session-log.md`
+
+> 🚨 Agent: design-miner-summarizer | gen: gen-{N} | Status: ✅
+
+#### 模板结构
+
+```markdown
+# 会话记录
+
+## [{ISO8601日期}] gen-{N} — {项目名}
+
+- **品味向量**：{用户偏好}
+- **产出文件夹清单**：
+  - 01-architecture/ (pattern-analysis.md, critical-review.md, abstract-principles.md)
+  - 02-ux-engineering/ (interaction-analysis.md, perception-analysis.md, emotion-analysis.md)
+  - 03-methodology/ (deconstructed-facts.md, methodology-system.md)
+  - 04-rules-crosscheck/ (verdict-summary.md, detailed-verdicts.md, statistics.md, rollback-items.md)
+  - 00-综合报告.md
+- **关键发现摘要**：[3-5 条，跨专家交叉点]
+- **视角局限性**：[本次分析的已知盲区或不足]
+- **下游推荐**：[给 DI 团队或后续分析的 1-2 条最核心建议]
+- **上游黑板 gen 引用**：pattern-analysis gen-{N}, critical-review gen-{N}, ...
+```
+
+#### 🚨 Guardrails
+
+- 禁止编造会话记录——每一条记录必须对应一次实际的汇总执行
+- 上游黑板 gen 引用必须与各专家产出的实际 gen 号一致
+- 每次汇总追加一条新记录，不可覆盖已有记录
+
+#### 质量自检
+
+- **完整性检查**：是否包含了品味向量、产出清单、关键发现、局限性、下游推荐全部五个维度的信息？
+- **可追溯性检查**：通过 gen 号和日期能否追溯到对应的黑板产出？
 
 ---
 
