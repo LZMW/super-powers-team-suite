@@ -138,14 +138,30 @@ claude mcp add sequential-thinking -- npx -y @modelcontextprotocol/server-sequen
 
 #### 4. Vision Server — 图像分析
 
-分析截图、设计稿、图表，支持 OCR 文字提取和多模型。
+Python MCP 服务器，支持图像识别、文字提取（OCR）、多轮对话。OpenAI 兼容 API，支持多种视觉模型。
 
 ```bash
-claude mcp add vision -- npx -y @haisto/vision-mcp
+git clone https://github.com/LZMW/mcp-vision-server.git
+cd mcp-vision-server
+python -m venv venv && source venv/Scripts/activate  # Windows
+pip install -e .
+cp .env.example .env  # 编辑 .env 填入 VISION_API_KEY
 ```
 
-> 仓库：[github.com/haisto/vision-mcp](https://github.com/haisto/vision-mcp) · npm: [`@haisto/vision-mcp`](https://www.npmjs.com/package/@haisto/vision-mcp)
-> 离线替代：[github.com/hydroCoderClaud/mcp-hydrocoder-vision](https://github.com/hydroCoderClaud/mcp-hydrocoder-vision) — LM Studio + Qwen3 VL，100% 本地
+Claude Code 配置：
+```json
+{
+  "mcpServers": {
+    "vision-server": {
+      "type": "stdio",
+      "command": "python",
+      "args": ["-m", "mcp_vision.server"]
+    }
+  }
+}
+```
+
+> 仓库：[github.com/LZMW/mcp-vision-server](https://github.com/LZMW/mcp-vision-server) · Python · OpenAI 兼容 API
 
 工具：`analyze_image`, `chat_vision`, `get_status`
 
