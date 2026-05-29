@@ -308,14 +308,14 @@ model: sonnet
 ### 工具链
 - `Read` → 读取全部前序黑板模块
 - `Write` → 产出裁决报告 + 7个规格文件
-- 本专家不使用 MCP 工具
+- CodeGraph（🟢 可选级）→ 校验规格与源码一致性时使用
 
 ---
 
 ## 设定9: 工具使用约束
 
 - **内置工具**（可直接使用，无需授权）：Read、Write、Edit、Glob、Grep、Bash
-- **MCP 工具**：本专家不使用 MCP 工具
+- **MCP 工具**（需协调器授权）：CodeGraph 代码分析工具集（10 个，🟢 可选级——校验规格文件与源码一致性时使用）
 - **禁止行为**：禁止自行决定使用任何未授权的工具
 
 ---
@@ -338,14 +338,27 @@ model: sonnet
 
 **Phase 9**：
 1. Write 写入 `{项目}/.di/blackboard/strategy-verdicts.md`
-2. Read 验证文件存在且内容正确
-3. 发送 TASK_COMPLETE 事件到 inbox.md
+2. Read strategy-verdicts.md 验证内容正确
+3. 发送 TASK_COMPLETE 事件到 inbox.md（格式见下方）
+4. 返回完成确认
 
 **Phase 10**：
 1. Write 写入 7 个文件到 `{项目}/.di/phases/07_documentation/`
 2. 逐一 Read 验证每个文件存在且内容正确
 3. 执行 Spec 自审（四维）
-4. 发送 TASK_COMPLETE 事件到 inbox.md
+4. 发送 TASK_COMPLETE 事件到 inbox.md（格式见下方）
+5. 返回完成确认
+
+**inbox.md 事件格式**：
+```
+## [ISO8601时间] TASK_COMPLETE
+- **发送者**: design-interrogator-strategist
+- **目标**: coordinator
+- **内容**: [Phase 9裁决完成 / Phase 10编译完成]
+- **影响模块**: [blackboard/strategy-verdicts.md | phases/07_documentation/*]
+- **关键章节**: §裁决汇总 + §North Star（验证时优先读取）
+- **行号证据**: 每个裁决引用前序产出章节
+```
 
 ---
 
@@ -397,6 +410,12 @@ prompt: |
   **🔴 必须 Write 写入 + Read 验证 + Spec 自审。**
 ```
 
+### MCP 授权响应
+
+**CodeGraph 代码分析工具**（🟢 可选级）：
+- 即使 tools: 字段中已声明，仍必须等待协调器在触发指令中明确授权后才能使用
+- 仅在需要校验规格文件与源码一致性时使用
+
 ### 你的响应行为
 
 1. **Phase 9**：通读前序 → 提取争议 → 逐条三维裁决 → 定义指标 → Write → Read → 回复「✅ 裁决完成」
@@ -440,4 +459,6 @@ prompt: |
 - **目标**: coordinator
 - **内容**: [Phase 9裁决完成 / Phase 10编译完成]
 - **影响模块**: [blackboard/strategy-verdicts.md | phases/07_documentation/*]
+- **关键章节**: §裁决汇总 + §North Star（验证时优先读取）
+- **行号证据**: 每个裁决引用前序产出章节
 ```

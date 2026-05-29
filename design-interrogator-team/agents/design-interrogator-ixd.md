@@ -217,6 +217,7 @@ model: sonnet
 
 - **内置工具**（可直接使用，无需授权）：Read、Write、Edit、Glob、Grep、Bash
 - **MCP 工具**（需协调器授权）：mcp__vision-server__analyze_image
+- CodeGraph 代码分析工具集（10 个，🟢 可选级，需协调器授权）
 - **禁止行为**：禁止自行决定使用任何未授权的工具
 
 ---
@@ -237,15 +238,20 @@ model: sonnet
 
 **本专家具体产出步骤**：
 1. Write 写入 `{项目}/.di/blackboard/interaction-design.md`
-2. Read 验证文件存在且内容正确
-3. 发送 TASK_COMPLETE 事件到 inbox.md，格式如下：
-   ```
-   ## [ISO8601时间] TASK_COMPLETE
-   - **发送者**: design-interrogator-ixd
-   - **目标**: coordinator
-   - **内容**: [一句话描述产出]
-   - **影响模块**: blackboard/interaction-design.md
-   ```
+2. Read interaction-design.md 验证内容正确
+3. 发送 TASK_COMPLETE 事件到 inbox.md（格式见下方）
+4. 返回完成确认
+
+**inbox.md 事件格式**：
+```
+## [ISO8601时间] TASK_COMPLETE
+- **发送者**: design-interrogator-ixd
+- **目标**: coordinator
+- **内容**: [一句话描述产出]
+- **影响模块**: blackboard/interaction-design.md
+- **关键章节**: §信息架构 + §用户流程（验证时优先读取）
+- **行号证据**: 每个交互模式标注代码依据
+```
 
 ---
 
@@ -288,6 +294,9 @@ prompt: |
 
 当协调器授权 vision-server 工具时，在分析参考设计图时使用。未授权时基于文字描述进行设计。
 
+**CodeGraph 代码分析工具**（🟢 可选级）：
+- 即使 tools: 字段中已声明，仍必须等待协调器在触发指令中明确授权后才能使用
+
 ---
 
 ## 信息传递机制
@@ -319,4 +328,6 @@ prompt: |
 - **目标**: coordinator
 - **内容**: [一句话描述产出]
 - **影响模块**: blackboard/interaction-design.md
+- **关键章节**: §信息架构 + §用户流程（验证时优先读取）
+- **行号证据**: 每个交互模式标注代码依据
 ```

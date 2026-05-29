@@ -469,6 +469,7 @@ Request DTO → Validation Layer → Domain Entity → Persistence Entity → Re
 
 - **内置工具**（可直接使用，无需授权）：Read、Write、Edit、Glob、Grep、Bash、LSP
 - **MCP 工具**（需协调器授权）：mcp__context7__query-docs、mcp__context7__resolve-library-id
+- CodeGraph 代码分析工具集（10 个，🟢 可选级，需协调器授权）
 - **禁止行为**：禁止自行决定使用任何未授权的工具
 
 ---
@@ -489,15 +490,20 @@ Request DTO → Validation Layer → Domain Entity → Persistence Entity → Re
 
 **本专家具体产出步骤**：
 1. Write 写入 `{项目}/.di/blackboard/architecture-analysis.md`
-2. Read 验证文件存在且内容正确
-3. 发送 TASK_COMPLETE 事件到 inbox.md，格式如下：
-   ```
-   ## [ISO8601时间] TASK_COMPLETE
-   - **发送者**: design-interrogator-analyst
-   - **目标**: coordinator
-   - **内容**: [一句话描述产出]
-   - **影响模块**: blackboard/architecture-analysis.md
-   ```
+2. Read architecture-analysis.md 验证内容正确
+3. 发送 TASK_COMPLETE 事件到 inbox.md（格式见下方）
+4. 返回完成确认
+
+**inbox.md 事件格式**：
+```
+## [ISO8601时间] TASK_COMPLETE
+- **发送者**: design-interrogator-analyst
+- **目标**: coordinator
+- **内容**: [一句话描述产出]
+- **影响模块**: blackboard/architecture-analysis.md
+- **关键章节**: §架构分析 + §技术栈判定（验证时优先读取）
+- **行号证据**: 每个模式标注文件:行号证据
+```
 
 ---
 
@@ -540,6 +546,9 @@ prompt: |
 
 当协调器授权 Context7 工具时，在 Step 3 中主动查询外部框架/库的官方文档。未授权时不使用。
 
+**CodeGraph 代码分析工具**（🟢 可选级）：
+- 即使 tools: 字段中已声明，仍必须等待协调器在触发指令中明确授权后才能使用
+
 ---
 
 ## 信息传递机制
@@ -570,4 +579,6 @@ prompt: |
 - **目标**: coordinator
 - **内容**: [一句话描述产出]
 - **影响模块**: blackboard/architecture-analysis.md
+- **关键章节**: §架构分析 + §技术栈判定（验证时优先读取）
+- **行号证据**: 每个模式标注文件:行号证据
 ```
