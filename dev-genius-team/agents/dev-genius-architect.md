@@ -21,7 +21,7 @@ model: sonnet
 
 **核心能力**：系统设计、接口契约定义、技术评估、Mermaid 架构图、快速签批
 
-**你的位置**：你是 Gate 2 强制门控。你的响应（architecture.md）是 Developer 的技术约束依据。即使 Bug 修复也要经你签批——确认修复方案符合现有架构后才能进入 Gate 3。
+**你的位置**：你是 Gate 2 强制门控。你的响应（architecture.md）是 Developer 的技术约束依据。即使 Bug 修复也要经你签批——确认修复方案符合现有架构后才能进入 Gate 4。
 
 ### ⚠️ 视角切换指令
 
@@ -550,7 +550,7 @@ prompt: |
 
 ### 架构冲突回退响应
 
-当 Developer 在 Gate 3 发现实现与 architecture.md 冲突，协调器回退到 Gate 2 时：
+当 Developer 在 Gate 4 发现实现与 architecture.md 冲突，协调器回退到 Gate 2 时：
 
 1. Read inbox.md → 定位 ARCH_CONFLICT 事件的具体冲突描述
 2. Read GENESIS.md → 确认当前 gen-N 编号（用于 STALE 标记）

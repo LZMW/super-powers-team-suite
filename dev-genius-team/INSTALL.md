@@ -1,4 +1,4 @@
-# Dev-Genius Team v2.3 — 安装说明
+# Dev-Genius Team v3.3 — 安装说明
 
 ## 前置依赖
 
@@ -20,9 +20,11 @@ cp skills/dev-genius-coordinator/skill.md ~/.claude/skills/dev-genius-coordinato
 mkdir -p ~/.claude/agents
 cp agents/dev-genius-planner.md ~/.claude/agents/
 cp agents/dev-genius-architect.md ~/.claude/agents/
+cp agents/dev-genius-doc-validator.md ~/.claude/agents/
 cp agents/dev-genius-developer.md ~/.claude/agents/
 cp agents/dev-genius-qa-tester.md ~/.claude/agents/
 cp agents/dev-genius-analyst.md ~/.claude/agents/
+cp agents/dev-genius-codebase-analyst.md ~/.claude/agents/
 ```
 
 ### 3. Agent 清单
@@ -31,9 +33,11 @@ cp agents/dev-genius-analyst.md ~/.claude/agents/
 |------|----------|------|
 | `dev-genius-planner.md` | 任务规划师 | 🚪 Gate 1 |
 | `dev-genius-architect.md` | 架构实施师 | 🚪 Gate 2 必经 |
-| `dev-genius-developer.md` | 开发工程师 | 🚪 Gate 3 |
-| `dev-genius-qa-tester.md` | 测试工程师 | 🚪 Gate 4 必经 |
-| `dev-genius-analyst.md` | 代码审查师 | 🚪 Gate 5+6 |
+| `dev-genius-doc-validator.md` | 文档验证师 | 🚪 Gate 3 |
+| `dev-genius-developer.md` | 开发工程师 | 🚪 Gate 4 |
+| `dev-genius-qa-tester.md` | 测试工程师 | 🚪 Gate 5 必经 |
+| `dev-genius-analyst.md` | 代码审查师 | 🚪 Gate 6+7 |
+| `dev-genius-codebase-analyst.md` | 源码状态分析师 | 🚪 Gate 0+7（双阶段） |
 
 ### 4. MCP 服务器（可选但推荐）
 
@@ -54,11 +58,11 @@ cp agents/dev-genius-analyst.md ~/.claude/agents/
 ```
 1. design-interrogator-team 产出 .di/phases/07_documentation/
 2. 启动 dev-genius-coordinator
-3. 协调器自动检测上游 → 🚪 Gate 1 (Plan) → 🚪 Gate 2 (Arch) → 🚪 Gate 3 (TDD) → 🚪 Gate 4 (Verify) → 🚪 Gate 5 (Review) → 🚪 Gate 6 (Finish)
-4. 每道门控通过后才进入下一阶段。Gate 2 (Architect) 和 Gate 4 (QA Tester) 是必经门控，协调器不可随意跳过
+3. 协调器自动检测上游 → 🚪 Gate 1 (Plan) → 🚪 Gate 2 (Arch) → 🚪 Gate 3 (Doc-Validate) → 🚪 Gate 4 (TDD) → 🚪 Gate 5 (Verify) → 🚪 Gate 6 (Review) → 🚪 Gate 7 (Codebase Re-scan) → 🚪 Gate 8 (Finish)
+4. 每道门控通过后才进入下一阶段。Gate 2 (Architect) 和 Gate 5 (QA Tester) 是必经门控，协调器不可随意跳过
 5. 推荐 /goal + /loop 实现全自动开发
 ```
 
 ---
 
-**版本**: v2.3
+**版本**: v3.3

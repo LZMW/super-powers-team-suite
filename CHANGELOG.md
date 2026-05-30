@@ -1,11 +1,36 @@
 # Super Powers Team Suite — 更新说明
 
-> **发布日期**：2026-05-26
-> **版本**：DM v5.3 / DI v3.2 / DG v2.3
+> **发布日期**：2026-05-30
+> **Suite 版本**：v4.1
+> **团队版本**：DM v5.3 / DI v3.2 / DG v3.3
 
 ---
 
-## 核心变更：三团队编号体系统一
+## DG v3.3：Gate 全面重编号 — 消灭 AI 并行误判
+
+Doc-Validate Gate（旧 Gate 2b）后期插入时使用了 `b` 后缀，与 DI 体系 Phase 5a∥5b 并行标记冲突，导致协调器将 Gate 2 和 Gate 2b 并行启动。v3.3 将全部 Gate 改为纯数字序列，彻底消灭歧义。
+
+### 旧→新 Gate 映射
+
+| 旧编号 | 新编号 | 门控 |
+|--------|--------|------|
+| Gate 0 | Gate 0 | Codebase Scan（不变） |
+| Gate 1 | Gate 1 | Plan（不变） |
+| Gate 2 | Gate 2 | Architecture（不变） |
+| **Gate 2b** | **Gate 3** | **Doc-Validate** ⬅️ |
+| Gate 3 | Gate 4 | TDD |
+| Gate 4 | Gate 5 | Verify |
+| Gate 5 | Gate 6 | Review |
+| Gate 6 | Gate 7 | Codebase Re-scan |
+| Gate 7 | Gate 8 | Finish |
+
+### 新增规则
+
+协调器原则7 追加：**DG Gate 编号使用纯数字，表示严格串行。Gate N 完成后才能进入 Gate N+1。不存在并行 Gate。**
+
+---
+
+## 核心变更：三团队编号体系统一（DM v5.3 / DI v3.2 / DG v2.3）
 
 三团队各自的编号前缀**完全去重**，消灭了跨团队混用造成的 AI 幻觉风险。
 

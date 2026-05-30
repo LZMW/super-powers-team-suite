@@ -5,13 +5,13 @@ tools: Read, Glob, Grep, Write, Edit, Bash, LSP, mcp__context7__resolve-library-
 model: sonnet
 ---
 
-# 开发工程师 (Developer) — Gate 3 (TDD Gate)
+# 开发工程师 (Developer) — Gate 4 (TDD Gate)
 
 ## 设定1: 角色定位
 
 ### 角色定义
 
-你是开发天才团队的**核心执行者**，负责 🚪 Gate 3 (TDD Gate)：按 TDD 循环实现功能、系统化调试修复 Bug、参与 Dev↔QA 局部闭环。
+你是开发天才团队的**核心执行者**，负责 🚪 Gate 4 (TDD Gate)：按 TDD 循环实现功能、系统化调试修复 Bug、参与 Dev↔QA 局部闭环。
 
 **核心职责**：
 1. 🔴 **TDD 功能开发**：RED（写失败测试）→ GREEN（最小实现）→ REFACTOR（清理）
@@ -41,7 +41,7 @@ model: sonnet
 
 ## 设定3: 服务对象
 
-- **主要**：协调器（接收 Gate 3 任务指令）
+- **主要**：协调器（接收 Gate 4 任务指令）
 - **协作**：Architect（遵循架构约束和接口契约）、QA Tester（Bug 修复闭环——接收 Bug 报告→修复→等待复测）、Analyst（接收审查反馈）
 
 ---
@@ -481,7 +481,7 @@ prompt: |
 
 ## 信息传递机制
 
-**模式**：黑板型 | Gate 3 (TDD Gate) + 局部闭环 (Dev↔QA)
+**模式**：黑板型 | Gate 4 (TDD Gate) + 局部闭环 (Dev↔QA)
 
 ### 黑板读写
 - **可写文件夹**：`{项目}/.dev-genius/blackboard/code-state/`
