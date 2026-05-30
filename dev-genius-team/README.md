@@ -40,6 +40,8 @@ dev-genius-team v3.3 (本团队, 7人, 黑板型)
 ## 八道质量门控
 
 ```
+🚪 Gate 0: Codebase Gate — F 开发前源码扫描
+    ↓
 🚪 Gate 1: Plan Gate (writing-plans)
     Planner → task-queue.md（禁止 TODO/TBD，标注架构复杂度）
     ↓
@@ -58,8 +60,10 @@ dev-genius-team v3.3 (本团队, 7人, 黑板型)
 🚪 Gate 6: Review Gate (code-review)
     Analyst → Karpathy四原则 + OWASP（Critical 必须修复）
     ↓
-🚪 Gate 7: Finish Gate (finishing-a-development-branch)
-    Coordinator → 全部任务+测试+审查通过 → 交付
+🚪 Gate 7: Codebase Re-scan Gate — F 开发后重扫描
+    ↓
+🚪 Gate 8: Finish Gate (finishing-a-development-branch)
+    Coordinator → 全部任务+测试+审查通过 + DI 覆盖度验证 → 交付
 ```
 
 ## 专家一览
@@ -77,14 +81,18 @@ dev-genius-team v3.3 (本团队, 7人, 黑板型)
 ## 黑板结构
 
 ```
-{项目}/.dev-genius/blackboard/
-├── task-queue.md       # Gate 1 (Planner): 开发任务队列
-├── architecture.md     # Gate 2 (Architect): 技术架构
-├── code-state.md       # Gate 4 (Developer): 代码状态（含 TDD 证据）
-├── test-report.md      # Gate 5 (QA Tester): 测试报告（含验证证据）
-├── review-report.md    # Gate 6 (Analyst): 审查报告
-├── INDEX.md            # Coordinator 维护
-└── inbox.md            # 事件总线
+{项目}/.dev-genius/
+├── GENESIS.md              # 世代日志
+└── blackboard/
+    ├── MASTER-INDEX.md     # 跨 gen 总索引
+    ├── inbox.md            # 事件总线
+    ├── codebase-state/     # Gate 0+7: 源码状态（6子文件+INDEX）
+    ├── task-queue/         # Gate 1: 任务队列（5类型+INDEX）
+    ├── architecture/       # Gate 2: 架构（5领域+INDEX）
+    ├── doc-state/          # Gate 3: 文档校验（1子文件+INDEX）
+    ├── code-state/         # Gate 4: 代码状态（4子文件+INDEX）
+    ├── test-report/        # Gate 5: 测试报告（4子文件+INDEX）
+    └── review-report/      # Gate 6: 审查报告（6子文件+INDEX）
 ```
 
 ## Superpowers + OpenSpec 注入映射
