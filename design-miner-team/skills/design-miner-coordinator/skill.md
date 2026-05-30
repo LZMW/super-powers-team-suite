@@ -214,6 +214,10 @@ gen 编号按完整 run（Stage 1-7）递增。同 gen 内的回退/重做不增
 | 代码审查(Design Review) | "设计审查"、"code review" | A → B | 串行 | pattern-analysis, critical-review | `01-架构设计分析.md`（A+B 版） |
 | 规则库维护 | "原则升级"、"rules update" | I (独立验证) | 单专家 | rules-crosscheck | `04-原则交叉印证.md` |
 | 🔴 汇总交付 | "生成报告"、"汇总产出" | J (汇总专家) | 读取全部黑板→写入全部产出 | 全部黑板→output/ | 全部产出文档 |
+| 🔴 技术栈调研 | "技术选型"、"依赖分析"、"版本升级"、"许可证审计" | A → B | 串行+联网调研 | pattern-analysis, critical-review | `05-tech-survey/` |
+| 🔴 安全审计 | "安全审计"、"CVE扫描"、"漏洞"、"安全" | A → B → F | 混合 | pattern-analysis, critical-review, emotion-analysis | `06-code-health/` |
+| 🔴 代码健康评估 | "技术债务"、"代码健康"、"复杂度"、"代码质量" | A → B | 串行 | pattern-analysis, critical-review | `06-code-health/` |
+| 🔴 依赖生态分析 | "供应链安全"、"过期依赖"、"许可证" | A | 单专家+联网调研 | pattern-analysis | `05-tech-survey/` |
 | 🔴 专项聚焦分析 | 用户指定具体主题（"缓存策略"/"安全审计"/"错误处理"） | 按主题选专家（见下方映射） | 按需 | 相关黑板模块 | `05-{主题}.md`（自定义命名） |
 
 **专项聚焦分析专家选择映射**（协调器根据主题关键词匹配）：
@@ -222,6 +226,9 @@ gen 编号按完整 run（Stage 1-7）递增。同 gen 内的回退/重做不增
 |-----------|----------|------|
 | 缓存/性能/数据库 | A → B, D | 架构模式 + 加载策略 |
 | 安全/认证/授权 | A → B, F | 架构模式 + 错误处理容错 |
+| 依赖/许可证/版本升级 | A → B | 技术栈指纹 + 替代方案对比（A 可使用 WebSearch 查版本/CVE） |
+| 技术选型/竞品对比 | A → B | 技术栈指纹 + 反事实推理（A/B 可使用 WebSearch/WebFetch 做联网调研） |
+| 安全漏洞/CVE | A, F | 依赖拓扑 + 容错分析（F 可使用 WebSearch 查 CVE 数据库） |
 | 错误处理/日志/重试 | A → B, F | 架构 + 情感容错 |
 | 交互/动画/加载 | D, E | UX 交互 + 感知 |
 | 布局/响应式/Token | E, D | 感知 + 交互 |
@@ -235,12 +242,12 @@ gen 编号按完整 run（Stage 1-7）递增。同 gen 内的回退/重做不增
 
 | 代号 | 可授权的MCP工具 | 授权条件 |
 |------|-----------------|----------|
-| pattern-recognizer | CodeGraph (10 tools) | 🟢 可选：LSP/Grep无法覆盖的跨文件调用链追踪 |
-| critical-thinker | CodeGraph (10 tools) | 🟢 可选：独立验证A的证据时跨模块追溯 |
+| pattern-recognizer | CodeGraph (10 tools) + WebSearch, WebFetch | 🟢 可选：LSP/Grep无法覆盖的跨文件调用链追踪；技术栈调研时可联网查版本/CVE/替代方案 |
+| critical-thinker | CodeGraph (10 tools) + WebSearch, WebFetch | 🟢 可选：独立验证A的证据时跨模块追溯；反事实推理时可联网查行业最佳实践 |
 | abstraction-modeler | CodeGraph (10 tools) | 🟢 可选：深读阶段如需回溯源码验证抽象依据 |
 | interaction-analyzer | CodeGraph (10 tools) | 🟢 可选：跨文件追踪交互反馈的完整调用链 |
 | perception-analyzer | CodeGraph (10 tools) | 🟢 可选：跨文件追踪信息架构的依赖关系 |
-| emotion-analyzer | CodeGraph (10 tools) | 🟢 可选：跨文件追踪错误处理链的完整路径 |
+| emotion-analyzer | CodeGraph (10 tools) + WebSearch | 🟢 可选：跨文件追踪错误处理链的完整路径；安全审计时可联网查 CVE 数据库 |
 | deconstructor-patternmaster | CodeGraph (10 tools) | 🟢 可选：深读阶段如需回溯源码验证跨域类比 |
 | methodologist-pragmatist | CodeGraph (10 tools) + `mcp__context7__query-docs`, `mcp__context7__resolve-library-id` | 🟢 可选：CodeGraph用于回溯验证；context7用于查找外部方法论参考 |
 | rules-distiller | CodeGraph (10 tools) | 🟢 可选：如有需要回溯源码验证原则的证据链 |
@@ -542,6 +549,8 @@ Stage 3 🔴: B(critical-thinker) ∥ D(interaction) ∥ E(perception) ∥ F(emo
     ↓
 [基础架构分析到此] → 🔴 更新 01-架构设计分析.md（A+B 版）
 [仅UX分析到此]     → 🔴 更新 02-UX工程分析.md（D+E+F 版）
+[仅技术调研到此]   → 🔴 A（联网调研依赖版本/许可证）→ B（替代方案对比）→ 产出 `05-tech-survey/`
+[仅代码健康到此]   → 🔴 A（技术栈指纹+依赖拓扑）→ B（技术债务评估）→ 产出 `06-code-health/`
     ↓
 Stage 4 🔴: Pre-Synthesis（协调器读取全部5份产出，生成 synthesis-summary.md）
     ↓
@@ -1190,6 +1199,16 @@ output/{project}-analysis/
 │   ├── statistics.md             # 统计
 │   └── rollback-items.md         # 回退项
 │
+├── 05-tech-survey/               # 🔴 技术调研（A→B 联网调研产出）
+│   ├── tech-survey-INDEX.md
+│   ├── dependency-report.md      # 依赖版本/许可证/CVE
+│   └── tech-comparison.md        # 技术栈选型对比
+│
+├── 06-code-health/               # 🔴 代码健康（A→B 代码质量审计产出）
+│   ├── code-health-INDEX.md
+│   ├── tech-debt-quantification.md  # 技术债务量化
+│   └── security-audit.md         # 安全审计报告
+│
 └── 05-{自定义主题}/              # 🔴 非标准分类时自动创建
     └── custom-INDEX.md
 ```
@@ -1202,6 +1221,8 @@ output/{project}-analysis/
 | Stage 7a | **J** | 02-ux-engineering/ | interaction-analysis.md, perception-analysis.md, emotion-analysis.md + ux-INDEX.md |
 | Stage 7a | **J** | 03-methodology/ | deconstructed-facts.md, methodology-system.md + methodology-INDEX.md |
 | Stage 7a | **J** | 04-rules-crosscheck/ | verdict-summary.md, detailed-verdicts.md, statistics.md, rollback-items.md + rules-INDEX.md |
+| Stage 7a（技术调研路径） | **J** | 05-tech-survey/ | dependency-report.md, tech-comparison.md + tech-survey-INDEX.md |
+| Stage 7a（代码健康路径） | **J** | 06-code-health/ | tech-debt-quantification.md, security-audit.md + code-health-INDEX.md |
 | Stage 7a | **J** | 根 | 00-综合报告.md（更新索引表）+ 00-session-log.md（追加会话记录） |
 | Stage 7b | **协调器** | 全部 | Read 验证全部产出子文件 + 子 INDEX |
 | Stage 7b | **协调器** | 全部 | 阅读学习关键产出文档 |
@@ -1218,6 +1239,10 @@ output/{project}-analysis/
 |--------|------|------|-------------|----------|
 | [01-architecture/](./01-architecture/) | [architecture-INDEX.md](./01-architecture/architecture-INDEX.md) | 设计模式/SOLID/架构风格/抽象原则 | 2026-05-25 | 架构 A+B+C |
 | [02-ux-engineering/](./02-ux-engineering/) | [ux-INDEX.md](./02-ux-engineering/ux-INDEX.md) | 交互反馈/信息感知/情感容错 | 2026-05-23 | UX D+E+F |
+| [03-methodology/](./03-methodology/) | [methodology-INDEX.md](./03-methodology/methodology-INDEX.md) | 跨域解构/方法论体系 | 2026-05-25 | 元方法论 G+H |
+| [04-rules-crosscheck/](./04-rules-crosscheck/) | [rules-INDEX.md](./04-rules-crosscheck/rules-INDEX.md) | 原则交叉印证/裁决/统计 | 2026-05-25 | 验证 I |
+| [05-tech-survey/](./05-tech-survey/) | [tech-survey-INDEX.md](./05-tech-survey/tech-survey-INDEX.md) | 依赖版本/许可证/CVE/技术选型对比 | — | 调研 A→B |
+| [06-code-health/](./06-code-health/) | [code-health-INDEX.md](./06-code-health/code-health-INDEX.md) | 技术债务量化/安全审计 | — | 健康 A→B |
 | [05-缓存策略/](./05-缓存策略/) | [custom-INDEX.md](./05-缓存策略/custom-INDEX.md) | Redis缓存策略 | 2026-05-22 | 架构 D（专项） |
 ```
 

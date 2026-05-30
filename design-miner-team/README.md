@@ -1,6 +1,6 @@
-# Design-Miner (设计挖掘) 团队 v6.1
+# Design-Miner (设计挖掘) 团队 v6.2
 
-> **一句话**：三轨道并行 + Pre-Synthesis + 品味注入 + Review-Execution 分离 + 增强手艺结构 + 模板完整对齐 + 汇总专家 J，从参考项目源码中挖掘架构智慧、UX 模式和跨领域元方法论。
+> **一句话**：三轨道并行 + Pre-Synthesis + 品味注入 + Review-Execution 分离 + 增强手艺结构 + 模板完整对齐 + 汇总专家 J，从参考项目源码中挖掘架构智慧、UX 模式和跨领域元方法论。**v6.2 扩展**：支持技术栈调研、依赖分析、安全审计、代码健康评估等代码相关的泛用调研分析能力。
 
 ## v5.1 模板对齐（super-team-builder v4.2 blackboard-coordinator-template）
 
@@ -181,6 +181,16 @@ output/{project}-analysis/
 │   ├── statistics.md             # 统计
 │   └── rollback-items.md         # 回退项
 │
+├── 05-tech-survey/               # 🔴 v6.2 技术调研
+│   ├── tech-survey-INDEX.md
+│   ├── dependency-report.md      # 依赖版本/许可证/CVE
+│   └── tech-comparison.md        # 技术栈选型对比
+│
+├── 06-code-health/               # 🔴 v6.2 代码健康
+│   ├── code-health-INDEX.md
+│   ├── tech-debt-quantification.md  # 技术债务量化
+│   └── security-audit.md         # 安全审计报告
+│
 └── 05-{自定义主题}/              # 非标准分类时自动创建
     └── custom-INDEX.md
 ```
@@ -202,6 +212,19 @@ DM (设计挖掘) → DI (设计审问) → DG (开发实现)
 | **DM → DI → DG** | ⭐⭐⭐ 推荐 | 完整项目链路：挖掘→审问→实现 |
 | **DI → DG** | ⭐⭐ 可接受 | 无参考项目时跳过 DM |
 | **DM → DG** | ⭐ 不推荐 | 跳过设计审问，缺失关键决策环节 |
+
+## 调研分析模式（v6.2 新增）
+
+除源码设计挖掘外，同一批专家可直接承担代码相关的泛用调研分析任务——**无需新增专家，复用现有 A-J 能力**：
+
+| 任务类型 | 关键词 | 专家路径 | 产出 |
+|----------|--------|----------|------|
+| **技术栈调研** | "技术选型"、"依赖分析"、"版本升级" | A（联网查版本/CVE）→ B（替代方案对比） | `05-tech-survey/` |
+| **安全审计** | "安全审计"、"CVE扫描"、"漏洞" | A（全局扫描+依赖拓扑）→ B（批判审视）→ F（容错分析+查CVE） | `06-code-health/` |
+| **代码健康评估** | "技术债务"、"代码健康"、"复杂度" | A（SOLID+依赖拓扑）→ B（技术债务评估） | `06-code-health/` |
+| **依赖生态分析** | "供应链安全"、"许可证"、"过期依赖" | A（技术栈指纹+联网调研） | `05-tech-survey/` |
+
+**联网调研能力**：A (pattern-recognizer) 和 B (critical-thinker) 现可访问 WebSearch/WebFetch，F (emotion-analyzer) 可访问 WebSearch。协调器在调研任务中主动授权联网搜索。
 
 ## 关键设计原则
 
@@ -225,6 +248,13 @@ DM (设计挖掘) → DI (设计审问) → DG (开发实现)
 | openspec 模式 | Scope Guardrails、常见故障模式 |
 
 ## 更新日志
+
+### v6.2 (2026-05-30)
+- 🆕 **泛用调研分析**：新增技术栈调研、安全审计、代码健康评估、依赖生态分析 4 种任务类型，复用现有 A-J 专家
+- 🆕 **联网调研能力**：A/B 新增 WebSearch/WebFetch，F 新增 WebSearch——技术调研时可联网查版本/CVE/替代方案
+- 🆕 **新产出文件夹**：`05-tech-survey/`（技术调研）+ `06-code-health/`（代码健康），产出触发时机表同步更新
+- 🆕 **快捷执行路径**：仅技术调研（A→B 联网调研）、仅代码健康（A→B 质量审计）
+- 📝 **协调器扩展**：任务类型映射表 +4 行、专项聚焦映射 +3 行、MCP 速查表更新
 
 ### v6.1 (2026-05-29)
 - 🆕 **汇总专家 J (summarizer)**：新增 Opus 级汇总专家，Stage 7a 读取全部黑板 → 写入全部产出文档

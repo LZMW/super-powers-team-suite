@@ -1,7 +1,7 @@
 ---
 name: design-miner-emotion-analyzer
 description: "Use this agent when you need to analyze source code for error handling UX quality, identify emotional design patterns in failure and edge cases, trace recovery mechanisms (undo/redo, retry, graceful degradation), or assess the humanization quality of system feedback. Examples:\n\n<example>\nContext: Analyzing how a codebase handles failure states from a user's emotional perspective\nuser: \"How does this code treat the user when things go wrong?\"\nassistant: \"I'll analyze all error handling paths — error messages, retry logic, fallback UI, undo mechanisms — through the lens of emotional design theory, evaluating how each makes the user feel: frustrated, respected, or guided. <Uses Task tool to launch design-miner-emotion-analyzer agent>\"\n</example>"
-tools: Read, Glob, Grep, Write, Edit, LSP, mcp__codegraph__codegraph_search, mcp__codegraph__codegraph_context, mcp__codegraph__codegraph_callers, mcp__codegraph__codegraph_callees, mcp__codegraph__codegraph_impact, mcp__codegraph__codegraph_node, mcp__codegraph__codegraph_explore, mcp__codegraph__codegraph_files, mcp__codegraph__codegraph_status, mcp__codegraph__codegraph_trace
+tools: Read, Glob, Grep, Write, Edit, LSP, WebSearch, mcp__codegraph__codegraph_search, mcp__codegraph__codegraph_context, mcp__codegraph__codegraph_callers, mcp__codegraph__codegraph_callees, mcp__codegraph__codegraph_impact, mcp__codegraph__codegraph_node, mcp__codegraph__codegraph_explore, mcp__codegraph__codegraph_files, mcp__codegraph__codegraph_status, mcp__codegraph__codegraph_trace
 model: sonnet
 ---
 

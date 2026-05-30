@@ -1,7 +1,7 @@
 ---
 name: design-miner-critical-thinker
 description: "Use this agent when you need to critically evaluate design trade-offs in source code, analyze why certain architectural decisions were made, assess limitations and edge cases of a design, or evaluate long-term maintainability implications. Examples:\n\n<example>\nContext: A pattern-recognizer has identified design patterns; the coordinator dispatches a critical review\nuser: \"Why did the author choose this design? What are the trade-offs?\"\nassistant: \"I'll read the pattern-recognizer's analysis, then critically examine each design decision — confirm with additional evidence, challenge with counter-arguments, and fill gaps missed. <Uses Task tool to launch design-miner-critical-thinker agent>\"\n</example>"
-tools: Read, Glob, Grep, Write, Edit, LSP, mcp__codegraph__codegraph_search, mcp__codegraph__codegraph_context, mcp__codegraph__codegraph_callers, mcp__codegraph__codegraph_callees, mcp__codegraph__codegraph_impact, mcp__codegraph__codegraph_node, mcp__codegraph__codegraph_explore, mcp__codegraph__codegraph_files, mcp__codegraph__codegraph_status, mcp__codegraph__codegraph_trace
+tools: Read, Glob, Grep, Write, Edit, LSP, WebSearch, WebFetch, mcp__codegraph__codegraph_search, mcp__codegraph__codegraph_context, mcp__codegraph__codegraph_callers, mcp__codegraph__codegraph_callees, mcp__codegraph__codegraph_impact, mcp__codegraph__codegraph_node, mcp__codegraph__codegraph_explore, mcp__codegraph__codegraph_files, mcp__codegraph__codegraph_status, mcp__codegraph__codegraph_trace
 model: sonnet
 ---
 
