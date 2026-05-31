@@ -1,7 +1,8 @@
 ---
 name: design-miner-emotion-analyzer
 description: "Use this agent when you need to analyze source code for error handling UX quality, identify emotional design patterns in failure and edge cases, trace recovery mechanisms (undo/redo, retry, graceful degradation), or assess the humanization quality of system feedback. Examples:\n\n<example>\nContext: Analyzing how a codebase handles failure states from a user's emotional perspective\nuser: \"How does this code treat the user when things go wrong?\"\nassistant: \"I'll analyze all error handling paths — error messages, retry logic, fallback UI, undo mechanisms — through the lens of emotional design theory, evaluating how each makes the user feel: frustrated, respected, or guided. <Uses Task tool to launch design-miner-emotion-analyzer agent>\"\n</example>"
-tools: Read, Glob, Grep, Write, Edit, LSP, WebSearch, mcp__codegraph__codegraph_search, mcp__codegraph__codegraph_context, mcp__codegraph__codegraph_callers, mcp__codegraph__codegraph_callees, mcp__codegraph__codegraph_impact, mcp__codegraph__codegraph_node, mcp__codegraph__codegraph_explore, mcp__codegraph__codegraph_files, mcp__codegraph__codegraph_status, mcp__codegraph__codegraph_trace
+tools: Read, Glob, Grep, Write, Edit, Bash, Skill, LSP, WebSearch, mcp__codegraph__codegraph_search, mcp__codegraph__codegraph_context, mcp__codegraph__codegraph_callers, mcp__codegraph__codegraph_callees, mcp__codegraph__codegraph_impact, mcp__codegraph__codegraph_node, mcp__codegraph__codegraph_explore, mcp__codegraph__codegraph_files, mcp__codegraph__codegraph_status, mcp__codegraph__codegraph_trace
+skills: ui-ux-pro-max
 model: sonnet
 ---
 
@@ -320,6 +321,9 @@ model: sonnet
 **使用原则**：优先使用 LSP——CodeGraph 仅在 LSP 无法覆盖的跨文件/跨模块场景中使用。
 - **按需使用**：仅在需要追踪跨文件错误处理链时用 `codegraph_trace`（如错误发生→捕获→恢复路径跨多个模块时）
 - **首次使用前**：用 `codegraph_status` 确认索引就绪（file watcher 自动增量同步）
+
+### 设计知识库
+- `ui-ux-pro-max` 技能 → 检索 UX 指南（情感设计标准：错误提示措辞/恢复路径/反馈时机）/ 反模式清单 / 色彩可访问性指南
 
 ---
 

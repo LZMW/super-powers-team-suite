@@ -1294,6 +1294,30 @@ output/{project}-analysis/
 
 **🔴 STALE 标记规则**：新分析结论与旧子文件矛盾时，在子文件内追加新 gen 内容，旧 gen 内容上方标记 `> ⚠️ [STALE — gen-N]`。子 INDEX 的状态列同步更新。
 
+---
+
+#### MASTER-INDEX.md 闭环更新 🔴
+
+> ⚠️ **关键步骤**：Stage 7b 产出验证全部通过后，必须立即更新 MASTER-INDEX.md！
+
+**更新时机**：Stage 7b 黑板验证和产出验证全部通过后。
+
+**更新流程**：
+```
+1. Read .design-miner/MASTER-INDEX.md → 定位当前 gen 条目
+2. 更新 gen 状态字段：in_progress → completed
+3. 写入 completion 字段：当前 ISO8601 时间戳
+4. 写入产出摘要：本 run 关键产出简述（1-2 行）
+5. Write 回 .design-miner/MASTER-INDEX.md
+```
+
+**禁止行为**：
+- ❌ 验证通过但跳过 MASTER-INDEX 更新
+- ❌ 推迟到下次启动再更新
+- ❌ 只更新子索引不更新总索引
+
+---
+
 #### 下游工作流推荐
 
 本次设计挖掘产出已写入 `output/{project}-analysis/`，供下游团队使用。

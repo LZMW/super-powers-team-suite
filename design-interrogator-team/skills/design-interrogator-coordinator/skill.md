@@ -1042,6 +1042,33 @@ prompt: |
 
 ---
 
+#### MASTER-INDEX.md 闭环更新 🔴
+
+> ⚠️ **关键步骤**：全部产出验证通过后，必须立即更新 MASTER-INDEX.md！不要推迟到下次启动。
+
+**更新时机**：Phase 11 黑板验证、产出验证、冲突审查验证全部通过后，Phase 12 之前。
+
+**更新流程**：
+```
+1. Read .di/MASTER-INDEX.md → 定位当前 gen 条目
+2. 更新 gen 状态字段：in_progress → completed
+3. 写入 completion 字段：当前 ISO8601 时间戳
+4. 写入产出摘要：本 gen 的关键产出简述（1-2 行）
+5. Write 回 .di/MASTER-INDEX.md
+```
+
+**更新字段**：
+- `status: in_progress` → `status: completed`
+- `completed_at: [ISO8601]`
+- `summary: [本 gen 关键产出简述]`
+
+**禁止行为**：
+- ❌ 验证通过但跳过 MASTER-INDEX 更新
+- ❌ 推迟到 Phase 12 再更新
+- ❌ 只更新子索引不更新总索引
+
+---
+
 ### Phase 12：综合报告 + 偏好捕获
 
 #### 综合报告汇总

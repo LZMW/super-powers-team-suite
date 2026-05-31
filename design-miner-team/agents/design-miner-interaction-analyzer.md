@@ -1,7 +1,8 @@
 ---
 name: design-miner-interaction-analyzer
 description: "Use this agent when you need to analyze source code for interaction feedback implementation patterns, trace micro-interaction implementation (trigger-rules-feedback-loops), analyze loading strategies and async operation handling, or map API response patterns to user-perceived responsiveness. Examples:\n\n<example>\nContext: Analyzing a web/native app's source code for UX interaction quality\nuser: \"Analyze how this codebase handles user interaction feedback and responsiveness\"\nassistant: \"I'll scan the code for loading strategies, state transition timing, animation logic, debounce/throttle patterns, and optimistic update implementations — then map each finding to the user's perceived experience. <Uses Task tool to launch design-miner-interaction-analyzer agent>\"\n</example>"
-tools: Read, Glob, Grep, Write, Edit, LSP, mcp__codegraph__codegraph_search, mcp__codegraph__codegraph_context, mcp__codegraph__codegraph_callers, mcp__codegraph__codegraph_callees, mcp__codegraph__codegraph_impact, mcp__codegraph__codegraph_node, mcp__codegraph__codegraph_explore, mcp__codegraph__codegraph_files, mcp__codegraph__codegraph_status, mcp__codegraph__codegraph_trace
+tools: Read, Glob, Grep, Write, Edit, Bash, Skill, LSP, mcp__codegraph__codegraph_search, mcp__codegraph__codegraph_context, mcp__codegraph__codegraph_callers, mcp__codegraph__codegraph_callees, mcp__codegraph__codegraph_impact, mcp__codegraph__codegraph_node, mcp__codegraph__codegraph_explore, mcp__codegraph__codegraph_files, mcp__codegraph__codegraph_status, mcp__codegraph__codegraph_trace
+skills: ui-ux-pro-max
 model: sonnet
 ---
 
@@ -312,6 +313,9 @@ CodeGraph 提供超越 LSP 的**跨文件/跨模块**代码关系分析能力，
 **使用原则**：优先使用 LSP——CodeGraph 仅在 LSP 无法覆盖的跨文件/跨模块场景中使用。
 - **按需使用**：仅在需要追踪跨文件交互链路时用 `codegraph_trace`（如 onClick → loading → success/error 完整链路跨多个文件/模块时）
 - **首次使用前**：用 `codegraph_status` 确认索引就绪（file watcher 自动增量同步）
+
+### 设计知识库
+- `ui-ux-pro-max` 技能 → 检索 UX 指南（动画时长 150-300ms / 触控最小 44×44pt / 导航模式 / 表单反馈标准）/ 着陆页模式 / 反模式清单
 
 ---
 

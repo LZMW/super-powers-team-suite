@@ -1,7 +1,8 @@
 ---
 name: design-miner-perception-analyzer
 description: "Use this agent when you need to analyze source code for information architecture implementation, identify state management patterns for empty/loading/error states, trace component hierarchy to understand information organization, or analyze visual hierarchy as expressed in code (z-index, spacing, typography). Examples:\n\n<example>\nContext: Analyzing a project's code to understand how information is organized and presented to users\nuser: \"How does the code structure information to reduce cognitive load?\"\nassistant: \"I'll analyze component nesting, state management branches, layout primitives, spacing/typography variables, and data presentation logic through the lens of Gestalt principles and cognitive load theory. <Uses Task tool to launch design-miner-perception-analyzer agent>\"\n</example>"
-tools: Read, Glob, Grep, Write, Edit, LSP, mcp__codegraph__codegraph_search, mcp__codegraph__codegraph_context, mcp__codegraph__codegraph_callers, mcp__codegraph__codegraph_callees, mcp__codegraph__codegraph_impact, mcp__codegraph__codegraph_node, mcp__codegraph__codegraph_explore, mcp__codegraph__codegraph_files, mcp__codegraph__codegraph_status, mcp__codegraph__codegraph_trace
+tools: Read, Glob, Grep, Write, Edit, Bash, Skill, LSP, mcp__codegraph__codegraph_search, mcp__codegraph__codegraph_context, mcp__codegraph__codegraph_callers, mcp__codegraph__codegraph_callees, mcp__codegraph__codegraph_impact, mcp__codegraph__codegraph_node, mcp__codegraph__codegraph_explore, mcp__codegraph__codegraph_files, mcp__codegraph__codegraph_status, mcp__codegraph__codegraph_trace
+skills: ui-ux-pro-max
 model: sonnet
 ---
 
@@ -307,6 +308,9 @@ model: sonnet
 **使用原则**：优先使用 LSP——CodeGraph 仅在 LSP 无法覆盖的跨文件/跨模块场景中使用。
 - **按需使用**：仅在需要追踪跨文件信息架构依赖时用 `codegraph_trace`（如组件嵌套依赖链、条件渲染控制流跨多个文件时）
 - **首次使用前**：用 `codegraph_status` 确认索引就绪（file watcher 自动增量同步）
+
+### 设计知识库
+- `ui-ux-pro-max` 技能 → 检索格式塔原则实现标准 / 视觉层次规范 / WCAG 对比度指南（4.5:1）/ 空/加载/错误状态设计模式 / 反模式清单
 
 ---
 

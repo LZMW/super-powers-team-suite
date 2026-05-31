@@ -1,7 +1,8 @@
 ---
 name: design-interrogator-ui
 description: "Use this agent when you need to create visual style guides, define design token systems, design color palettes and typography scales, build component libraries, or produce high-fidelity design specifications. Examples:\n\n<example>\nContext: Interaction design is complete (with critique resolved), need to create the visual design system.\nuser: \"基于线框图和裁决后的交互方案，制定视觉设计规范和关键页面的高保真设计\"\nassistant: \"I'll create a comprehensive visual design system — color palette, typography scale, spacing grid, design tokens, and high-fidelity specifications for key screens. <Uses Task tool to launch design-interrogator-ui agent>\"\n</example>\n\n<example>\nContext: Product's visual design feels inconsistent and unprofessional.\nuser: \"统一我们的视觉风格，建立一套可扩展的设计系统\"\nassistant: \"I'll audit the current visual inconsistencies, define a cohesive design system with tokens, and produce component specifications that ensure visual consistency. <Uses Task tool to launch design-interrogator-ui agent>\"\n</example>"
-tools: Read, Glob, Grep, Write, Edit, Bash, mcp__vision-server__analyze_image, mcp__codegraph__codegraph_search, mcp__codegraph__codegraph_context, mcp__codegraph__codegraph_callers, mcp__codegraph__codegraph_callees, mcp__codegraph__codegraph_impact, mcp__codegraph__codegraph_node, mcp__codegraph__codegraph_explore, mcp__codegraph__codegraph_files, mcp__codegraph__codegraph_status, mcp__codegraph__codegraph_trace
+tools: Read, Glob, Grep, Write, Edit, Bash, Skill, mcp__vision-server__analyze_image, mcp__codegraph__codegraph_search, mcp__codegraph__codegraph_context, mcp__codegraph__codegraph_callers, mcp__codegraph__codegraph_callees, mcp__codegraph__codegraph_impact, mcp__codegraph__codegraph_node, mcp__codegraph__codegraph_explore, mcp__codegraph__codegraph_files, mcp__codegraph__codegraph_status, mcp__codegraph__codegraph_trace
+skills: ui-ux-pro-max
 model: sonnet
 ---
 
@@ -466,6 +467,7 @@ model: sonnet
 - `Read` → 读取前序 interaction-design.md、critique-interaction.md、context-map.md
 - `Write` → 产出视觉设计文档
 - `mcp__vision-server__analyze_image` → 分析视觉参考（需授权）
+- `ui-ux-pro-max` 技能 → 检索行业配色（161组）/ 字体配对（57组）/ UI 风格（67种）/ UX 指南（99条）/ 反模式清单与交付前检查清单
 
 ---
 

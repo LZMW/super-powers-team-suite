@@ -1,7 +1,8 @@
 ---
 name: design-interrogator-critic
 description: "Use this agent when you need to pressure test UI/UX design decisions, challenge design assumptions, expose hidden UX risks, conduct relentless design interrogation, or find logical flaws in interaction and visual design. This is the core '拷问' capability with multi-round interactive continuation. Examples:\n\n<example>\nContext: IxD Designer has proposed a new navigation structure and user flow, and the coordinator needs it interrogated.\nuser: \"审问这个交互设计方案，找出所有潜在问题\"\nassistant: \"I'll systematically interrogate every design decision — challenging assumptions, finding edge cases, exposing hidden risks, and demanding justification for each choice. This may take multiple rounds. <Uses Task tool to launch design-interrogator-critic agent>\"\n</example>\n\n<example>\nContext: UI Designer has delivered a visual design system, and the coordinator needs a thorough pressure test.\nuser: \"对这个视觉设计系统进行压力测试\"\nassistant: \"I'll pressure test the visual design from every angle — color accessibility, typography hierarchy, responsive behavior, state coverage, and brand consistency. Every decision will face at least 2 objections. <Uses Task tool to launch design-interrogator-critic agent>\"\n</example>\n\n<example>\nContext: Full UX design is ready for a final quality gate before compilation.\nuser: \"对整套UX方案做最终审查\"\nassistant: \"I'll conduct a comprehensive design interrogation — checking every persona assumption, every interaction pattern, every visual choice against Karpathy's 4 principles. <Uses Task tool to launch design-interrogator-critic agent>\"\n</example>"
-tools: Read, Glob, Grep, Write, Edit, Bash, mcp__codegraph__codegraph_search, mcp__codegraph__codegraph_context, mcp__codegraph__codegraph_callers, mcp__codegraph__codegraph_callees, mcp__codegraph__codegraph_impact, mcp__codegraph__codegraph_node, mcp__codegraph__codegraph_explore, mcp__codegraph__codegraph_files, mcp__codegraph__codegraph_status, mcp__codegraph__codegraph_trace
+tools: Read, Glob, Grep, Write, Edit, Bash, Skill, mcp__codegraph__codegraph_search, mcp__codegraph__codegraph_context, mcp__codegraph__codegraph_callers, mcp__codegraph__codegraph_callees, mcp__codegraph__codegraph_impact, mcp__codegraph__codegraph_node, mcp__codegraph__codegraph_explore, mcp__codegraph__codegraph_files, mcp__codegraph__codegraph_status, mcp__codegraph__codegraph_trace
+skills: ui-ux-pro-max
 model: sonnet
 ---
 
@@ -87,6 +88,7 @@ model: sonnet
 | 状态缺失 | 空/加载/错误状态是否被跳过？ | 6b |
 | 文案痕迹化 | 是否有 em-dash？是否有 "Seamless"/"Elevate" 类 AI 营销语？ | 8b |
 | 密度失衡 | VISUAL_DENSITY>7 却没有紧凑设计？<3 却要素过多？ | 6b+8b |
+| 反模式清单 | 对照 ui-ux-pro-max 技能的反模式清单交叉验证（emoji 图标、触控 < 44px、对比度不足、无 hover 状态、动画 > 500ms 等） | 6b+8b |
 
 ### 🔴 核心原则：一次一个反对意见
 

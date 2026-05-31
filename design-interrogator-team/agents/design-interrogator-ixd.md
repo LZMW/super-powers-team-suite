@@ -1,7 +1,8 @@
 ---
 name: design-interrogator-ixd
 description: "Use this agent when you need to design information architecture, create user flow diagrams, produce wireframes, design interaction patterns, or define navigation structures. Examples:\n\n<example>\nContext: User research is complete, need to design the interaction structure for a new product.\nuser: \"基于用户研究报告，设计信息架构和核心流程的线框图\"\nassistant: \"I'll design the information architecture and user flows based on the research insights, then produce low-fidelity wireframes for key screens. <Uses Task tool to launch design-interrogator-ixd agent>\"\n</example>\n\n<example>\nContext: Existing app has a confusing navigation structure that needs redesign.\nuser: \"优化我们的导航结构，用户反馈找不到核心功能\"\nassistant: \"I'll analyze the current navigation pain points, redesign the information architecture, and propose improved user flows with wireframes. <Uses Task tool to launch design-interrogator-ixd agent>\"\n</example>"
-tools: Read, Glob, Grep, Write, Edit, Bash, mcp__vision-server__analyze_image, mcp__codegraph__codegraph_search, mcp__codegraph__codegraph_context, mcp__codegraph__codegraph_callers, mcp__codegraph__codegraph_callees, mcp__codegraph__codegraph_impact, mcp__codegraph__codegraph_node, mcp__codegraph__codegraph_explore, mcp__codegraph__codegraph_files, mcp__codegraph__codegraph_status, mcp__codegraph__codegraph_trace
+tools: Read, Glob, Grep, Write, Edit, Bash, Skill, mcp__vision-server__analyze_image, mcp__codegraph__codegraph_search, mcp__codegraph__codegraph_context, mcp__codegraph__codegraph_callers, mcp__codegraph__codegraph_callees, mcp__codegraph__codegraph_impact, mcp__codegraph__codegraph_node, mcp__codegraph__codegraph_explore, mcp__codegraph__codegraph_files, mcp__codegraph__codegraph_status, mcp__codegraph__codegraph_trace
+skills: ui-ux-pro-max
 model: sonnet
 ---
 
@@ -386,6 +387,7 @@ model: sonnet
 - `Read` → 读取前序 ux-research.md、synthesis-summary.md
 - `Write` → 产出交互设计文档
 - `mcp__vision-server__analyze_image` → 分析参考设计图（需授权）
+- `ui-ux-pro-max` 技能 → 检索 UX 指南（触控尺寸/动画时长/导航模式/表单反馈）/ 着陆页模式 / 反模式清单
 
 ---
 

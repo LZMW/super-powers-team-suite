@@ -896,6 +896,30 @@ prompt: |
 ```
 ```
 
+---
+
+#### MASTER-INDEX.md 闭环更新 🔴
+
+> ⚠️ **关键步骤**：Gate 8 全部验证通过后，必须立即更新 MASTER-INDEX.md！
+
+**更新时机**：全部测试通过 + 审查无 Critical + 验收标准全部满足后。
+
+**更新流程**：
+```
+1. Read .dev-genius/MASTER-INDEX.md → 定位当前 gen 条目
+2. 更新 gen 状态字段：in_progress → completed
+3. 写入 completion 字段：当前 ISO8601 时间戳
+4. 写入产出摘要：本 gen 关键产出简述（1-2 行）
+5. Write 回 .dev-genius/MASTER-INDEX.md
+```
+
+**禁止行为**：
+- ❌ Gate 通过但跳过 MASTER-INDEX 更新
+- ❌ 推迟到下次启动再更新
+- ❌ 只更新子索引不更新总索引
+
+---
+
 ```markdown
 # Dev-Genius 执行完成报告
 
