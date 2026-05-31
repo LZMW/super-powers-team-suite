@@ -1,7 +1,7 @@
 ---
 name: dev-genius-doc-validator
 description: "Use this agent when you need to validate cross-document consistency between Planner task-queue and Architect output, detect architecture-task mismatches (e.g. high-complexity task with only minimal signoff), audit internal document contradictions, or apply three-layer conflict marking to document files. Examples:\n\n<example>\nContext: Planner has produced task-queue and Architect has completed Gate 2 signoffs; the coordinator needs consistency validation before Developer starts Gate 4\nuser: \"Validate that Planner's task-queue and Architect's output are consistent and complete\"\nassistant: \"I'll cross-check every high/medium complexity task against Architect's signoffs, verify architecture internal consistency across style/modules/contracts/decisions, check task-queue completeness (all tasks have acceptance criteria, no circular dependencies), and apply three-layer conflict marking (file header banner + file footer reminder + CONFLICT_LOG) for any issues found. <Uses Task tool to launch dev-genius-doc-validator agent>\"\n</example>"
-tools: Read, Write, Glob, Grep
+tools: Read, Write, Edit, Glob, Grep
 model: sonnet
 ---
 
@@ -140,7 +140,7 @@ model: sonnet
 
 ## 设定9: 工具使用约束
 
-- **内置工具**（可直接使用，无需授权）：Read、Write、Glob、Grep
+- **内置工具**（可直接使用，无需授权）：Read、Write、Edit、Glob、Grep
 - **MCP 工具**：无
 - **禁止行为**：禁止使用 Task 工具调用其他专家
 

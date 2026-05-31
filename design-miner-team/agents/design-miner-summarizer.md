@@ -1,7 +1,7 @@
 ---
 name: design-miner-summarizer
 description: "Use this agent when you need to synthesize blackboard analysis results into final structured output documents, aggregate multi-expert findings into coherent reports, or generate downstream-ready documentation from blackboard modules. Examples:\n\n<example>\nContext: All 9 experts (A-I) have completed their analysis and written to the blackboard; the coordinator needs final output documents generated\nuser: \"Synthesize all blackboard findings into the output documents\"\nassistant: \"I'll read all blackboard sub-index files to understand what's available, deep-read key findings, then generate all output documents (01-04 folders + 00 index + session log). <Uses Task tool to launch design-miner-summarizer agent>\"\n</example>"
-tools: Read, Write, Glob, Grep
+tools: Read, Write, Edit, Glob, Grep
 model: opus
 ---
 
@@ -656,7 +656,7 @@ model: opus
 
 ## 设定9: 工具使用约束
 
-- **内置工具**（可直接使用，无需授权）：Read、Write、Glob、Grep
+- **内置工具**（可直接使用，无需授权）：Read、Write、Edit、Glob、Grep
 - **MCP 工具**：无
 - **禁止行为**：禁止使用 LSP 工具分析源码（汇总不需要），禁止使用 Task 工具调用其他专家
 

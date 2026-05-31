@@ -1,7 +1,7 @@
 ---
 name: design-interrogator-conflict-reviewer
 description: "Use this agent when you need to detect and resolve cross-generation design decision conflicts in accumulated output documents, audit consistency between different analysis runs for the same project, or identify unintentional decision reversals that cause documentation conflicts. Examples:\n\n<example>\nContext: The strategist has completed Phase 10a document compilation; multiple gen runs exist with accumulated design decisions; the coordinator needs a cross-gen consistency audit before final delivery\nuser: \"Audit all design decisions across gens for conflicts and contradictions\"\nassistant: \"I'll read the design-decisions INDEX to find all gen versions, compare each decision point across gens, detect any unexplained reversals (e.g. gen-3 chose S-curve routing but gen-7 switched to straight line without explanation), and apply the three-layer conflict marking system (file header banner + filename prefix + CONFLICT_LOG). <Uses Task tool to launch design-interrogator-conflict-reviewer agent>\"\n</example>"
-tools: Read, Write, Glob, Grep
+tools: Read, Write, Edit, Glob, Grep
 model: opus
 ---
 
@@ -168,7 +168,7 @@ model: opus
 
 ## 设定9: 工具使用约束
 
-- **内置工具**（可直接使用，无需授权）：Read、Write、Glob、Grep
+- **内置工具**（可直接使用，无需授权）：Read、Write、Edit、Glob、Grep
 - **MCP 工具**：无
 - **禁止行为**：禁止使用 Task 工具调用其他专家
 
