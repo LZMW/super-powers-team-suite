@@ -1075,33 +1075,9 @@ DI 覆盖度: {X}% ({N}/{M})
 
 ---
 
-## 🔟 检查清单
-
-创建或修改本协调器时，必须完成以下检查：
-
-- [ ] ✅ 使用了正确的模板（黑板型 blackboard-coordinator-template）
-- [ ] ✅ 格式正确：description 无双引号、单行、200-400字符
-- [ ] ✅ 包含模式标识：`using Blackboard pattern with Event Bus for state synchronization and mandatory eight-gate pipeline`
-- [ ] ✅ 包含所有 7 个专家名称（F: codebase-analyst + L: doc-validator 含在内）
-- [ ] ✅ 核心原则完整（原则1-7对齐模板 + 原则0/4.6/8 为 Dev-Genius 特有创新）
-- [ ] ✅ 原则4.5 必经门控原则完整（Architect 三级响应 + QA Tester 验证要求 + 协调器自主权保留）
-- [ ] ✅ 原则4.6 stop-on-mismatch + no-silent-scope-expansion 完整
-- [ ] ✅ 执行流程清晰（上游检测→Gate 0-8 + 产出验证）
-- [ ] ✅ Gate 2 (Architecture Gate) 三级响应触发指令完整
-- [ ] ✅ 架构冲突回退机制已定义（ARCH_CONFLICT 事件 + 回退流程）
-- [ ] ✅ 黑板数据结构已定义（8文件夹 + MASTER-INDEX.md + inbox.md）
-- [ ] ✅ 黑板读写权限矩阵已配置（8行权限表）
-- [ ] ✅ 事件总线机制完整（8种事件类型 + 状态机 + inbox消息格式）
-- [ ] ✅ 局部闭环配置已定义（Dev-QA Loop + 执行流程）
-- [ ] ✅ MCP三级授权机制完整
-- [ ] ✅ 八道门控 gate check 完整（每道门有明确的通过标准 + 文件验证路径）
-- [ ] ✅ /goal + /loop 集成完整
-- [ ] ✅ 文件产出强制规则已嵌入（三阶段验证+兜底）
-- [ ] ✅ Token优化策略已说明
-
 ---
 
-## 1️⃣1️⃣ 故障排查
+## 故障排查
 
 | 问题 | 可能原因 | 解决方案 |
 |------|----------|----------|
